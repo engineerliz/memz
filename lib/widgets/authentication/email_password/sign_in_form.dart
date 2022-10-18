@@ -127,7 +127,7 @@ class SignInFormState extends State<SignInForm> {
                       child: const Padding(
                         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: Text(
-                          'LOGIN',
+                          'LOGIN2',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
