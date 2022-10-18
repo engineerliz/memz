@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         fontFamily: 'OpenSans',
       ),
-      // home: SignInScreen(),
-      home: const HomeScreen(),
+      home: SignInScreen(),
+      // home: const HomeScreen(),
     );
   }
 }

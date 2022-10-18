@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../../components/CommonScaffold.dart';
 import '../../../res/custom_colors.dart';
 import '../../../utils/authentication/email_password_auth/authentication.dart';
 import '../../../widgets/app_bar_title.dart';
@@ -21,6 +22,13 @@ class UserInfoScreen extends StatefulWidget {
 class UserInfoScreenState extends State<UserInfoScreen> {
   late bool _isEmailVerified;
   late User _user;
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   bool _verificationEmailBeingSent = false;
   bool _isSigningOut = false;
@@ -55,22 +63,10 @@ class UserInfoScreenState extends State<UserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Palette.firebaseNavy,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Palette.firebaseNavy,
-        title: const AppBarTitle(
-          sectionName: 'Authentication',
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16.0,
-            right: 16.0,
-            bottom: 20.0,
-          ),
+    // print('_user, $_user');
+    return CommonScaffold(
+        title: 'Pinned',
+        body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -275,8 +271,6 @@ class UserInfoScreenState extends State<UserInfoScreen> {
                     ),
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

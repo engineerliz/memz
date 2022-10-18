@@ -19,7 +19,7 @@ class SignInScreen extends StatefulWidget {
 class SignInScreenState extends State<SignInScreen> {
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
-
+  
   Future<FirebaseApp> _initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
