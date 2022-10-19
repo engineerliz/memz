@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:memz/api/users/UserStore.dart';
 
 import '../../../res/custom_colors.dart';
 import '../../../screens/authentication/email_password/email_password.dart';
@@ -148,6 +149,28 @@ class RegisterFormState extends State<RegisterForm> {
                           );
 
                           if (user != null) {
+                            await UserStore.addUser(user: user);
+                            //         onPressed: () async {
+                            //   widget.titleFocusNode.unfocus();
+                            //   widget.descriptionFocusNode.unfocus();
+
+                            //   if (_addItemFormKey.currentState!.validate()) {
+                            //     setState(() {
+                            //       _isProcessing = true;
+                            //     });
+
+                            //     await Database.addItem(
+                            //       title: _titleController.text,
+                            //       description: _descriptionController.text,
+                            //     );
+
+                            //     setState(() {
+                            //       _isProcessing = false;
+                            //     });
+
+                            //     Navigator.of(context).pop();
+                            //   }
+                            // },
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => UserInfoScreen(
