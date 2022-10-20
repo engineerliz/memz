@@ -29,21 +29,17 @@ class ProfileViewState extends State<ProfileView> {
         body: Column(
           children: [
             FutureBuilder<MUser?>(
-              future: mUser, // a previously-obtained Future<String> or null
+              future: mUser, 
               builder: (BuildContext context, AsyncSnapshot<MUser?> userData) {
                 List<Widget> children;
                 if (userData.hasData) {
                   children = <Widget>[
-                    const Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: 20,
-                    ),
-                    Text('Result: ${userData.data?.toJson()}'),
-                    // Container(
-                    //     child:
-                    //   Expanded(
-                    //         child: Text('Result: ${userData.data?.toJson()}'))),
+                    // const Icon(
+                    //   Icons.check_circle_outline,
+                    //   color: Colors.green,
+                    //   size: 20,
+                    // ),
+                    // Text('Result: ${userData.data?.toJson()}'),
                     Row(
                       children: [
                         const Text('👋', style: TextStyle(fontSize: 22)),
@@ -95,11 +91,11 @@ class ProfileViewState extends State<ProfileView> {
                               EditProfileView(user: userData.data),
                         ),
                       ),
-                      child: Text('Edit', style: SubHeading.SH18),
                       style: const ButtonStyle(
                         backgroundColor:
                             MaterialStatePropertyAll<Color>(MColors.grayV9),
                       ),
+                      child: Text('Edit', style: SubHeading.SH18),
                     ),
 
                   ];
@@ -136,45 +132,6 @@ class ProfileViewState extends State<ProfileView> {
                 );
               },
             ),
-            // Row(
-            //   children: [
-            //     const Text('👋', style: TextStyle(fontSize: 22)),
-            //     const SizedBox(
-            //       width: 6,
-            //     ),
-            //     Text(user?.displayName ?? '', style: SubHeading.SH14)
-            //   ],
-            // ),
-            // Row(
-            //   children: [
-            //     const Text('🏠', style: TextStyle(fontSize: 22)),
-            //     const SizedBox(
-            //       width: 6,
-            //     ),
-            //     Text(
-            //       'Los Angeles, California',
-            //       style: SubHeading.SH14,
-            //     )
-            //   ],
-            // ),
-            // Row(
-            //   children: [
-            //     const Text('🎉', style: TextStyle(fontSize: 22)),
-            //     const SizedBox(
-            //       width: 6,
-            //     ),
-            //     Text('81 friends', style: SubHeading.SH14)
-            //   ],
-            // ),
-            // Row(
-            //   children: [
-            //     const Text('🎁', style: TextStyle(fontSize: 22)),
-            //     const SizedBox(
-            //       width: 6,
-            //     ),
-            //     Text('Joined Aug 22, 2022', style: SubHeading.SH14)
-            //   ],
-            // ),
           ],
         ));
   }

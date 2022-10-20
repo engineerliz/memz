@@ -31,6 +31,8 @@ class BottomBar extends StatelessWidget {
       ],
       currentIndex: activeIndex,
       selectedItemColor: MColors.green,
+      unselectedItemColor: MColors.grayV5,
+      backgroundColor: MColors.background,
       onTap: onItemTapped,
     );
   }
