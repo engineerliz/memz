@@ -6,8 +6,11 @@ import 'package:memz/components/CommonScaffold.dart';
 import 'package:memz/features/editProfile/EditProfileView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
+import 'package:intl/intl.dart';
 
 class ProfileView extends StatefulWidget {
+  const ProfileView({super.key});
+
   @override
   ProfileViewState createState() => ProfileViewState();
 }
@@ -27,34 +30,80 @@ class ProfileViewState extends State<ProfileView> {
           children: [
             FutureBuilder<MUser?>(
               future: mUser, // a previously-obtained Future<String> or null
-              builder: (BuildContext context, AsyncSnapshot<MUser?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<MUser?> userData) {
                 List<Widget> children;
-                if (snapshot.hasData) {
+                if (userData.hasData) {
                   children = <Widget>[
                     const Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,
                       size: 20,
                     ),
-                    Stack(children: [
-                      Expanded(
-                          child: Text('Result: ${snapshot.data?.toJson()}'))
-                    ]),
+                    Text('Result: ${userData.data?.toJson()}'),
+                    // Container(
+                    //     child:
+                    //   Expanded(
+                    //         child: Text('Result: ${userData.data?.toJson()}'))),
+                    Row(
+                      children: [
+                        const Text('👋', style: TextStyle(fontSize: 22)),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Text(userData.data?.username ?? '',
+                            style: SubHeading.SH14)
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text('🏠', style: TextStyle(fontSize: 22)),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          userData.data?.homeBase ?? '',
+                          style: SubHeading.SH14,
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text('🎉', style: TextStyle(fontSize: 22)),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Text('[Static] 81 friends', style: SubHeading.SH14)
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text('🎁', style: TextStyle(fontSize: 22)),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        if (userData.data?.joinDate != null)
+                          Text(
+                              'Joined ${DateFormat.yMMMd().format(userData.data!.joinDate!)}',
+                              style: SubHeading.SH14)
+                      ],
+                    ),
+                    const SizedBox(height: 40),
                     OutlinedButton(
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                              EditProfileView(user: snapshot.data),
+                              EditProfileView(user: userData.data),
                         ),
                       ),
-                      child: const Text('Edit'),
+                      child: Text('Edit', style: SubHeading.SH18),
                       style: const ButtonStyle(
                         backgroundColor:
                             MaterialStatePropertyAll<Color>(MColors.grayV9),
                       ),
                     ),
+
                   ];
-                } else if (snapshot.hasError) {
+                } else if (userData.hasError) {
                   children = <Widget>[
                     const Icon(
                       Icons.error_outline,
@@ -63,7 +112,7 @@ class ProfileViewState extends State<ProfileView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${snapshot.error}'),
+                      child: Text('Error: ${userData.error}'),
                     ),
                   ];
                 } else {
@@ -87,45 +136,45 @@ class ProfileViewState extends State<ProfileView> {
                 );
               },
             ),
-            Row(
-              children: [
-                const Text('👋', style: TextStyle(fontSize: 22)),
-                const SizedBox(
-                  width: 6,
-                ),
-                Text(user?.displayName ?? '', style: SubHeading.SH14)
-              ],
-            ),
-            Row(
-              children: [
-                const Text('🏠', style: TextStyle(fontSize: 22)),
-                const SizedBox(
-                  width: 6,
-                ),
-                Text(
-                  'Los Angeles, California',
-                  style: SubHeading.SH14,
-                )
-              ],
-            ),
-            Row(
-              children: [
-                const Text('🎉', style: TextStyle(fontSize: 22)),
-                const SizedBox(
-                  width: 6,
-                ),
-                Text('81 friends', style: SubHeading.SH14)
-              ],
-            ),
-            Row(
-              children: [
-                const Text('🎁', style: TextStyle(fontSize: 22)),
-                const SizedBox(
-                  width: 6,
-                ),
-                Text('Joined Aug 22, 2022', style: SubHeading.SH14)
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     const Text('👋', style: TextStyle(fontSize: 22)),
+            //     const SizedBox(
+            //       width: 6,
+            //     ),
+            //     Text(user?.displayName ?? '', style: SubHeading.SH14)
+            //   ],
+            // ),
+            // Row(
+            //   children: [
+            //     const Text('🏠', style: TextStyle(fontSize: 22)),
+            //     const SizedBox(
+            //       width: 6,
+            //     ),
+            //     Text(
+            //       'Los Angeles, California',
+            //       style: SubHeading.SH14,
+            //     )
+            //   ],
+            // ),
+            // Row(
+            //   children: [
+            //     const Text('🎉', style: TextStyle(fontSize: 22)),
+            //     const SizedBox(
+            //       width: 6,
+            //     ),
+            //     Text('81 friends', style: SubHeading.SH14)
+            //   ],
+            // ),
+            // Row(
+            //   children: [
+            //     const Text('🎁', style: TextStyle(fontSize: 22)),
+            //     const SizedBox(
+            //       width: 6,
+            //     ),
+            //     Text('Joined Aug 22, 2022', style: SubHeading.SH14)
+            //   ],
+            // ),
           ],
         ));
   }

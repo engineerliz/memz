@@ -34,6 +34,12 @@ class UserStore {
     // return userDoc.get().then((value) => MUser.fromJson(json.encode(value.data())));
   }
 
+  static Future<void> updateUser({
+    required MUser user,
+  }) async {
+    usersDb.doc(user.id).set(user.toJson());
+  }
+
   static Future<void> updateItem({
     required String title,
     required String description,

@@ -34,4 +34,19 @@ class MUser {
         homeBase: data['homeBase'],
         joinDate: data['joinDate'].toDate(),
       );
+      
+  MUser updateEditableFields({
+    String? newUsername,
+    String? newEmail,
+    String? newName,
+    String? newHomebase,
+  }) =>
+      MUser(
+        id: id,
+        joinDate: joinDate,
+        username: newUsername ?? username,
+        email: newEmail ?? email,
+        name: newName ?? name,
+        homeBase: newHomebase ?? homeBase,
+      );
 }
