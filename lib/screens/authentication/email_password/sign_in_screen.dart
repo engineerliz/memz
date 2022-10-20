@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import '../../../features/mainViews/MainViews.dart';
 import '../../../firebase_options.dart';
 import '../../../res/custom_colors.dart';
 import '../../../widgets/app_bar_title.dart';
@@ -31,8 +32,8 @@ class SignInScreenState extends State<SignInScreen> {
       if (!mounted) return firebaseApp;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => UserInfoScreen(
-            user: user,
+          builder: (context) => MainViews(
+              // user: user,
           ),
         ),
       );

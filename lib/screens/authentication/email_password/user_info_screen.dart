@@ -9,11 +9,11 @@ import '../../../widgets/authentication/email_password/register_form.dart';
 import 'sign_in_screen.dart';
 
 class UserInfoScreen extends StatefulWidget {
-  const UserInfoScreen({Key? key, required User user})
+  const UserInfoScreen({Key? key, User? user})
       : _user = user,
         super(key: key);
 
-  final User _user;
+  final User? _user;
 
   @override
   UserInfoScreenState createState() => UserInfoScreenState();
@@ -21,7 +21,7 @@ class UserInfoScreen extends StatefulWidget {
 
 class UserInfoScreenState extends State<UserInfoScreen> {
   late bool _isEmailVerified;
-  late User _user;
+  late User? _user;
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -56,7 +56,7 @@ class UserInfoScreenState extends State<UserInfoScreen> {
   @override
   void initState() {
     _user = widget._user;
-    _isEmailVerified = _user.emailVerified;
+    _isEmailVerified = _user?.emailVerified ?? false;
 
     super.initState();
   }
@@ -66,7 +66,8 @@ class UserInfoScreenState extends State<UserInfoScreen> {
     // print('_user, $_user');
     return CommonScaffold(
         title: 'Pinned',
-        body: SafeArea(
+      body: _user != null
+          ? SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -94,7 +95,7 @@ class UserInfoScreenState extends State<UserInfoScreen> {
               ),
               const SizedBox(height: 8.0),
               Text(
-                widget._user.displayName!,
+                    widget._user!.displayName!,
                 style: const TextStyle(
                   color: Palette.firebaseYellow,
                   fontSize: 26,
@@ -183,7 +184,7 @@ class UserInfoScreenState extends State<UserInfoScreen> {
                               setState(() {
                                 _verificationEmailBeingSent = true;
                               });
-                              await _user.sendEmailVerification();
+                                  await _user!.sendEmailVerification();
                               setState(() {
                                 _verificationEmailBeingSent = false;
                               });
@@ -205,7 +206,8 @@ class UserInfoScreenState extends State<UserInfoScreen> {
                     IconButton(
                       icon: const Icon(Icons.refresh),
                       onPressed: () async {
-                        User? user = await Authentication.refreshUser(_user);
+                            User? user =
+                                await Authentication.refreshUser(_user!);
 
                         if (user != null) {
                           setState(() {
@@ -271,6 +273,8 @@ class UserInfoScreenState extends State<UserInfoScreen> {
                     ),
             ],
           ),
-        ));
+            )
+          : const SizedBox(),
+    );
   }
 }

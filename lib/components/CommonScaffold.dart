@@ -52,10 +52,10 @@ class CommonScaffoldState extends State<CommonScaffold> {
         ),
         child: widget.body,
       ),
-      bottomNavigationBar: BottomBar(
-        activeIndex: widget.activeTab ?? _selectedIndex,
-        onItemTapped: onItemTapped,
-      ),
+      // bottomNavigationBar: BottomBar(
+      //   activeIndex: widget.activeTab ?? _selectedIndex,
+      //   onItemTapped: onItemTapped,
+      // ),
     );
   }
 }

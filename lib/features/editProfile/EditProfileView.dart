@@ -110,11 +110,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                       newEmail: emailController.text,
                       newHomebase: homeBaseController.text,
                     )),
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ProfileView(),
-                      ),
-                    )
+                    Navigator.of(context).pop(),
                   },
                   child: const Text('Save'),
                   style: const ButtonStyle(
