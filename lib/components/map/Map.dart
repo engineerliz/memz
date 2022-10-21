@@ -7,17 +7,28 @@ import 'package:memz/components/map/style.dart';
 import 'landmarks.dart';
 
 class MapSample extends StatefulWidget {
+  final LatLng? location;
+
+  const MapSample({
+    super.key,
+    this.location,
+  });
+
   @override
   State<MapSample> createState() => MapSampleState();
 }
 
 class MapSampleState extends State<MapSample> {
   final Completer<GoogleMapController> _controller = Completer();
+  late LatLng currentLocation = nycWSP;
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: nycWSP,
-    zoom: 13,
-  );
+  @override
+  initState() {
+    setState(() {
+      currentLocation = widget.location != null ? widget.location! : nycWSP;
+    });
+    super.initState();
+  }
 
   static const CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
@@ -29,7 +40,10 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
+        initialCameraPosition: CameraPosition(
+          target: currentLocation,
+          zoom: 13,
+        ),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
           controller.setMapStyle(mapStyle);

@@ -50,6 +50,7 @@ class ProfileViewState extends State<ProfileView> {
                             style: SubHeading.SH14)
                       ],
                     ),
+                    const SizedBox(height: 6),
                     Row(
                       children: [
                         const Text('🏠', style: TextStyle(fontSize: 22)),
@@ -62,6 +63,8 @@ class ProfileViewState extends State<ProfileView> {
                         )
                       ],
                     ),
+                    const SizedBox(height: 6),
+
                     Row(
                       children: [
                         const Text('🎉', style: TextStyle(fontSize: 22)),
@@ -71,6 +74,8 @@ class ProfileViewState extends State<ProfileView> {
                         Text('[Static] 81 friends', style: SubHeading.SH14)
                       ],
                     ),
+                    const SizedBox(height: 6),
+
                     Row(
                       children: [
                         const Text('🎁', style: TextStyle(fontSize: 22)),
