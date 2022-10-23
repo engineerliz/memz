@@ -20,6 +20,7 @@ class PinPost extends StatelessWidget {
     final Future<UserModel?> user = UserStore.getUserById(id: pin.creatorId);
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -52,7 +53,9 @@ class PinPost extends StatelessWidget {
           child: MapSample(
             location: pin.location,
           ),
-        )
+        ),
+        const SizedBox(height: 8),
+        if (pin.caption != null) Text(pin.caption!, style: Paragraph.P14),
       ],
     );
   }

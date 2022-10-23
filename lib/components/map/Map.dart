@@ -54,8 +54,8 @@ class MapSampleState extends State<MapSample> {
             myLocationButtonEnabled: false,
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
-              // target: currentLocation,
-              target: nycWSP,
+              target: currentLocation,
+              // target: nycWSP,
               zoom: 15,
         ),
         onMapCreated: (GoogleMapController controller) {
@@ -65,8 +65,8 @@ class MapSampleState extends State<MapSample> {
             markers: {
               Marker(
                 markerId: const MarkerId('currentLocation'),
-                // position: currentLocation,
-                position: nycWSP,
+                position: currentLocation,
+                // position: nycWSP,
                 icon: mapIcon,
               )
             },

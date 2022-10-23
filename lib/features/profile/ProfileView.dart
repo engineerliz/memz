@@ -155,7 +155,7 @@ class ProfileViewState extends State<ProfileView> {
                       children: [
                         ...pinsData.data!.map(
                           (pin) => Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.only(bottom: 25),
                             child: PinPost(pin: pin),
                           ),
                         )

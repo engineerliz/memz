@@ -38,7 +38,9 @@ class PinStore {
     required String userId,
   }) async {
     print('getPinsByUserId $userId');
-    final query = pinsDb.where('creatorId', isEqualTo: userId);
+    final query = pinsDb
+        .where('creatorId', isEqualTo: userId)
+        .orderBy('creationTime', descending: true);
     final Future<List<PinModel>?> result = query.get().then(
           (resultsList) => List.from(
             resultsList.docs.map(
