@@ -8,10 +8,12 @@ import 'landmarks.dart';
 
 class MapSample extends StatefulWidget {
   final LatLng? location;
+  final bool? isLoading;
 
   const MapSample({
     super.key,
     this.location,
+    this.isLoading = false,
   });
 
   @override
@@ -21,11 +23,19 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
   final Completer<GoogleMapController> _controller = Completer();
   late LatLng currentLocation = nycWSP;
+  late BitmapDescriptor mapIcon = BitmapDescriptor.defaultMarker;
 
   @override
   initState() {
     setState(() {
       currentLocation = widget.location != null ? widget.location! : nycWSP;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(20, 20)), 'assets/pin.png')
+        .then((onValue) {
+      setState(() {
+        mapIcon = onValue;
+      });
     });
     super.initState();
   }
@@ -38,16 +48,28 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
+    return widget.isLoading == true
+        ? const SizedBox(child: Text('Loading...'))
+        : GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
-          target: currentLocation,
-          zoom: 13,
+              // target: currentLocation,
+              target: nycWSP,
+              zoom: 15,
         ),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
           controller.setMapStyle(mapStyle);
-        });
+            },
+            markers: {
+              Marker(
+                markerId: const MarkerId('currentLocation'),
+                // position: currentLocation,
+                position: nycWSP,
+                icon: mapIcon,
+              )
+            },
+          );
     // return Scaffold(
     //   body: GoogleMap(
     //     mapType: MapType.normal,

@@ -89,7 +89,7 @@ class ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                     const SizedBox(height: 40),
-                    OutlinedButton(
+                    ElevatedButton(
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>

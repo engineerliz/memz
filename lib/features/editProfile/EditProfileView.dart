@@ -101,7 +101,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                   ),
                 ),
-                OutlinedButton(
+                ElevatedButton(
                   onPressed: () async => {
                     await UserStore.updateUser(
                         user: widget.user!.updateEditableFields(

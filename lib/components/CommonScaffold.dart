@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memz/features/profile/ProfileView.dart';
+import 'package:memz/styles/fonts.dart';
 
 import '../styles/colors.dart';
 import 'BottomBar.dart';
@@ -41,7 +42,7 @@ class CommonScaffoldState extends State<CommonScaffold> {
           ? AppBar(
               elevation: 0,
               backgroundColor: MColors.background,
-              title: Text(widget.title!),
+              title: Row(children: [Text(widget.title!, style: Heading.H26)]),
             )
           : null,
       body: Padding(
