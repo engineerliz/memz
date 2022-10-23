@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class MUser {
+class UserModel {
   late final String id;
   late final String username;
   late final String email;
@@ -8,7 +8,7 @@ class MUser {
   late final String? homeBase;
   late final DateTime? joinDate;
 
-  MUser({
+  UserModel({
     required this.id,
     required this.username,
     required this.email,
@@ -26,7 +26,7 @@ class MUser {
         'joinDate': joinDate,
       };
 
-  factory MUser.fromJson(Map<String, dynamic> data) => MUser(
+  factory UserModel.fromJson(Map<String, dynamic> data) => UserModel(
         id: data['id'],
         username: data['username'],
         email: data['email'],
@@ -34,14 +34,14 @@ class MUser {
         homeBase: data['homeBase'],
         joinDate: data['joinDate'].toDate(),
       );
-      
-  MUser updateEditableFields({
+
+  UserModel updateEditableFields({
     String? newUsername,
     String? newEmail,
     String? newName,
     String? newHomebase,
   }) =>
-      MUser(
+      UserModel(
         id: id,
         joinDate: joinDate,
         username: newUsername ?? username,

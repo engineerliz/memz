@@ -31,7 +31,7 @@ class MapSampleState extends State<MapSample> {
       currentLocation = widget.location != null ? widget.location! : nycWSP;
     });
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(20, 20)), 'assets/pin.png')
+            ImageConfiguration(size: Size(20, 20)), 'assets/pin-emoji.png')
         .then((onValue) {
       setState(() {
         mapIcon = onValue;
@@ -51,6 +51,7 @@ class MapSampleState extends State<MapSample> {
     return widget.isLoading == true
         ? const SizedBox(child: Text('Loading...'))
         : GoogleMap(
+            myLocationButtonEnabled: false,
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
               // target: currentLocation,

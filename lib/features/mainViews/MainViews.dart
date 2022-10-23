@@ -32,7 +32,7 @@ class MainViewsState extends State<MainViews> {
 
   @override
   initState() {
-    _selectedIndex = 0;
+    _selectedIndex = widget.activeTab ?? 0;
     Future.delayed(Duration.zero, () async {
       var permission = await Geolocator.checkPermission();
       setState(() {

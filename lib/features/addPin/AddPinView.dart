@@ -1,12 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/components/CommonScaffold.dart';
 import 'package:memz/components/map/landmarks.dart';
+import 'package:memz/features/mainViews/MainViews.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../components/map/Map.dart';
 import '../../styles/colors.dart';
+import '../profile/ProfileView.dart';
 
 class AddPinView extends StatefulWidget {
   @override
@@ -14,6 +18,8 @@ class AddPinView extends StatefulWidget {
 }
 
 class AddPinViewState extends State<AddPinView> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   late LatLng currentLocation = LatLng(0, 0);
   late bool isLoading = true;
   @override
@@ -29,11 +35,11 @@ class AddPinViewState extends State<AddPinView> {
     super.initState();
   }
 
-  final commentController = TextEditingController();
+  final captionController = TextEditingController();
 
   @override
   void dispose() {
-    commentController.dispose();
+    captionController.dispose();
     super.dispose();
   }
 
@@ -43,7 +49,7 @@ class AddPinViewState extends State<AddPinView> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: CommonScaffold(
-      title: 'Add Pin',
+        title: 'Add Pin',
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -67,17 +73,33 @@ class AddPinViewState extends State<AddPinView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: TextField(
-                    controller: commentController,
+                    controller: captionController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Comments',
+                      labelText: 'Caption',
                     ),
                   ),
                 ),
               ],
             ),
             ElevatedButton(
-              onPressed: () => {},
+              onPressed: () => {
+                if (user?.uid != null && currentLocation.latitude != 0)
+                  {
+                    PinStore.addPin(
+                      creatorId: user!.uid,
+                      location: currentLocation,
+                      caption: captionController.text,
+                    ),
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => MainViews(
+                          activeTab: 2,
+                        ),
+                      ),
+                    ),
+                  }
+              },
               style: const ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll<Color>(MColors.white),
               ),
@@ -85,10 +107,9 @@ class AddPinViewState extends State<AddPinView> {
                 'Post Pin',
                 style: SubHeading.SH18.copyWith(color: MColors.black),
               ),
-
             )
           ],
-      ),
+        ),
       ),
     );
   }

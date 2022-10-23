@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'MUser.dart';
+import 'UserModel.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 final CollectionReference usersDb = db.collection('users');
@@ -15,7 +15,7 @@ class UserStore {
   static Future<void> addUser({
     required User user,
   }) async {
-    MUser data = MUser(
+    UserModel data = UserModel(
       id: user.uid,
       username: user.displayName ?? '',
       email: user.email ?? '',
@@ -24,18 +24,18 @@ class UserStore {
     usersDb.doc(user.uid).set(data.toJson());
   }
 
-  static Future<MUser?> getUserById({
+  static Future<UserModel?> getUserById({
     required String id,
   }) async {
     final userDoc = usersDb.doc(id);
     return userDoc
         .get()
-        .then((e) => MUser.fromJson(e.data() as Map<String, dynamic>));
-    // return userDoc.get().then((value) => MUser.fromJson(json.encode(value.data())));
+        .then((e) => UserModel.fromJson(e.data() as Map<String, dynamic>));
+    // return userDoc.get().then((value) => UserModel.fromJson(json.encode(value.data())));
   }
 
   static Future<void> updateUser({
-    required MUser user,
+    required UserModel user,
   }) async {
     usersDb.doc(user.id).set(user.toJson());
   }

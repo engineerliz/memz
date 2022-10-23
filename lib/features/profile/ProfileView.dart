@@ -1,12 +1,18 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:memz/api/users/MUser.dart';
+import 'package:memz/api/pins/PinStore.dart';
+import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/CommonScaffold.dart';
 import 'package:memz/features/editProfile/EditProfileView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
+
+import '../../api/pins/PinModel.dart';
+import '../../components/pin/PinPost.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -18,9 +24,11 @@ class ProfileView extends StatefulWidget {
 class ProfileViewState extends State<ProfileView> {
   User? user = FirebaseAuth.instance.currentUser;
 
-  final Future<MUser?> mUser =
+  final Future<UserModel?> mUser =
       UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '');
 
+  final Future<List<PinModel>?> userPins = PinStore.getPinsByUserId(
+      userId: FirebaseAuth.instance.currentUser?.uid ?? '');
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
@@ -28,9 +36,10 @@ class ProfileViewState extends State<ProfileView> {
         activeTab: 2,
         body: Column(
           children: [
-            FutureBuilder<MUser?>(
-              future: mUser, 
-              builder: (BuildContext context, AsyncSnapshot<MUser?> userData) {
+            FutureBuilder<UserModel?>(
+              future: mUser,
+              builder:
+                  (BuildContext context, AsyncSnapshot<UserModel?> userData) {
                 List<Widget> children;
                 if (userData.hasData) {
                   children = <Widget>[
@@ -102,7 +111,6 @@ class ProfileViewState extends State<ProfileView> {
                       ),
                       child: Text('Edit', style: SubHeading.SH18),
                     ),
-
                   ];
                 } else if (userData.hasError) {
                   children = <Widget>[
@@ -137,6 +145,26 @@ class ProfileViewState extends State<ProfileView> {
                 );
               },
             ),
+            FutureBuilder<List<PinModel>?>(
+                future: userPins,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<PinModel>?> pinsData) {
+                  print('userPins ${pinsData.data}');
+                  if (pinsData.hasData) {
+                    return Column(
+                      children: [
+                        ...pinsData.data!.map(
+                          (pin) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: PinPost(pin: pin),
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                  return const SizedBox();
+                }),
+
           ],
         ));
   }

@@ -42,17 +42,21 @@ class CommonScaffoldState extends State<CommonScaffold> {
           ? AppBar(
               elevation: 0,
               backgroundColor: MColors.background,
+              titleSpacing: 0,
               title: Row(children: [Text(widget.title!, style: Heading.H26)]),
             )
           : null,
-      body: Padding(
+      body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Padding(
         padding: const EdgeInsets.only(
-          left: 12.0,
-          right: 12.0,
+              left: 0,
+              right: 0,
+              top: 15,
           bottom: 20.0,
         ),
         child: widget.body,
-      ),
+          )),
       // bottomNavigationBar: BottomBar(
       //   activeIndex: widget.activeTab ?? _selectedIndex,
       //   onItemTapped: onItemTapped,
