@@ -7,6 +7,7 @@ import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
+import 'package:memz/features/search/SearchView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
@@ -47,6 +48,24 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
   Widget build(BuildContext context) {
     return CommonScaffold(
         title: 'Pinned',
+        appBar: CommonAppBar(
+          title: 'My Profile',
+          rightWidget: GestureDetector(
+            child: Opacity(
+              opacity: 0.8,
+              child: Text(
+                parser.get('mag').code,
+                style: SubHeading.SH26,
+              ),
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const SearchView(),
+              ),
+            ),
+          ),
+        ),
+
         activeTab: 2,
         body: Column(
           children: [

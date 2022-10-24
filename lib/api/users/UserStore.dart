@@ -34,6 +34,37 @@ class UserStore {
     // return userDoc.get().then((value) => UserModel.fromJson(json.encode(value.data())));
   }
 
+  static Future<List<UserModel>?> searchUsersByUsername({
+    required String username,
+  }) async {
+    final query = usersDb.where('username', isEqualTo: username);
+    final Future<List<UserModel>?> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) =>
+                  UserModel.fromJson(value.data() as Map<String, dynamic>),
+            ),
+          ),
+        );
+    return result;
+  }
+
+  static Future<List<UserModel>?> searchUsersByEmail({
+    required String email,
+  }) async {
+    final query = usersDb.where('email', isEqualTo: email);
+    final Future<List<UserModel>?> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) =>
+                  UserModel.fromJson(value.data() as Map<String, dynamic>),
+            ),
+          ),
+        );
+    return result;
+  }
+
+
   static Future<void> updateUser({
     required UserModel user,
   }) async {

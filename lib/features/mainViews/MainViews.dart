@@ -86,13 +86,7 @@ class MainViewsState extends State<MainViews> {
               title: Text(widget.title!),
             )
           : null,
-      body: Padding(
-        padding: const EdgeInsets.only(
-          left: 16.0,
-          right: 16.0,
-          bottom: 20.0,
-        ),
-        child: (() {
+      body: (() {
           if (_selectedIndex == 0) {
             return FriendsFeedView();
           }
@@ -103,7 +97,7 @@ class MainViewsState extends State<MainViews> {
             return const ProfileView();
           }
         }()),
-      ),
+
       bottomNavigationBar: BottomBar(
         activeIndex: _selectedIndex,
         onItemTapped: onItemTapped,

@@ -23,7 +23,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       backgroundColor: MColors.background,
-      titleSpacing: 0,
+      titleSpacing: 10,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
