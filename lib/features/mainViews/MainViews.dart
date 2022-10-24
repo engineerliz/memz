@@ -7,6 +7,7 @@ import '../../components/scaffold/BottomBar.dart';
 import '../../screens/authentication/email_password/user_info_screen.dart';
 import '../../styles/colors.dart';
 import '../addPin/AddPinView.dart';
+import '../friendsFeed/FriendsFeedView.dart';
 
 class MainViews extends StatefulWidget {
   final String? title;
@@ -93,9 +94,7 @@ class MainViewsState extends State<MainViews> {
         ),
         child: (() {
           if (_selectedIndex == 0) {
-            return UserInfoScreen(
-              user: user,
-            );
+            return FriendsFeedView();
           }
           if (_selectedIndex == 1) {
             return AddPinView();

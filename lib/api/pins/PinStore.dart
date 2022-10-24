@@ -33,7 +33,6 @@ class PinStore {
     pinsDb.doc(pinId).set(data.toJson());
   }
 
-  // static Future<List<PinModel>?> getPinsByUserId({
   static Future<List<PinModel>?> getPinsByUserId({
     required String userId,
   }) async {
@@ -63,6 +62,32 @@ class PinStore {
     //     .then((e) => PinModel.fromJson(e.data() as Map<String, dynamic>));
     // return userDoc.get().then((value) => PinModel.fromJson(json.encode(value.data())));
   }
+
+  static Future<List<PinModel>?> getAllPins() async {
+    final query = pinsDb.orderBy('creationTime', descending: true);
+    final Future<List<PinModel>?> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) =>
+                  PinModel.fromJson(value.data() as Map<String, dynamic>),
+            ),
+            // value.docs.map((value) => print(
+            //         'value.data ${PinModel.fromJson(value.data() as Map<String, dynamic>)}')
+            //     ),
+          ),
+        );
+    print('result ${result}');
+    result.then((test) => print('test? ${test?.first.toJson()}'));
+    return result;
+    // .then((value) => print('docs first ${value.docs.first.data()}'));
+
+    // .then((value) => value.docs.map((e) => print('dataa ${e.data()}')));
+    // return userDoc
+    //     .get()
+    //     .then((e) => PinModel.fromJson(e.data() as Map<String, dynamic>));
+    // return userDoc.get().then((value) => PinModel.fromJson(json.encode(value.data())));
+  }
+
 
   static Future<void> updateUser({
     required PinModel user,
