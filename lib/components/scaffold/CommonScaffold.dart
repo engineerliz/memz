@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:memz/features/profile/ProfileView.dart';
 import 'package:memz/styles/fonts.dart';
 
-import '../styles/colors.dart';
+import '../../styles/colors.dart';
 import 'BottomBar.dart';
+import 'CommonAppBar.dart';
 
 class CommonScaffold extends StatefulWidget {
-  final String? title;
+  final String title;
   final Widget? body;
   final int? activeTab;
+  final PreferredSizeWidget? appBar;
 
   const CommonScaffold({
     super.key,
-    this.title,
+    required this.title,
     this.body,
     this.activeTab,
+    this.appBar,
   });
 
   @override
@@ -38,24 +41,19 @@ class CommonScaffoldState extends State<CommonScaffold> {
 
     return Scaffold(
       backgroundColor: MColors.background,
-      appBar: widget.title != null
-          ? AppBar(
-              elevation: 0,
-              backgroundColor: MColors.background,
-              titleSpacing: 0,
-              title: Row(children: [Text(widget.title!, style: Heading.H26)]),
-            )
-          : null,
+      appBar: widget.appBar != null
+          ? widget.appBar!
+          : CommonAppBar(title: widget.title),
       body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Padding(
-        padding: const EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 0,
               right: 0,
               top: 15,
-          bottom: 20.0,
-        ),
-        child: widget.body,
+              bottom: 20.0,
+            ),
+            child: widget.body,
           )),
       // bottomNavigationBar: BottomBar(
       //   activeIndex: widget.activeTab ?? _selectedIndex,

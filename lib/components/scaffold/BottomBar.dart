@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../styles/colors.dart';
+import '../../styles/colors.dart';
 
 class BottomBar extends StatelessWidget {
   final int activeIndex;

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserStore.dart';
+import 'package:memz/features/mainViews/MainViews.dart';
 
 import '../../../res/custom_colors.dart';
 import '../../../screens/authentication/email_password/email_password.dart';
@@ -173,9 +174,7 @@ class RegisterFormState extends State<RegisterForm> {
                             // },
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => UserInfoScreen(
-                                  user: user,
-                                ),
+                                builder: (context) => MainViews(),
                               ),
                             );
                           }

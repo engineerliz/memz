@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memz/api/pins/PinModel.dart';
 import 'package:memz/api/users/UserStore.dart';
+import 'package:memz/components/map/CurrentLocationMap.dart';
 import 'package:memz/components/map/Map.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
@@ -50,7 +51,7 @@ class PinPost extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
           ),
-          child: MapSample(
+          child: Map(
             location: pin.location,
           ),
         ),

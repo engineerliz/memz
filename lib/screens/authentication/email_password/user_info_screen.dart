@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../components/CommonScaffold.dart';
+import '../../../components/scaffold/CommonScaffold.dart';
 import '../../../res/custom_colors.dart';
 import '../../../utils/authentication/email_password_auth/authentication.dart';
 import '../../../widgets/app_bar_title.dart';

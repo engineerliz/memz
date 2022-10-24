@@ -6,21 +6,21 @@ import 'package:memz/components/map/style.dart';
 
 import 'landmarks.dart';
 
-class Map extends StatefulWidget {
+class CurrentLocationMap extends StatefulWidget {
   final LatLng? location;
   final bool? isLoading;
 
-  const Map({
+  const CurrentLocationMap({
     super.key,
     this.location,
     this.isLoading = false,
   });
 
   @override
-  State<Map> createState() => MapState();
+  State<CurrentLocationMap> createState() => CurrentLocationMapState();
 }
 
-class MapState extends State<Map> {
+class CurrentLocationMapState extends State<CurrentLocationMap> {
   final Completer<GoogleMapController> _controller = Completer();
   late LatLng currentLocation = nycWSP;
   late BitmapDescriptor mapIcon = BitmapDescriptor.defaultMarker;
@@ -54,7 +54,7 @@ class MapState extends State<Map> {
             myLocationButtonEnabled: false,
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
-              target: widget.location ?? nycWSP,
+              target: currentLocation,
               // target: nycWSP,
               zoom: 15,
             ),
@@ -65,7 +65,7 @@ class MapState extends State<Map> {
             markers: {
               Marker(
                 markerId: const MarkerId('currentLocation'),
-                position: widget.location ?? nycWSP,
+                position: currentLocation,
                 // position: nycWSP,
                 icon: mapIcon,
               )

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memz/api/pins/PinStore.dart';
-import 'package:memz/components/CommonScaffold.dart';
+import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/components/map/landmarks.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
 import 'package:memz/styles/fonts.dart';
 
-import '../../components/map/Map.dart';
+import '../../components/map/CurrentLocationMap.dart';
 import '../../styles/colors.dart';
 import '../profile/ProfileView.dart';
 
@@ -66,7 +66,7 @@ class AddPinViewState extends State<AddPinView> {
                   ),
                   child: isLoading
                       ? const SizedBox(child: Text('Loading...'))
-                      : MapSample(
+                      : CurrentLocationMap(
                           location: currentLocation,
                         ),
                 ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:memz/features/profile/ProfileView.dart';
 
-import '../../components/BottomBar.dart';
+import '../../components/scaffold/BottomBar.dart';
 import '../../screens/authentication/email_password/user_info_screen.dart';
 import '../../styles/colors.dart';
 import '../addPin/AddPinView.dart';

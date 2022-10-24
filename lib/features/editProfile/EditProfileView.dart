@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserStore.dart';
-import 'package:memz/components/CommonScaffold.dart';
+import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/profile/ProfileView.dart';
+import 'package:memz/styles/fonts.dart';
 
 import '../../../res/custom_colors.dart';
 import '../../../screens/authentication/email_password/email_password.dart';
@@ -27,6 +28,10 @@ class EditProfileView extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds the data related to the Form.
 class _EditProfileViewState extends State<EditProfileView> {
+  bool _isSigningOut = false;
+  late bool _isEmailVerified;
+  late User? _user;
+  bool _verificationEmailBeingSent = false;
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -34,6 +39,15 @@ class _EditProfileViewState extends State<EditProfileView> {
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final homeBaseController = TextEditingController();
+
+  @override
+  void initState() {
+    _user = FirebaseAuth.instance.currentUser;
+    _isEmailVerified = _user?.emailVerified ?? false;
+
+    super.initState();
+  }
+
 
   @override
   void dispose() {
@@ -45,6 +59,27 @@ class _EditProfileViewState extends State<EditProfileView> {
 
     super.dispose();
   }
+
+  Route _routeToSignInScreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const SignInScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = const Offset(-1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +153,218 @@ class _EditProfileViewState extends State<EditProfileView> {
                         MaterialStatePropertyAll<Color>(MColors.grayV9),
                   ),
                 ),
-              ]),
+                  Text('Account', style: SubHeading.SH22),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(),
+                      ClipOval(
+                        child: Material(
+                          color: Palette.firebaseGrey.withOpacity(0.3),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.person,
+                              size: 42,
+                              color: Palette.firebaseGrey,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      const Text(
+                        'Hello',
+                        style: TextStyle(
+                          color: Palette.firebaseGrey,
+                          fontSize: 26,
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        _user!.displayName!,
+                        style: const TextStyle(
+                          color: Palette.firebaseYellow,
+                          fontSize: 26,
+                        ),
+                      ),
+                      const SizedBox(height: 24.0),
+                      _isEmailVerified
+                          ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ClipOval(
+                                  child: Material(
+                                    color: Colors.greenAccent.withOpacity(0.6),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Email is verified',
+                                  style: TextStyle(
+                                    color: Colors.greenAccent,
+                                    fontSize: 20,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ClipOval(
+                                  child: Material(
+                                    color: Colors.redAccent.withOpacity(0.8),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Icon(
+                                        Icons.close,
+                                        size: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Email is not verified',
+                                  style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontSize: 20,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                      const SizedBox(height: 8.0),
+                      Visibility(
+                        visible: !_isEmailVerified,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _verificationEmailBeingSent
+                                ? const CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Palette.firebaseGrey,
+                                    ),
+                                  )
+                                : ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        Palette.firebaseGrey,
+                                      ),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        _verificationEmailBeingSent = true;
+                                      });
+                                      await _user!.sendEmailVerification();
+                                      setState(() {
+                                        _verificationEmailBeingSent = false;
+                                      });
+                                    },
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
+                                      child: Text(
+                                        'Verify',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Palette.firebaseNavy,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                            const SizedBox(width: 16.0),
+                            IconButton(
+                              icon: const Icon(Icons.refresh),
+                              onPressed: () async {
+                                User? user =
+                                    await Authentication.refreshUser(_user!);
+
+                                if (user != null) {
+                                  setState(() {
+                                    _user = user;
+                                    _isEmailVerified = user.emailVerified;
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24.0),
+                      Text(
+                        'You are now signed in using Firebase Authentication. To sign out of your account click the "Sign Out" button below.',
+                        style: TextStyle(
+                            color: Palette.firebaseGrey.withOpacity(0.8),
+                            fontSize: 14,
+                            letterSpacing: 0.2),
+                      ),
+                      const SizedBox(height: 16.0),
+                      _isSigningOut
+                          ? const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.redAccent,
+                              ),
+                            )
+                          : ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                  Colors.redAccent,
+                                ),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  _isSigningOut = true;
+                                });
+                                await FirebaseAuth.instance.signOut();
+                                setState(() {
+                                  _isSigningOut = false;
+                                });
+                                if (!mounted) return;
+                                Navigator.of(context)
+                                    .pushReplacement(_routeToSignInScreen());
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                child: Text(
+                                  'Sign Out',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    letterSpacing: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                      const SizedBox(height: 50),
+                    ],
+                  ),
+                ],
+              ),
             )
 
           ),

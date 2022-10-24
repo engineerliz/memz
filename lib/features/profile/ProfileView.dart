@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
-import 'package:memz/components/CommonScaffold.dart';
+import 'package:memz/components/scaffold/CommonAppBar.dart';
+import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/editProfile/EditProfileView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 
 import '../../api/pins/PinModel.dart';
 import '../../components/pin/PinPost.dart';
@@ -23,128 +25,99 @@ class ProfileView extends StatefulWidget {
 
 class ProfileViewState extends State<ProfileView> {
   User? user = FirebaseAuth.instance.currentUser;
+  UserModel? userData;
 
-  final Future<UserModel?> mUser =
+  final Future<UserModel?> userFuture =
       UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '');
 
   final Future<List<PinModel>?> userPins = PinStore.getPinsByUserId(
       userId: FirebaseAuth.instance.currentUser?.uid ?? '');
+
+  var parser = EmojiParser();
+
+  @override
+  void initState() {
+    userFuture.then(
+      (value) => setState(() {
+        userData = value;
+      }),
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
         title: 'My Profile',
+        appBar: CommonAppBar(
+          title: 'My Profile',
+          rightWidget: GestureDetector(
+            child: Opacity(
+              opacity: 0.8,
+              child: Text(
+                parser.get('gear').code,
+                style: SubHeading.SH26,
+              ),
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => EditProfileView(user: userData),
+              ),
+            ),
+          ),
+        ),
         activeTab: 2,
         body: Column(
           children: [
-            FutureBuilder<UserModel?>(
-              future: mUser,
-              builder:
-                  (BuildContext context, AsyncSnapshot<UserModel?> userData) {
-                List<Widget> children;
-                if (userData.hasData) {
-                  children = <Widget>[
-                    // const Icon(
-                    //   Icons.check_circle_outline,
-                    //   color: Colors.green,
-                    //   size: 20,
-                    // ),
-                    // Text('Result: ${userData.data?.toJson()}'),
-                    Row(
-                      children: [
-                        const Text('👋', style: TextStyle(fontSize: 22)),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Text(userData.data?.username ?? '',
-                            style: SubHeading.SH14)
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        const Text('🏠', style: TextStyle(fontSize: 22)),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Text(
-                          userData.data?.homeBase ?? '',
-                          style: SubHeading.SH14,
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-
-                    Row(
-                      children: [
-                        const Text('🎉', style: TextStyle(fontSize: 22)),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Text('[Static] 81 friends', style: SubHeading.SH14)
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-
-                    Row(
-                      children: [
-                        const Text('🎁', style: TextStyle(fontSize: 22)),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        if (userData.data?.joinDate != null)
-                          Text(
-                              'Joined ${DateFormat.yMMMd().format(userData.data!.joinDate!)}',
-                              style: SubHeading.SH14)
-                      ],
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              EditProfileView(user: userData.data),
-                        ),
-                      ),
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(MColors.grayV9),
-                      ),
-                      child: Text('Edit', style: SubHeading.SH18),
-                    ),
-                  ];
-                } else if (userData.hasError) {
-                  children = <Widget>[
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${userData.error}'),
-                    ),
-                  ];
-                } else {
-                  children = const <Widget>[
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
-                    ),
-                  ];
-                }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
-                  ),
-                );
-              },
+            Row(
+              children: [
+                const Text('👋', style: TextStyle(fontSize: 22)),
+                const SizedBox(
+                  width: 6,
+                ),
+                Text(userData?.username ?? '', style: SubHeading.SH14)
+              ],
             ),
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                const Text('🏠', style: TextStyle(fontSize: 22)),
+                const SizedBox(
+                  width: 6,
+                ),
+                Text(
+                  userData?.homeBase ?? '',
+                  style: SubHeading.SH14,
+                )
+              ],
+            ),
+            const SizedBox(height: 6),
+
+            Row(
+              children: [
+                const Text('🎉', style: TextStyle(fontSize: 22)),
+                const SizedBox(
+                  width: 6,
+                ),
+                Text('[Static] 81 friends', style: SubHeading.SH14)
+              ],
+            ),
+            const SizedBox(height: 6),
+
+            Row(
+              children: [
+                const Text('🎁', style: TextStyle(fontSize: 22)),
+                const SizedBox(
+                  width: 6,
+                ),
+                if (userData?.joinDate != null)
+                  Text(
+                      'Joined ${DateFormat.yMMMd().format(userData!.joinDate!)}',
+                      style: SubHeading.SH14)
+              ],
+            ),
+            const SizedBox(height: 40),
+
             FutureBuilder<List<PinModel>?>(
                 future: userPins,
                 builder: (BuildContext context,
@@ -164,7 +137,6 @@ class ProfileViewState extends State<ProfileView> {
                   }
                   return const SizedBox();
                 }),
-
           ],
         ));
   }
