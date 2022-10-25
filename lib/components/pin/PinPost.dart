@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:memz/api/pins/PinModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/map/CurrentLocationMap.dart';
@@ -25,6 +26,11 @@ class PinPost extends StatelessWidget {
       children: [
         Row(
           children: [
+            Text(
+              EmojiParser().get('full_moon_with_face').code,
+              style: SubHeading.SH22,
+            ),
+            const SizedBox(width: 6),
             FutureBuilder<UserModel?>(
               future: user,
               builder:
@@ -44,7 +50,11 @@ class PinPost extends StatelessWidget {
             )
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 2),
+        if (pin.caption?.isNotEmpty == true) ...[
+          Text(pin.caption!, style: Paragraph.P14),
+          const SizedBox(height: 12)
+        ],
         Container(
           height: 200,
           clipBehavior: Clip.hardEdge,
@@ -55,8 +65,6 @@ class PinPost extends StatelessWidget {
             location: pin.location,
           ),
         ),
-        const SizedBox(height: 8),
-        if (pin.caption != null) Text(pin.caption!, style: Paragraph.P14),
       ],
     );
   }

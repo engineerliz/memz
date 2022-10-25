@@ -49,7 +49,7 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
     return CommonScaffold(
         title: 'Pinned',
         appBar: CommonAppBar(
-          title: 'My Profile',
+          title: 'Pinned',
           rightWidget: GestureDetector(
             child: Opacity(
               opacity: 0.8,
