@@ -4,14 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memz/components/map/style.dart';
 
+import '../../api/pins/PinModel.dart';
+import '../../utils/locationUtils.dart';
 import 'landmarks.dart';
 
 class MultiPinMap extends StatefulWidget {
+  final List<PinModel> pins;
   final LatLng? location;
   final bool? isLoading;
 
   const MultiPinMap({
     super.key,
+    required this.pins,
     this.location,
     this.isLoading = false,
   });
@@ -25,26 +29,38 @@ class MultiPinMapState extends State<MultiPinMap> {
   late LatLng currentLocation = nycWSP;
   late BitmapDescriptor mapIcon = BitmapDescriptor.defaultMarker;
 
+  var mapCenter = nycWSP;
+  late List<LatLng>? pinsLatLngList;
+
+  late Set<Marker> markerSet = {};
+
   @override
   initState() {
     setState(() {
       currentLocation = widget.location != null ? widget.location! : nycWSP;
+      pinsLatLngList = List.from(widget.pins!.map((pin) => pin.location));
+
+      mapCenter = getLatLngCenterFromList(pinsLatLngList!);
     });
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(20, 20)), 'assets/pin-emoji.png')
+            const ImageConfiguration(size: Size(20, 20)),
+            'assets/pin-emoji.png')
         .then((onValue) {
       setState(() {
         mapIcon = onValue;
+        markerSet = Set.from(
+          widget.pins.map(
+            (pin) => Marker(
+              markerId: MarkerId(pin.id),
+              position: pin.location,
+              icon: mapIcon,
+            ),
+          ),
+        );
       });
     });
     super.initState();
   }
-
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(40.7580, 73.9855),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -54,30 +70,14 @@ class MultiPinMapState extends State<MultiPinMap> {
             myLocationButtonEnabled: false,
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
-              target: widget.location ?? nycWSP,
-              zoom: 15,
+              target: mapCenter,
+              zoom: 5,
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               controller.setMapStyle(mapStyle);
             },
-            markers: {
-              Marker(
-                markerId: const MarkerId('currentLocation'),
-                position: widget.location ?? nycWSP,
-                icon: mapIcon,
-              ),
-              Marker(
-                markerId: const MarkerId('currentLocation'),
-                position: nycWSP,
-                icon: mapIcon,
-              )
-            },
+            markers: markerSet,
           );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }

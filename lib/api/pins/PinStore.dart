@@ -51,8 +51,6 @@ class PinStore {
             //     ),
           ),
         );
-    print('result ${result}');
-    result.then((test) => print('test? ${test?.first.toJson()}'));
     return result;
     // .then((value) => print('docs first ${value.docs.first.data()}'));
 
@@ -76,8 +74,6 @@ class PinStore {
             //     ),
           ),
         );
-    print('result ${result}');
-    result.then((test) => print('test? ${test?.first.toJson()}'));
     return result;
     // .then((value) => print('docs first ${value.docs.first.data()}'));
 

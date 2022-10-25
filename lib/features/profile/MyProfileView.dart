@@ -24,7 +24,7 @@ class MyProfileView extends StatefulWidget {
 class MyProfileViewState extends State<MyProfileView> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel? userData;
-  List<PinModel>? userPins;
+  List<PinModel>? _userPins;
 
   final Future<UserModel?> userFuture =
       UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '');
@@ -44,7 +44,7 @@ class MyProfileViewState extends State<MyProfileView> {
     );
     userPinsFuture.then(
       (value) => setState(() {
-        userPins = value;
+        _userPins = value;
       }),
     );
     super.initState();
@@ -77,11 +77,16 @@ class MyProfileViewState extends State<MyProfileView> {
         children: [
           Container(
             height: 200,
-            child: MultiPinMap(),
+            child: _userPins != null
+                ? MultiPinMap(
+                    pins: _userPins!,
+                    isLoading: _userPins == null,
+                  )
+                : null,
           ),
           Expanded(
             child: DefaultTabController(
-              length: 5,
+              length: 2,
               child: Column(
                 children: [
                   TabBar(
@@ -96,7 +101,7 @@ class MyProfileViewState extends State<MyProfileView> {
                             const SizedBox(
                               width: 6,
                             ),
-                            Text('${userPins?.length ?? 0} pins',
+                            Text('${_userPins?.length ?? 0} pins',
                                 style: SubHeading.SH14)
                           ],
                         ),
@@ -126,7 +131,7 @@ class MyProfileViewState extends State<MyProfileView> {
                       children: [
                         ListView(
                           children: [
-                            ProfilePinsTab(pins: userPins),
+                            ProfilePinsTab(pins: _userPins),
                             const SizedBox(height: 40),
                           ],
                         ),
@@ -137,7 +142,7 @@ class MyProfileViewState extends State<MyProfileView> {
                               homebase: userData?.homeBase,
                               friendsCount: 81,
                               joinDate: userData?.joinDate,
-                              pinCount: userPins?.length,
+                              pinCount: _userPins?.length,
                             ),
                             const SizedBox(height: 40),
                           ],
