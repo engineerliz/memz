@@ -10,7 +10,7 @@ import 'package:memz/styles/fonts.dart';
 
 import '../../components/map/CurrentLocationMap.dart';
 import '../../styles/colors.dart';
-import '../profile/ProfileView.dart';
+import '../profile/MyProfileView.dart';
 
 class AddPinView extends StatefulWidget {
   @override

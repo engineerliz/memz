@@ -76,8 +76,8 @@ class RegisterFormState extends State<RegisterForm> {
                   validator: (value) => Validator.validateName(
                     name: value,
                   ),
-                  label: 'Name',
-                  hint: 'Enter your name',
+                  label: 'Username',
+                  hint: 'Enter a username',
                 ),
                 const SizedBox(height: 16.0),
                 CustomFormField(
@@ -172,6 +172,7 @@ class RegisterFormState extends State<RegisterForm> {
                             //     Navigator.of(context).pop();
                             //   }
                             // },
+                            Navigator.of(context).pop();
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => MainViews(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memz/features/profile/ProfileView.dart';
+import 'package:memz/features/profile/MyProfileView.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../styles/colors.dart';
@@ -11,6 +11,7 @@ class CommonScaffold extends StatefulWidget {
   final Widget? body;
   final int? activeTab;
   final PreferredSizeWidget? appBar;
+  final EdgeInsetsGeometry? padding;
 
   const CommonScaffold({
     super.key,
@@ -18,6 +19,7 @@ class CommonScaffold extends StatefulWidget {
     this.body,
     this.activeTab,
     this.appBar,
+    this.padding,
   });
 
   @override
@@ -33,7 +35,7 @@ class CommonScaffoldState extends State<CommonScaffold> {
       if (index == 2) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => ProfileView(),
+            builder: (context) => MyProfileView(),
           ),
         );
       }
@@ -44,17 +46,17 @@ class CommonScaffoldState extends State<CommonScaffold> {
       appBar: widget.appBar != null
           ? widget.appBar!
           : CommonAppBar(title: widget.title),
-      body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-              top: 15,
-              bottom: 20.0,
-            ),
-            child: widget.body,
-          )),
+      body: Padding(
+        padding: widget.padding != null
+            ? widget.padding!
+            : const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 15,
+                bottom: 20.0,
+              ),
+        child: widget.body,
+      ),
       // bottomNavigationBar: BottomBar(
       //   activeIndex: widget.activeTab ?? _selectedIndex,
       //   onItemTapped: onItemTapped,

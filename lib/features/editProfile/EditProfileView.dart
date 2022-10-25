@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
-import 'package:memz/features/profile/ProfileView.dart';
+import 'package:memz/features/profile/MyProfileView.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../../res/custom_colors.dart';

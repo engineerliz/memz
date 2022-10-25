@@ -45,12 +45,13 @@ class SearchViewState extends State<SearchView> {
         children: [
           TextField(
             onChanged: ((value) => setState(() {
-                  userSearchFuture = UserStore.searchUsersByEmail(email: value);
+                  userSearchFuture =
+                      UserStore.searchUsersByUsername(username: value);
                 })),
             controller: searchController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Find friends by email',
+              labelText: 'Find friends by username',
             ),
           ),
           const SizedBox(height: 30),

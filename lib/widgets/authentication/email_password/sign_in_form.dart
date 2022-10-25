@@ -111,6 +111,7 @@ class SignInFormState extends State<SignInForm> {
                           );
 
                           if (user != null) {
+                            Navigator.of(context).pop();
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => MainViews(),
