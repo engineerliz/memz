@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memz/features/profile/MyProfileView.dart';
+import 'package:memz/features/profile/UserProfileView.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../styles/colors.dart';
@@ -35,7 +35,7 @@ class CommonScaffoldState extends State<CommonScaffold> {
       if (index == 2) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => MyProfileView(),
+            builder: (context) => UserProfileView(),
           ),
         );
       }

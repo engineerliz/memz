@@ -10,7 +10,7 @@ import 'package:memz/styles/fonts.dart';
 
 import '../../components/map/CurrentLocationMap.dart';
 import '../../styles/colors.dart';
-import '../profile/MyProfileView.dart';
+import '../profile/UserProfileView.dart';
 
 class AddPinView extends StatefulWidget {
   @override
@@ -94,7 +94,7 @@ class AddPinViewState extends State<AddPinView> {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => MainViews(
-                          activeTab: 2,
+                          activeTab: 0,
                         ),
                       ),
                     ),

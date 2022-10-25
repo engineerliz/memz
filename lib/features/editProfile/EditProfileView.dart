@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
-import 'package:memz/features/profile/MyProfileView.dart';
+import 'package:memz/features/profile/UserProfileView.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../../res/custom_colors.dart';
@@ -95,7 +95,9 @@ class _EditProfileViewState extends State<EditProfileView> {
         title: 'Edit Profile',
         body: Padding(
             padding: const EdgeInsets.only(top: 20),
-            child: Column(children: [
+            child: Expanded(
+              child: ListView(
+                children: [
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                 child: TextField(
@@ -365,9 +367,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                   ),
                 ],
               ),
-            )
-
+            ),
           ),
+        ),
       );
     }
     return const SizedBox();

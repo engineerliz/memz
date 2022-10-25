@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:memz/features/profile/MyProfileView.dart';
+import 'package:memz/features/profile/UserProfileView.dart';
 
 import '../../components/scaffold/BottomBar.dart';
 import '../../screens/authentication/email_password/user_info_screen.dart';
@@ -94,7 +94,7 @@ class MainViewsState extends State<MainViews> {
             return AddPinView();
           }
           if (_selectedIndex == 2) {
-          return const MyProfileView();
+          return const UserProfileView();
           }
         }()),
 

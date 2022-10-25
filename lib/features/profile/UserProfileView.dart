@@ -14,35 +14,39 @@ import '../../components/map/MultiPinMap.dart';
 import 'ProfileAboutTab.dart';
 import 'ProfilePinsTab.dart';
 
-class MyProfileView extends StatefulWidget {
-  const MyProfileView({super.key});
+class UserProfileView extends StatefulWidget {
+  final String? userId;
+
+  const UserProfileView({
+    super.key,
+    this.userId,
+  });
 
   @override
-  MyProfileViewState createState() => MyProfileViewState();
+  UserProfileViewState createState() => UserProfileViewState();
 }
 
-class MyProfileViewState extends State<MyProfileView> {
-  User? user = FirebaseAuth.instance.currentUser;
+class UserProfileViewState extends State<UserProfileView> {
+  String? profileUserId;
   UserModel? userData;
   List<PinModel>? _userPins;
-
-  final Future<UserModel?> userFuture =
-      UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '');
-
-  final Future<List<PinModel>?> userPinsFuture = PinStore.getPinsByUserId(
-      userId: FirebaseAuth.instance.currentUser?.uid ?? '');
-
-  var parser = EmojiParser();
   TabController? tabController;
+  bool isMyProfile = true;
 
   @override
   void initState() {
-    userFuture.then(
-      (value) => setState(() {
-        userData = value;
-      }),
-    );
-    userPinsFuture.then(
+    setState(() {
+      isMyProfile = widget.userId == null;
+      profileUserId = widget.userId ?? FirebaseAuth.instance.currentUser?.uid;
+    });
+    if (profileUserId != null) {
+      UserStore.getUserById(id: profileUserId!).then(
+        (value) => setState(() {
+          userData = value;
+        }),
+      );
+    }
+    PinStore.getPinsByUserId(userId: profileUserId!).then(
       (value) => setState(() {
         _userPins = value;
       }),
@@ -50,17 +54,24 @@ class MyProfileViewState extends State<MyProfileView> {
     super.initState();
   }
 
+  String getTitle() {
+    if (!isMyProfile) {
+      return userData?.username ?? 'Profile';
+    }
+    return 'My Profile';
+  }
+
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      title: 'My Profile',
+      title: getTitle(),
       appBar: CommonAppBar(
-        title: 'My Profile',
+        title: getTitle(),
         rightWidget: GestureDetector(
           child: Opacity(
             opacity: 0.8,
             child: Text(
-              parser.get('gear').code,
+              EmojiParser().get('gear').code,
               style: SubHeading.SH26,
             ),
           ),
@@ -75,7 +86,7 @@ class MyProfileViewState extends State<MyProfileView> {
       activeTab: 2,
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: 200,
             child: _userPins != null
                 ? MultiPinMap(
@@ -122,38 +133,39 @@ class MyProfileViewState extends State<MyProfileView> {
                     ],
                   ),
                   Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      child: TabBarView(
+                        children: [
+                          ListView(
+                            children: [
+                              ProfilePinsTab(pins: _userPins),
+                              const SizedBox(height: 40),
+                            ],
+                          ),
+                          ListView(
+                            children: [
+                              ProfileAboutTab(
+                                username: userData?.username,
+                                homebase: userData?.homeBase,
+                                friendsCount: 81,
+                                joinDate: userData?.joinDate,
+                                pinCount: _userPins?.length,
+                              ),
+                              const SizedBox(height: 40),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    child: TabBarView(
-                      children: [
-                        ListView(
-                          children: [
-                            ProfilePinsTab(pins: _userPins),
-                            const SizedBox(height: 40),
-                          ],
-                        ),
-                        ListView(
-                          children: [
-                            ProfileAboutTab(
-                              username: userData?.username,
-                              homebase: userData?.homeBase,
-                              friendsCount: 81,
-                              joinDate: userData?.joinDate,
-                              pinCount: _userPins?.length,
-                            ),
-                            const SizedBox(height: 40),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )),
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

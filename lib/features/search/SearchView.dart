@@ -8,6 +8,7 @@ import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
 import '../../components/user/UserTile.dart';
+import '../profile/UserProfileView.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -67,7 +68,18 @@ class SearchViewState extends State<SearchView> {
                     ...usersData.data!.map(
                       (user) => Padding(
                         padding: const EdgeInsets.only(bottom: 25),
-                        child: UserTile(user: user),
+                        child: UserTile(
+                            user: user,
+                            onTap: () {
+                              print('user??? ${user.id}');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => UserProfileView(
+                                    userId: user.id,
+                                  ),
+                                ),
+                              );
+                            }),
                       ),
                     )
                   ],

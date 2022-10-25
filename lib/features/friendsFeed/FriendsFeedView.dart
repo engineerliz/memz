@@ -8,7 +8,6 @@ import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/search/SearchView.dart';
-import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
@@ -71,11 +70,13 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
           children: [
             FutureBuilder<List<PinModel>?>(
                 future: allPins,
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<PinModel>?> pinsData) {
-                  print('userPins ${pinsData.data}');
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<PinModel>?> pinsData,
+            ) {
                   if (pinsData.hasData) {
-                    return Column(
+                return Expanded(
+                    child: ListView(
                       children: [
                         ...pinsData.data!.map(
                           (pin) => Padding(
@@ -83,12 +84,13 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
                             child: PinPost(pin: pin),
                           ),
                         )
-                      ],
-                    );
+                ]));
                   }
                   return const SizedBox();
-                }),
+            },
+          ),
           ],
-        ));
+      ),
+    );
   }
 }

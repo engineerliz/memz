@@ -43,9 +43,9 @@ class MultiPinMapState extends State<MultiPinMap> {
       mapCenter = getLatLngCenterFromList(pinsLatLngList!);
     });
     BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(size: Size(20, 20)),
-            'assets/pin-emoji.png')
-        .then((onValue) {
+      const ImageConfiguration(size: Size(20, 20)),
+      'assets/pin-emoji.png',
+    ).then((onValue) {
       setState(() {
         mapIcon = onValue;
         markerSet = Set.from(
@@ -62,6 +62,26 @@ class MultiPinMapState extends State<MultiPinMap> {
     super.initState();
   }
 
+  LatLngBounds _bounds(Set<Marker> markers) {
+    return _createBounds(markers.map((m) => m.position).toList());
+  }
+
+  LatLngBounds _createBounds(List<LatLng> positions) {
+    final southwestLat = positions.map((p) => p.latitude).reduce(
+        (value, element) => value < element ? value : element); // smallest
+    final southwestLon = positions
+        .map((p) => p.longitude)
+        .reduce((value, element) => value < element ? value : element);
+    final northeastLat = positions.map((p) => p.latitude).reduce(
+        (value, element) => value > element ? value : element); // biggest
+    final northeastLon = positions
+        .map((p) => p.longitude)
+        .reduce((value, element) => value > element ? value : element);
+    return LatLngBounds(
+        southwest: LatLng(southwestLat, southwestLon),
+        northeast: LatLng(northeastLat, northeastLon));
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.isLoading == true
@@ -75,6 +95,11 @@ class MultiPinMapState extends State<MultiPinMap> {
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
+              setState(() {
+                controller.animateCamera(
+                    CameraUpdate.newLatLngBounds(_bounds(markerSet), 40));
+              });
+
               controller.setMapStyle(mapStyle);
             },
             markers: markerSet,
