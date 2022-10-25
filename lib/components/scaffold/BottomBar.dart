@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:memz/styles/fonts.dart';
 
 import '../../styles/colors.dart';
 
@@ -15,17 +17,28 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
+      unselectedLabelStyle: SubHeading.SH12,
+      selectedLabelStyle: SubHeading.SH12.copyWith(color: MColors.green),
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.emoji_people_rounded),
+          icon: Text(
+            EmojiParser().get('people_holding_hands').code,
+            style: SubHeading.SH26,
+          ),
           label: 'Friends',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_location_alt_rounded),
-          label: 'Add Pinn',
+          icon: Text(
+            EmojiParser().get('round_pushpin').code,
+            style: SubHeading.SH26,
+          ),
+          label: 'Add Pin',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_rounded),
+          icon: Text(
+            EmojiParser().get('wave').code,
+            style: SubHeading.SH26,
+          ),
           label: 'Me',
         ),
       ],
