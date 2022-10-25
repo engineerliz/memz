@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../res/custom_colors.dart';
-import '../../../utils/database/database.dart';
+import '../../../utilsBoilerplate/database/database.dart';
 import '../../../widgets/app_bar_title.dart';
 import '../../../widgets/database/crud/db_edit_item_form.dart';
 

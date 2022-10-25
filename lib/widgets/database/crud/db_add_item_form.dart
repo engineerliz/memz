@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../res/custom_colors.dart';
-import '../../../utils/database/database.dart';
-import '../../../utils/database/validator.dart';
+import '../../../utilsBoilerplate/database/database.dart';
+import '../../../utilsBoilerplate/database/validator.dart';
 import '../../custom_form_field.dart';
 
 class DbAddItemForm extends StatefulWidget {

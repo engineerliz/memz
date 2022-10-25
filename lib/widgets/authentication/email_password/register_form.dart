@@ -5,8 +5,8 @@ import 'package:memz/features/mainViews/MainViews.dart';
 
 import '../../../res/custom_colors.dart';
 import '../../../screens/authentication/email_password/email_password.dart';
-import '../../../utils/authentication/email_password_auth/authentication.dart';
-import '../../../utils/authentication/email_password_auth/validator.dart';
+import '../../../utilsBoilerplate/authentication/email_password_auth/authentication.dart';
+import '../../../utilsBoilerplate/authentication/email_password_auth/validator.dart';
 import '../../custom_form_field.dart';
 
 class RegisterForm extends StatefulWidget {

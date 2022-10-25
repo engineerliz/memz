@@ -87,28 +87,32 @@ class MyProfileViewState extends State<MyProfileView> {
                   TabBar(
                     physics: const BouncingScrollPhysics(),
                     tabs: [
-                      Container(
-                          height: 50,
-                          child: Row(
-                            children: [
-                              const Text('👋', style: TextStyle(fontSize: 22)),
-                              const SizedBox(
-                                width: 6,
-                              ),
-                              Text(userData?.username ?? '',
-                                  style: SubHeading.SH14)
-                            ],
-                          )),
-                      Row(
-                        children: [
-                          Text(EmojiParser().get('round_pushpin').code,
-                              style: const TextStyle(fontSize: 22)),
-                          const SizedBox(
-                            width: 6,
-                          ),
-                          Text('${userPins?.length ?? 0} pins',
-                              style: SubHeading.SH14)
-                        ],
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          children: [
+                            Text(EmojiParser().get('round_pushpin').code,
+                                style: const TextStyle(fontSize: 22)),
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            Text('${userPins?.length ?? 0} pins',
+                                style: SubHeading.SH14)
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          children: [
+                            const Text('👋', style: TextStyle(fontSize: 22)),
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            Text(userData?.username ?? '',
+                                style: SubHeading.SH14)
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -122,6 +126,12 @@ class MyProfileViewState extends State<MyProfileView> {
                       children: [
                         ListView(
                           children: [
+                            ProfilePinsTab(pins: userPins),
+                            const SizedBox(height: 40),
+                          ],
+                        ),
+                        ListView(
+                          children: [
                             ProfileAboutTab(
                               username: userData?.username,
                               homebase: userData?.homeBase,
@@ -132,11 +142,6 @@ class MyProfileViewState extends State<MyProfileView> {
                             const SizedBox(height: 40),
                           ],
                         ),
-                        // ),
-                        ListView(children: [
-                          ProfilePinsTab(pins: userPins),
-                          const SizedBox(height: 40),
-                        ])
                       ],
                     ),
                   )),

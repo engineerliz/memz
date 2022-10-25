@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../res/custom_colors.dart';
 import '../../../screens/database/crud/db_edit_screen.dart';
-import '../../../utils/database/database.dart';
-import '../../../utils/database/validator.dart';
+import '../../../utilsBoilerplate/database/database.dart';
+import '../../../utilsBoilerplate/database/validator.dart';
 import '../../custom_form_field.dart';
 
 class DbItemList extends StatelessWidget {

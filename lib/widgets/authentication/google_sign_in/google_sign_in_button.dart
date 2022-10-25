@@ -4,7 +4,7 @@ import 'package:memz/features/mainViews/MainViews.dart';
 
 import '../../../res/fire_assets.dart';
 import '../../../screens/authentication/email_password/user_info_screen.dart';
-import '../../../utils/authentication/google_auth/authentication.dart';
+import '../../../utilsBoilerplate/authentication/google_auth/authentication.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   const GoogleSignInButton({Key? key}) : super(key: key);

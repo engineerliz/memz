@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../res/custom_colors.dart';
 import '../../../screens/database/crud/db_dashboard_screen.dart';
-import '../../../utils/database/database.dart';
-import '../../../utils/database/validator.dart';
+import '../../../utilsBoilerplate/database/database.dart';
+import '../../../utilsBoilerplate/database/validator.dart';
 import '../../custom_form_field.dart';
 
 class DbLoginForm extends StatefulWidget {
