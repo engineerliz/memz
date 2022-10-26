@@ -55,7 +55,6 @@ class MapState extends State<Map> {
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: widget.location ?? nycWSP,
-              // target: nycWSP,
               zoom: 15,
             ),
             onMapCreated: (GoogleMapController controller) {
@@ -66,25 +65,10 @@ class MapState extends State<Map> {
               Marker(
                 markerId: const MarkerId('currentLocation'),
                 position: widget.location ?? nycWSP,
-                // position: nycWSP,
                 icon: mapIcon,
               )
             },
           );
-    // return Scaffold(
-    //   body: GoogleMap(
-    //     mapType: MapType.normal,
-    //     initialCameraPosition: _kGooglePlex,
-    //     onMapCreated: (GoogleMapController controller) {
-    //       _controller.complete(controller);
-    //     },
-    //   ),
-    //   floatingActionButton: FloatingActionButton.extended(
-    //     onPressed: _goToTheLake,
-    //     label: const Text('To the lake!'),
-    //     icon: const Icon(Icons.directions_boat),
-    //   ),
-    // );
   }
 
   Future<void> _goToTheLake() async {

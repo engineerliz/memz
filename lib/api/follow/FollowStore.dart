@@ -19,14 +19,39 @@ class FollowStore {
     required String userId,
     required String followingId,
   }) async {
-    String id = getFollowId(userId: userId, followingId: followingId);
-    FollowModel data = FollowModel(
-      id: id,
-      userId: userId,
-      followingId: followingId,
-      followTime: DateTime.now(),
+    bool followCheck = false;
+
+    await isFollowing(userId: userId, followingId: followingId).then(
+      (value) => followCheck = value == true,
     );
-    followsDb.doc(id).set(data.toJson());
+    if (!followCheck) {
+      String id = getFollowId(userId: userId, followingId: followingId);
+      FollowModel data = FollowModel(
+        id: id,
+        userId: userId,
+        followingId: followingId,
+        followTime: DateTime.now(),
+      );
+      followsDb
+          .doc(id)
+          .set(data.toJson())
+          .whenComplete(() => log('User followed'))
+          .catchError((e) => log(e));
+      ;
+    }
+  }
+
+  static Future<void> unfollowUser({
+    required String userId,
+    required String followingId,
+  }) async {
+    String id = getFollowId(userId: userId, followingId: followingId);
+
+    await followsDb
+        .doc(id)
+        .delete()
+        .whenComplete(() => log('User unfollowed'))
+        .catchError((e) => log(e));
   }
 
   static Future<bool?> isFollowing({
@@ -100,15 +125,4 @@ class FollowStore {
   //   return notesItemCollection.snapshots();
   // }
 
-  // static Future<void> deleteItem({
-  //   required String docId,
-  // }) async {
-  //   DocumentReference documentReferencer =
-  //       followsDb.doc(userUid).collection('items').doc(docId);
-
-  //   await documentReferencer
-  //       .delete()
-  //       .whenComplete(() => log('Note item deleted from the database'))
-  //       .catchError((e) => log(e));
-  // }
 }

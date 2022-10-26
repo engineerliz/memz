@@ -12,6 +12,7 @@ class CommonScaffold extends StatefulWidget {
   final int? activeTab;
   final PreferredSizeWidget? appBar;
   final EdgeInsetsGeometry? padding;
+  final Widget? bottomBar;
 
   const CommonScaffold({
     super.key,
@@ -20,6 +21,7 @@ class CommonScaffold extends StatefulWidget {
     this.activeTab,
     this.appBar,
     this.padding,
+    this.bottomBar,
   });
 
   @override
@@ -27,20 +29,9 @@ class CommonScaffold extends StatefulWidget {
 }
 
 class CommonScaffoldState extends State<CommonScaffold> {
-  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    void onItemTapped(int index) {
-      if (index == 2) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => UserProfileView(),
-          ),
-        );
-      }
-    }
-
     return Scaffold(
       backgroundColor: MColors.background,
       appBar: widget.appBar != null
@@ -52,15 +43,12 @@ class CommonScaffoldState extends State<CommonScaffold> {
             : const EdgeInsets.only(
                 left: 10,
                 right: 10,
-                top: 15,
-                bottom: 20.0,
+                top: 10,
+                bottom: 0,
               ),
         child: widget.body,
       ),
-      // bottomNavigationBar: BottomBar(
-      //   activeIndex: widget.activeTab ?? _selectedIndex,
-      //   onItemTapped: onItemTapped,
-      // ),
+      bottomNavigationBar: widget.bottomBar,
     );
   }
 }

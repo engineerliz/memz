@@ -14,6 +14,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import '../../api/pins/PinModel.dart';
 import '../../components/map/MultiPinMap.dart';
 import 'ProfileAboutTab.dart';
+import 'ProfileBottomBar.dart';
 import 'ProfilePinsTab.dart';
 
 class UserProfileView extends StatefulWidget {
@@ -30,6 +31,7 @@ class UserProfileView extends StatefulWidget {
 
 class UserProfileViewState extends State<UserProfileView> {
   String? profileUserId;
+  String currentUserId = '';
   UserModel? userData;
   List<PinModel>? _userPins;
   TabController? tabController;
@@ -38,8 +40,8 @@ class UserProfileViewState extends State<UserProfileView> {
 
   @override
   void initState() {
-    print('widget.userId ${widget.userId}');
     setState(() {
+      currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
       isMyProfile = widget.userId == null;
       profileUserId = widget.userId ?? FirebaseAuth.instance.currentUser?.uid;
     });
@@ -57,7 +59,7 @@ class UserProfileViewState extends State<UserProfileView> {
     );
     if (!isMyProfile) {
       FollowStore.isFollowing(
-        userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+        userId: currentUserId,
         followingId: widget.userId!,
       ).then((value) => setState(() {
             isFollowing = value == true;
@@ -74,7 +76,6 @@ class UserProfileViewState extends State<UserProfileView> {
   }
 
   GestureDetector? getRightWidget(BuildContext context, UserModel? userData) {
-    print('isMyProfile $isMyProfile');
     if (isMyProfile == true) {
       return GestureDetector(
         child: Opacity(
@@ -98,10 +99,23 @@ class UserProfileViewState extends State<UserProfileView> {
               .copyWith(color: isFollowing ? MColors.grayV3 : MColors.green),
         ),
         onTap: () {
-          FollowStore.followUser(
-            userId: FirebaseAuth.instance.currentUser?.uid ?? '',
-            followingId: widget.userId!,
-          );
+          if (isFollowing) {
+            FollowStore.unfollowUser(
+              userId: currentUserId,
+              followingId: widget.userId!,
+            );
+            setState(() {
+              isFollowing = false;
+            });
+          } else {
+            FollowStore.followUser(
+              userId: currentUserId,
+              followingId: widget.userId!,
+            );
+            setState(() {
+              isFollowing = true;
+            });
+          }
         },
       );
     }
@@ -117,14 +131,22 @@ class UserProfileViewState extends State<UserProfileView> {
       ),
       padding: const EdgeInsets.only(left: 0, right: 0),
       activeTab: 2,
+      // bottomBar: !isMyProfile
+      //     ? ProfileBottomBar(
+      //         currentUserId: currentUserId,
+      //         profileUser: userData,
+      //       )
+      //     : null,
       body: Column(
         children: [
           SizedBox(
             height: 200,
-            child: MultiPinMap(
-              pins: _userPins ?? [],
-              isLoading: _userPins == null,
-            ),
+            child: _userPins != null
+                ? MultiPinMap(
+                    pins: _userPins!,
+                    isLoading: _userPins == null,
+                  )
+                : null,
           ),
           Expanded(
             child: DefaultTabController(
@@ -165,9 +187,10 @@ class UserProfileViewState extends State<UserProfileView> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        top: 12,
                       ),
                       child: TabBarView(
                         children: [
