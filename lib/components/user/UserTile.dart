@@ -4,6 +4,8 @@ import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 
+import '../../features/profile/UserProfileView.dart';
+
 class UserTile extends StatelessWidget {
   final UserModel user;
   final VoidCallback? onTap;
@@ -15,7 +17,16 @@ class UserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap ??
+          () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => UserProfileView(
+                  userId: user.id,
+                ),
+              ),
+            );
+          },
       child: Container(
         height: 60,
         clipBehavior: Clip.hardEdge,

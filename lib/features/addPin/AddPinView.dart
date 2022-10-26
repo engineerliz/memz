@@ -104,7 +104,7 @@ class AddPinViewState extends State<AddPinView> {
                 backgroundColor: MaterialStatePropertyAll<Color>(MColors.white),
               ),
               child: Text(
-                'Post Pin',
+                'Drop Pin',
                 style: SubHeading.SH18.copyWith(color: MColors.black),
               ),
             )

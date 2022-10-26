@@ -32,7 +32,7 @@ class BottomBar extends StatelessWidget {
             EmojiParser().get('round_pushpin').code,
             style: SubHeading.SH26,
           ),
-          label: 'Add Pin',
+          label: 'Drop a Pin',
         ),
         BottomNavigationBarItem(
           icon: Text(

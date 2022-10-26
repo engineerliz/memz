@@ -54,17 +54,31 @@ class ProfileAboutTab extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 6),
-        Row(
-          children: [
-            const Text('🎉', style: TextStyle(fontSize: 22)),
-            const SizedBox(
-              width: 6,
-            ),
-            if (joinDate != null)
-              Text('${followersList?.length ?? 0} followers',
-                  style: SubHeading.SH14)
-          ],
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => FollowsListView(
+                  title: 'Followers',
+                  followList: followersList ?? [],
+                ),
+              ),
+            );
+          },
+          child: Row(
+            children: [
+              const Text('🎉', style: TextStyle(fontSize: 22)),
+              const SizedBox(
+                width: 6,
+              ),
+              if (joinDate != null)
+                Text('${followersList?.length ?? 0} followers',
+                    style: SubHeading.SH14)
+            ],
+          ),
+
         ),
+
         const SizedBox(height: 6),
         GestureDetector(
             onTap: () {
@@ -87,7 +101,8 @@ class ProfileAboutTab extends StatelessWidget {
                   Text('${followingList?.length ?? 0} following',
                       style: SubHeading.SH14)
               ],
-            )),
+          ),
+        ),
       ],
     );
   }

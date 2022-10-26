@@ -26,22 +26,19 @@ class MultiPinMap extends StatefulWidget {
 
 class MultiPinMapState extends State<MultiPinMap> {
   final Completer<GoogleMapController> _controller = Completer();
-  late LatLng currentLocation = nycWSP;
   late BitmapDescriptor mapIcon = BitmapDescriptor.defaultMarker;
 
-  var mapCenter = nycWSP;
-  late List<LatLng>? pinsLatLngList;
-
+  var mapCenter = veniceLA;
   late Set<Marker> markerSet = {};
 
   @override
   initState() {
-    setState(() {
-      currentLocation = widget.location != null ? widget.location! : nycWSP;
-      pinsLatLngList = List.from(widget.pins!.map((pin) => pin.location));
-
-      mapCenter = getLatLngCenterFromList(pinsLatLngList!);
-    });
+    if (widget.pins.isNotEmpty) {
+      setState(() {
+        mapCenter = getLatLngCenterFromList(
+            List.from(widget.pins.map((pin) => pin.location)));
+      });
+    }
     BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(size: Size(20, 20)),
       'assets/pin-emoji.png',
@@ -91,14 +88,16 @@ class MultiPinMapState extends State<MultiPinMap> {
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: mapCenter,
-              zoom: 5,
+              zoom: 12,
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-              setState(() {
-                controller.animateCamera(
-                    CameraUpdate.newLatLngBounds(_bounds(markerSet), 40));
-              });
+              if (widget.pins.isNotEmpty) {
+                setState(() {
+                  controller.animateCamera(
+                      CameraUpdate.newLatLngBounds(_bounds(markerSet), 40));
+                });
+              }
 
               controller.setMapStyle(mapStyle);
             },

@@ -9,11 +9,15 @@ import 'landmarks.dart';
 class Map extends StatefulWidget {
   final LatLng? location;
   final bool? isLoading;
+  final bool? hasGestures;
+  final Function(LatLng)? onTap;
 
   const Map({
     super.key,
     this.location,
     this.isLoading = false,
+    this.hasGestures = false,
+    this.onTap,
   });
 
   @override
@@ -51,6 +55,9 @@ class MapState extends State<Map> {
     return widget.isLoading == true
         ? const SizedBox(child: Text('Loading...'))
         : GoogleMap(
+            onTap: widget.onTap,
+            zoomGesturesEnabled: widget.hasGestures == true,
+            scrollGesturesEnabled: widget.hasGestures == true,
             myLocationButtonEnabled: false,
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(

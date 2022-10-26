@@ -24,11 +24,6 @@ class FollowsListViewState extends State<FollowsListView> {
 
   @override
   void initState() {
-    print('FollowsListView ${widget.followList}');
-    // widget.followList.map(
-    //   (e) => print(e),
-    // );
-    // print('FollowsListView ${widget.followList.first}');
     for (String followId in widget.followList) {
       UserStore.getUserById(id: followId).then(
         (userData) {
@@ -37,32 +32,12 @@ class FollowsListViewState extends State<FollowsListView> {
             newList.add(userData);
 
             setState(() {
-              print('userData $userData');
               usersList = newList;
             });
           }
         },
       );
     }
-    widget.followList.map((followId) {
-      print('FollowsListView');
-
-      UserStore.getUserById(id: followId).then(
-        (userData) {
-          if (userData != null) {
-            var newList = usersList;
-            newList.add(userData);
-
-            setState(() {
-              print('userData $userData');
-              usersList = newList;
-            });
-          }
-        },
-      );
-    });
-
-    // setState(() {});
     super.initState();
   }
 

@@ -4,7 +4,7 @@ const mapStyle = '''
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#37485C"
+        "color": "#2C435F"
       }
     ]
   },
@@ -46,7 +46,7 @@ const mapStyle = '''
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#085C5E"
+        "color": "#007D76"
       }
     ]
   },
@@ -64,7 +64,7 @@ const mapStyle = '''
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#085C5E"
+        "color": "#007D76"
       }
     ]
   },
@@ -82,7 +82,7 @@ const mapStyle = '''
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#617286"
+        "color": "#4B6C84"
       }
     ]
   },
@@ -145,7 +145,7 @@ const mapStyle = '''
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#213B85"
+        "color": "#0A2A88"
       }
     ]
   },
