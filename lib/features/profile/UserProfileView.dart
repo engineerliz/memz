@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:memz/api/follow/FollowModel.dart';
 import 'package:memz/api/follow/FollowStore.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserModel.dart';
@@ -37,6 +38,8 @@ class UserProfileViewState extends State<UserProfileView> {
   TabController? tabController;
   bool isMyProfile = true;
   bool isFollowing = false;
+  List<FollowModel>? followersList;
+  List<FollowModel>? followingList;
 
   @override
   void initState() {
@@ -51,12 +54,24 @@ class UserProfileViewState extends State<UserProfileView> {
           userData = value;
         }),
       );
+      PinStore.getPinsByUserId(userId: profileUserId!).then(
+        (value) => setState(() {
+          _userPins = value;
+        }),
+      );
+
+      FollowStore.getFollowerUsers(userId: profileUserId!).then(
+        (value) => setState(() {
+          followersList = value;
+        }),
+      );
+
+      FollowStore.getFollowingUsers(userId: profileUserId!).then(
+        (value) => setState(() {
+          followingList = value;
+        }),
+      );
     }
-    PinStore.getPinsByUserId(userId: profileUserId!).then(
-      (value) => setState(() {
-        _userPins = value;
-      }),
-    );
     if (!isMyProfile) {
       FollowStore.isFollowing(
         userId: currentUserId,
@@ -65,6 +80,7 @@ class UserProfileViewState extends State<UserProfileView> {
             isFollowing = value == true;
           }));
     }
+
     super.initState();
   }
 
@@ -123,6 +139,7 @@ class UserProfileViewState extends State<UserProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    
     return CommonScaffold(
       title: getTitle(),
       appBar: CommonAppBar(
@@ -208,6 +225,8 @@ class UserProfileViewState extends State<UserProfileView> {
                                 friendsCount: 81,
                                 joinDate: userData?.joinDate,
                                 pinCount: _userPins?.length,
+                                followersList: followersList,
+                                followingList: followingList,
                               ),
                               const SizedBox(height: 40),
                             ],

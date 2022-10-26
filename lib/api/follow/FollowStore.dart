@@ -63,6 +63,43 @@ class FollowStore {
     return followDoc.get().then((value) => value.data() != null);
   }
 
+  static Future<List<FollowModel>?> getFollowingUsers({
+    required String userId,
+  }) async {
+    final query = followsDb
+        .where('userId', isEqualTo: userId)
+        .orderBy('followTime', descending: true);
+    final Future<List<FollowModel>?> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) {
+                print('followingUsers ${value.data()}');
+                return FollowModel.fromJson(
+                    value.data() as Map<String, dynamic>);
+              },
+            ),
+          ),
+        );
+    return result;
+  }
+
+  static Future<List<FollowModel>?> getFollowerUsers({
+    required String userId,
+  }) async {
+    final query = followsDb
+        .where('followingId', isEqualTo: userId)
+        .orderBy('followTime', descending: true);
+    final Future<List<FollowModel>?> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) =>
+                  FollowModel.fromJson(value.data() as Map<String, dynamic>),
+            ),
+          ),
+        );
+    return result;
+  }
+
   // static Future<List<UserModel>?> searchUsersByUsername({
   //   required String username,
   // }) async {

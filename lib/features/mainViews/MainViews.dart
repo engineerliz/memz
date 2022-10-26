@@ -72,7 +72,6 @@ class MainViewsState extends State<MainViews> {
 
   @override
   Widget build(BuildContext context) {
-    print('locationPermission? $locationPermission');
     if (locationPermission == LocationPermission.unableToDetermine) {
       askForLocation();
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
 
+import '../../api/follow/FollowModel.dart';
 import '../../styles/fonts.dart';
 
 class ProfileAboutTab extends StatelessWidget {
@@ -10,6 +11,8 @@ class ProfileAboutTab extends StatelessWidget {
   final int? friendsCount;
   final DateTime? joinDate;
   final int? pinCount;
+  final List<FollowModel>? followersList;
+  final List<FollowModel>? followingList;
 
   const ProfileAboutTab({
     this.username,
@@ -17,6 +20,8 @@ class ProfileAboutTab extends StatelessWidget {
     this.friendsCount,
     this.joinDate,
     this.pinCount,
+    this.followersList,
+    this.followingList,
   });
 
   @override
@@ -38,16 +43,6 @@ class ProfileAboutTab extends StatelessWidget {
         const SizedBox(height: 6),
         Row(
           children: [
-            const Text('🎉', style: TextStyle(fontSize: 22)),
-            const SizedBox(
-              width: 6,
-            ),
-            Text('[Static] $friendsCount friends', style: SubHeading.SH14)
-          ],
-        ),
-        const SizedBox(height: 6),
-        Row(
-          children: [
             const Text('🎁', style: TextStyle(fontSize: 22)),
             const SizedBox(
               width: 6,
@@ -57,6 +52,31 @@ class ProfileAboutTab extends StatelessWidget {
                   style: SubHeading.SH14)
           ],
         ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            const Text('🎉', style: TextStyle(fontSize: 22)),
+            const SizedBox(
+              width: 6,
+            ),
+            if (joinDate != null)
+              Text('${followersList?.length ?? 0} followers',
+                  style: SubHeading.SH14)
+          ],
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            const Text('👀', style: TextStyle(fontSize: 22)),
+            const SizedBox(
+              width: 6,
+            ),
+            if (joinDate != null)
+              Text('${followingList?.length ?? 0} following',
+                  style: SubHeading.SH14)
+          ],
+        ),
+
       ],
     );
   }
