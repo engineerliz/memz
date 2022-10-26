@@ -38,8 +38,8 @@ class UserProfileViewState extends State<UserProfileView> {
   TabController? tabController;
   bool isMyProfile = true;
   bool isFollowing = false;
-  List<FollowModel>? followersList;
-  List<FollowModel>? followingList;
+  List<String>? followersList;
+  List<String>? followingList;
 
   @override
   void initState() {
@@ -62,13 +62,18 @@ class UserProfileViewState extends State<UserProfileView> {
 
       FollowStore.getFollowerUsers(userId: profileUserId!).then(
         (value) => setState(() {
-          followersList = value;
+          if (value != null) {
+            followersList = List.from(value.map((follower) => follower.userId));
+          }
         }),
       );
 
       FollowStore.getFollowingUsers(userId: profileUserId!).then(
         (value) => setState(() {
-          followingList = value;
+          if (value != null) {
+            followingList =
+                List.from(value.map((follower) => follower.followingId));
+          }
         }),
       );
     }
@@ -139,7 +144,6 @@ class UserProfileViewState extends State<UserProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    
     return CommonScaffold(
       title: getTitle(),
       appBar: CommonAppBar(

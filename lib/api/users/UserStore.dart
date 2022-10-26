@@ -30,7 +30,8 @@ class UserStore {
     final userDoc = usersDb.doc(id);
     return userDoc
         .get()
-        .then((e) => UserModel.fromJson(e.data() as Map<String, dynamic>));
+        .then((e) => UserModel.fromJson(e.data() as Map<String, dynamic>))
+        .whenComplete(() => log('Fetched user $id'));
     // return userDoc.get().then((value) => UserModel.fromJson(json.encode(value.data())));
   }
 

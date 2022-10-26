@@ -73,7 +73,6 @@ class FollowStore {
           (resultsList) => List.from(
             resultsList.docs.map(
               (value) {
-                print('followingUsers ${value.data()}');
                 return FollowModel.fromJson(
                     value.data() as Map<String, dynamic>);
               },
