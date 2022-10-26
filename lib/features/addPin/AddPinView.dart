@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/components/map/landmarks.dart';
+import 'package:memz/features/camera/CameraView.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
 import 'package:memz/styles/fonts.dart';
 
@@ -84,6 +85,22 @@ class AddPinViewState extends State<AddPinView> {
             ),
             ElevatedButton(
               onPressed: () => {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => CameraView(),
+                  ),
+                ),
+              },
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll<Color>(MColors.white),
+              ),
+              child: Text(
+                'Camera',
+                style: SubHeading.SH18.copyWith(color: MColors.black),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => {
                 if (user?.uid != null && currentLocation.latitude != 0)
                   {
                     PinStore.addPin(
@@ -107,7 +124,7 @@ class AddPinViewState extends State<AddPinView> {
                 'Drop Pin',
                 style: SubHeading.SH18.copyWith(color: MColors.black),
               ),
-            )
+            ),
           ],
         ),
       ),

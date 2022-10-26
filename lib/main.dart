@@ -1,9 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:memz/screens/authentication/email_password/sign_in_screen.dart';
+import 'package:camera/camera.dart';
 
 import 'screens/main_screens/home_screen.dart';
 
-void main() {
+List<CameraDescription> cameras = [];
+
+Future<void> main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    log('Error in fetching the cameras: $e');
+  }
   runApp(const MyApp());
 }
 
