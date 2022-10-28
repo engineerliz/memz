@@ -12,12 +12,15 @@ import '../../main.dart';
 import '../../styles/fonts.dart';
 
 class CameraView extends StatefulWidget {
+  final Function(String) getFinalPic;
+
+  CameraView({required this.getFinalPic});
+
   @override
   _CameraViewState createState() => _CameraViewState();
 }
 
 class _CameraViewState extends State<CameraView> {
-  bool showPic = false;
   String? picPath;
   CameraController? controller;
   bool _isCameraInitialized = false;
@@ -65,7 +68,7 @@ class _CameraViewState extends State<CameraView> {
   void initState() {
     // if (cameras[0] != null) {
     onNewCameraSelected(cameras[0]);
-    // clearPics();
+    clearPics();
     // }
     super.initState();
   }
@@ -109,50 +112,11 @@ class _CameraViewState extends State<CameraView> {
     }
   }
 
-  List<File> allFileList = [];
-
-  // refreshAlreadyCapturedImages() async {
-  //   // Get the directory
-  //   final directory = await getApplicationDocumentsDirectory();
-  //   List<FileSystemEntity> fileList = await directory.list().toList();
-  //   allFileList.clear();
-
-  //   List<Map<int, dynamic>> fileNames = [];
-
-  //   // Searching for all the image and video files using
-  //   // their default format, and storing them
-  //   fileList.forEach((file) {
-  //     if (file.path.contains('.jpg') || file.path.contains('.mp4')) {
-  //       allFileList.add(File(file.path));
-
-  //       String name = file.path.split('/').last.split('.').first;
-  //       fileNames.add({0: int.parse(name), 1: file.path.split('/').last});
-  //     }
-  //   });
-
-  //   // Retrieving the recent file
-  //   if (fileNames.isNotEmpty) {
-  //     final recentFile =
-  //         fileNames.reduce((curr, next) => curr[0] > next[0] ? curr : next);
-  //     String recentFileName = recentFile[1];
-  //     // Checking whether it is an image or a video file
-  //     if (recentFileName.contains('.mp4')) {
-  //       _videoFile = File('${directory.path}/$recentFileName');
-  //       _startVideoPlayer();
-  //     } else {
-  //       _imageFile = File('${directory.path}/$recentFileName');
-  //     }
-
-  //     setState(() {});
-  //   }
-  // }
-
   getPic() async {
     final directory = await getApplicationDocumentsDirectory();
     List<FileSystemEntity> fileList = await directory.list().toList();
     if (fileList.isNotEmpty) {
       setState(() {
-        showPic = true;
         picPath = fileList.last.path;
       });
     }
@@ -181,21 +145,9 @@ class _CameraViewState extends State<CameraView> {
     return Container();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    print('path state $picPath');
-    return CommonScaffold(
-      title: EmojiParser().get('camera').code,
-      padding: const EdgeInsets.all(0),
-      body: getBody(),
-      // body: _isCameraInitialized
-      //     ? AspectRatio(
-      //         aspectRatio: 1 / controller!.value.aspectRatio,
-      //         child: controller!.buildPreview(),
-      //       )
-      //     : Container(),
-      bottomBar: SingleButtonBottomBar(
-          child: ElevatedButton(
+  Widget getButton() {
+    if (picPath == null) {
+      return ElevatedButton(
         onPressed: () async {
           XFile? rawImage = await takePicture();
           File imageFile = File(rawImage!.path);
@@ -222,7 +174,63 @@ class _CameraViewState extends State<CameraView> {
             )
           ],
         ),
-      )),
+      );
+    } else {
+      return Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                picPath = null;
+              });
+            },
+            child: Row(
+              children: [
+                Text(
+                  EmojiParser().get('arrows_counterclockwise').code,
+                  style: SubHeading.SH26,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Retake',
+                  style: SubHeading.SH18,
+                )
+              ],
+            ),
+          ),
+          const SizedBox(width: 50),
+          ElevatedButton(
+            onPressed: () {
+              widget.getFinalPic(picPath!);
+              Navigator.of(context).pop();
+            },
+            child: Row(
+              children: [
+                Text(
+                  EmojiParser().get('white_check_mark').code,
+                  style: SubHeading.SH26,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Looks good',
+                  style: SubHeading.SH18,
+                )
+              ],
+            ),
+          )
+        ],
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('path state $picPath');
+    return CommonScaffold(
+      title: EmojiParser().get('camera').code,
+      padding: const EdgeInsets.all(0),
+      body: getBody(),
+      bottomBar: SingleButtonBottomBar(child: getButton()),
     );
   }
 }

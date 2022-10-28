@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,6 +25,8 @@ class AddPinViewState extends State<AddPinView> {
 
   late LatLng currentLocation = LatLng(0, 0);
   late bool isLoading = true;
+  late String? picPath;
+
   @override
   initState() {
     Future.delayed(Duration.zero, () async {
@@ -38,6 +42,12 @@ class AddPinViewState extends State<AddPinView> {
 
   final captionController = TextEditingController();
 
+  getFinalPic(String value) {
+    setState(() {
+      picPath = value;
+    });
+  }
+
   @override
   void dispose() {
     captionController.dispose();
@@ -51,7 +61,8 @@ class AddPinViewState extends State<AddPinView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: CommonScaffold(
         title: 'Add Pin',
-        body: Column(
+        body: ListView(children: [
+          Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
@@ -83,11 +94,14 @@ class AddPinViewState extends State<AddPinView> {
                 ),
               ],
             ),
+              Container(child: Image.file(File(picPath!))),
             ElevatedButton(
               onPressed: () => {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => CameraView(),
+                      builder: (context) => CameraView(
+                        getFinalPic: getFinalPic,
+                      ),
                   ),
                 ),
               },
@@ -126,7 +140,8 @@ class AddPinViewState extends State<AddPinView> {
               ),
             ),
           ],
-        ),
+          )
+        ]),
       ),
     );
   }
