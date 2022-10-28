@@ -21,7 +21,7 @@ class ProfilePinsTab extends StatelessWidget {
             children: [
               ...pins!.map(
                 (pin) => Padding(
-                  padding: const EdgeInsets.only(bottom: 25),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   child: PinPost(
                     pin: pin,
                     withTap: false,

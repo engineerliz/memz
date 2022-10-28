@@ -15,7 +15,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import '../../api/pins/PinModel.dart';
 import '../../components/map/MultiPinMap.dart';
 import 'ProfileAboutTab.dart';
-import 'ProfileBottomBar.dart';
+import 'SingleButtonBottomBar.dart';
 import 'ProfilePinsTab.dart';
 
 class UserProfileView extends StatefulWidget {
@@ -153,7 +153,7 @@ class UserProfileViewState extends State<UserProfileView> {
       padding: const EdgeInsets.only(left: 0, right: 0),
       activeTab: 2,
       // bottomBar: !isMyProfile
-      //     ? ProfileBottomBar(
+      //     ? SingleButtonBottomBar(
       //         currentUserId: currentUserId,
       //         profileUser: userData,
       //       )
@@ -208,10 +208,8 @@ class UserProfileViewState extends State<UserProfileView> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        top: 12,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
                       ),
                       child: TabBarView(
                         children: [

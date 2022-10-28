@@ -85,7 +85,7 @@ class AddPinViewState extends State<AddPinView> {
             ),
             ElevatedButton(
               onPressed: () => {
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => CameraView(),
                   ),
