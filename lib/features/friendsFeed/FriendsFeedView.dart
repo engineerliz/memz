@@ -46,9 +46,9 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-        title: 'Pinned',
+      title: 'SMYL 🫠',
         appBar: CommonAppBar(
-          title: 'Pinned',
+        title: 'SMYL 🫠',
           rightWidget: GestureDetector(
             child: Opacity(
               opacity: 0.8,
@@ -84,9 +84,11 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
                             child: PinPost(pin: pin),
                           ),
                         )
-                ]));
-                  }
-                  return const SizedBox();
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox();
             },
           ),
           ],

@@ -37,7 +37,9 @@ class PinModel {
             LatLng(data['location']['latitude'], data['location']['longitude']),
         creationTime: data['creationTime'].toDate(),
         caption: data['caption'],
-        imgUrls: data['imgUrls'],
+        imgUrls: data['imgUrls'] != null
+            ? List.from(data['imgUrls']!.map((url) => url.toString()))
+            : null,
       );
 
   // PinModel updateEditableFields({

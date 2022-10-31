@@ -98,6 +98,16 @@ class PinPostState extends State<PinPost> {
                 ),
               ),
             ),
+            if (widget.pin.imgUrls != null)
+              ...widget.pin.imgUrls!.map(
+                (url) => Container(
+                    width: 300,
+                    height: 300,
+                    child: Image.network(
+                      url,
+                      width: 280.0,
+                    )),
+              )
           ],
         ));
   }

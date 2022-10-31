@@ -121,6 +121,7 @@ class _CameraViewState extends State<CameraView> {
       });
     }
     print('fileList ${fileList.length}');
+    print('fileList ${fileList}');
     // return fileList.first.;
   }
 
@@ -183,6 +184,7 @@ class _CameraViewState extends State<CameraView> {
               setState(() {
                 picPath = null;
               });
+              clearPics();
             },
             child: Row(
               children: [

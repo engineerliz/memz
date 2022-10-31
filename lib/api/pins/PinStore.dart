@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:memz/api/uploadFile/UploadStorage.dart';
 import 'package:uuid/uuid.dart';
 
 import 'PinModel.dart';
@@ -22,14 +23,25 @@ class PinStore {
   }) async {
     var uuid = const Uuid();
     final String pinId = uuid.v4();
+    String? picUrl;
+
+    if (imgUrls != null) {
+      await UploadStorage.uploadFile(filePath: imgUrls.first).then((value) {
+        print('picUrl!!! $value');
+        picUrl = value;
+      });
+    }
+
     PinModel data = PinModel(
       id: pinId,
       creatorId: creatorId,
       location: location,
       caption: caption,
-      imgUrls: imgUrls,
+      imgUrls: picUrl != null ? [picUrl!] : null,
       creationTime: DateTime.now(),
     );
+
+    print('check pinmodel ${data.toJson()}');
     pinsDb.doc(pinId).set(data.toJson());
   }
 
@@ -62,7 +74,6 @@ class PinStore {
         );
     return result;
   }
-
 
   static Future<void> updateUser({
     required PinModel user,

@@ -65,7 +65,7 @@ class UserInfoScreenState extends State<UserInfoScreen> {
   Widget build(BuildContext context) {
     // print('_user, $_user');
     return CommonScaffold(
-        title: 'Pinned',
+      title: 'SMYL 🫠',
       body: _user != null
           ? SafeArea(
           child: Column(
