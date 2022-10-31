@@ -41,19 +41,4 @@ class PinModel {
             ? List.from(data['imgUrls']!.map((url) => url.toString()))
             : null,
       );
-
-  // PinModel updateEditableFields({
-  //   String? newUsername,
-  //   String? newEmail,
-  //   String? newName,
-  //   String? newHomebase,
-  // }) =>
-  //     PinModel(
-  //       id: id,
-  //       joinDate: joinDate,
-  //       username: newUsername ?? username,
-  //       email: newEmail ?? email,
-  //       name: newName ?? name,
-  //       homeBase: newHomebase ?? homeBase,
-  //     );
 }

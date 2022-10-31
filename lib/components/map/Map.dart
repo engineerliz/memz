@@ -11,6 +11,7 @@ class Map extends StatefulWidget {
   final bool? isLoading;
   final bool? hasGestures;
   final Function(LatLng)? onTap;
+  final double? zoom;
 
   const Map({
     super.key,
@@ -18,6 +19,7 @@ class Map extends StatefulWidget {
     this.isLoading = false,
     this.hasGestures = false,
     this.onTap,
+    this.zoom = 15,
   });
 
   @override
@@ -62,7 +64,7 @@ class MapState extends State<Map> {
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: widget.location ?? nycWSP,
-              zoom: 15,
+              zoom: widget.zoom!,
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);

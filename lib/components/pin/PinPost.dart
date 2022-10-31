@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:memz/api/pins/PinModel.dart';
 import 'package:memz/api/users/UserStore.dart';
-import 'package:memz/components/map/CurrentLocationMap.dart';
 import 'package:memz/components/map/Map.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
@@ -47,11 +46,71 @@ class PinPostState extends State<PinPost> {
     }
   }
 
+  Widget getPostBodyWithPics() {
+    if (widget.pin.imgUrls != null) {
+      return Stack(
+        alignment: AlignmentDirectional.topEnd,
+        children: [
+          Container(
+            clipBehavior: Clip.hardEdge,
+            width: MediaQuery.of(context).size.width,
+            height: 500,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(widget.pin.imgUrls!.first),
+              ),
+            ),
+          ),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                height: 200,
+                width: 150,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Map(
+                  location: widget.pin.location,
+                  zoom: 14,
+                  onTap: (latlng) {
+                    onTap();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    return SizedBox();
+  }
+
+  Widget getPostBodyWithoutPics() {
+    return Container(
+      height: 200,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Map(
+          location: widget.pin.location,
+          onTap: (latlng) {
+            onTap();
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final Future<UserModel?> user =
-    //     UserStore.getUserById(id: widget.pin.creatorId);
-
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
@@ -82,33 +141,11 @@ class PinPostState extends State<PinPost> {
               Text(widget.pin.caption!, style: Paragraph.P14),
               const SizedBox(height: 12)
             ],
-            Container(
-              height: 200,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                child: Map(
-                  location: widget.pin.location,
-                  onTap: (latlng) {
-                    onTap();
-                  },
-                ),
-              ),
-            ),
-            if (widget.pin.imgUrls != null)
-              ...widget.pin.imgUrls!.map(
-                (url) => Container(
-                    width: 300,
-                    height: 300,
-                    child: Image.network(
-                      url,
-                      width: 280.0,
-                    )),
-              )
-          ],
-        ));
+          widget.pin.imgUrls != null
+              ? getPostBodyWithPics()
+              : getPostBodyWithoutPics(),
+        ],
+      ),
+    );
   }
 }
