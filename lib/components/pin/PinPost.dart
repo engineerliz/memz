@@ -58,7 +58,7 @@ class PinPostState extends State<PinPost> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               image: DecorationImage(
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 image: NetworkImage(widget.pin.imgUrls!.first),
               ),
             ),
@@ -92,7 +92,7 @@ class PinPostState extends State<PinPost> {
 
   Widget getPostBodyWithoutPics() {
     return Container(
-      height: 200,
+      height: 170,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),

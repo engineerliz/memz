@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:memz/features/profile/UserProfileView.dart';
 
 import '../../components/scaffold/BottomBar.dart';
-import '../../screens/authentication/email_password/user_info_screen.dart';
 import '../../styles/colors.dart';
 import '../addPin/AddPinView.dart';
 import '../friendsFeed/FriendsFeedView.dart';
@@ -43,20 +42,8 @@ class MainViewsState extends State<MainViews> {
     super.initState();
   }
 
-  // @override
-  // void didChangeDependencies() async {
-  //   super.didChangeDependencies();
-  //   var permission = await Geolocator.checkPermission();
-  //   super.setState(() {
-  //     locationPermission = permission;
-  //   }); // to update widget data
-  //   /// new
-  //   print('locationPermission $locationPermission');
-  // }
-
   void askForLocation() {
     Future.delayed(Duration(seconds: 2), () async {
-      LocationPermission permission = await Geolocator.requestPermission();
       var newPermission = await Geolocator.checkPermission();
       setState(() {
         locationPermission = newPermission;
@@ -85,18 +72,14 @@ class MainViewsState extends State<MainViews> {
               title: Text(widget.title!),
             )
           : null,
-      body: (() {
-          if (_selectedIndex == 0) {
-            return FriendsFeedView();
-          }
-          if (_selectedIndex == 1) {
-            return AddPinView();
-          }
-          if (_selectedIndex == 2) {
-          return const UserProfileView();
-          }
-        }()),
-
+      body: IndexedStack(
+        children: <Widget>[
+          FriendsFeedView(),
+          AddPinView(),
+          UserProfileView(),
+        ],
+        index: _selectedIndex,
+      ),
       bottomNavigationBar: BottomBar(
         activeIndex: _selectedIndex,
         onItemTapped: onItemTapped,
