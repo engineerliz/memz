@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "801051530454",
-    "project_id": "memz-ae633",
-    "storage_bucket": "memz-ae633.appspot.com"
+    "project_number": "717737182106",
+    "project_id": "memz-prod",
+    "storage_bucket": "memz-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:801051530454:android:9e3e3b7c9b0af7a377e577",
+        "mobilesdk_app_id": "1:717737182106:android:6bfbfbbbb478e406c3f023",
         "android_client_info": {
           "package_name": "com.example.memz"
         }
       },
       "oauth_client": [
         {
-          "client_id": "801051530454-vttrdgl7iog1r661ug07d1bvdclfs0g8.apps.googleusercontent.com",
+          "client_id": "717737182106-k09eu4nfvoig40onb1vqn78mql0rqe6m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBO1wPh96HWY-AHIgIt97vbUTcQHYFCHGU"
+          "current_key": "AIzaSyAQ0ilMfLpXq5Yvdf6WWo8-FuXTuQoh5Js"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "801051530454-vttrdgl7iog1r661ug07d1bvdclfs0g8.apps.googleusercontent.com",
+              "client_id": "717737182106-k09eu4nfvoig40onb1vqn78mql0rqe6m.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "801051530454-g8ankemrhg0uul9brrls0e2o926ic310.apps.googleusercontent.com",
+              "client_id": "717737182106-i3sircjkokeg6c28bk57jgu688f3eh7l.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.memz"
