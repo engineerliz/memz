@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:memz/api/follow/FollowModel.dart';
 import 'package:memz/api/follow/FollowStore.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserModel.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import '../../api/pins/PinModel.dart';
 import '../../components/map/MultiPinMap.dart';
 import 'ProfileAboutTab.dart';
-import 'SingleButtonBottomBar.dart';
 import 'ProfilePinsTab.dart';
 
 class UserProfileView extends StatefulWidget {
@@ -162,12 +160,9 @@ class UserProfileViewState extends State<UserProfileView> {
         children: [
           SizedBox(
             height: 200,
-            child: _userPins != null
-                ? MultiPinMap(
-                    pins: _userPins!,
-                    isLoading: _userPins == null,
-                  )
-                : null,
+            child: MultiPinMap(
+              pins: _userPins != null ? _userPins! : [],
+            ),
           ),
           Expanded(
             child: DefaultTabController(
