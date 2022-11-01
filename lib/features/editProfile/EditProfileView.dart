@@ -49,7 +49,6 @@ class _EditProfileViewState extends State<EditProfileView> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -81,7 +80,6 @@ class _EditProfileViewState extends State<EditProfileView> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     if (widget.user != null) {
@@ -93,7 +91,7 @@ class _EditProfileViewState extends State<EditProfileView> {
       return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: CommonScaffold(
-        title: 'Edit Profile',
+          title: 'Edit Profile',
           appBar: CommonAppBar(
             title: 'Edit Profile',
             rightWidget: GestureDetector(
@@ -116,20 +114,20 @@ class _EditProfileViewState extends State<EditProfileView> {
               },
             ),
           ),
-        body: Padding(
+          body: Padding(
             padding: const EdgeInsets.only(top: 20),
-              child: ListView(
-                children: [
-              Padding(
+            child: ListView(
+              children: [
+                Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                child: TextField(
-                  controller: nameController,
+                  child: TextField(
+                    controller: nameController,
                     decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
+                      border: OutlineInputBorder(),
+                      labelText: 'Name',
+                    ),
                   ),
                 ),
-              ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: TextField(
@@ -160,58 +158,57 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                   ),
                 ),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                      _isEmailVerified
-                          ? Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
+                    _isEmailVerified
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
                               Icon(
                                 Icons.check,
                                 size: 18,
                                 color: MColors.green,
                               ),
-                                const SizedBox(width: 8.0),
-                                const Text(
-                                  'Email is verified',
-                                  style: TextStyle(
-                                    color: Colors.greenAccent,
-                                    fontSize: 20,
-                                    letterSpacing: 0.5,
-                                  ),
+                              const SizedBox(width: 8.0),
+                              const Text(
+                                'Email is verified',
+                                style: TextStyle(
+                                  color: Colors.greenAccent,
+                                  fontSize: 20,
+                                  letterSpacing: 0.5,
                                 ),
-                              ],
-                            )
-                          : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
                               Icon(
-                                        Icons.close,
+                                Icons.close,
                                 size: 18,
                                 color: MColors.red,
                               ),
-                                const SizedBox(width: 8.0),
+                              const SizedBox(width: 8.0),
                               Text(
                                 'Email not verified',
                                 style: SubHeading.SH14
                                     .copyWith(color: MColors.red),
-                                ),
-                              ],
-                            ),
-                      const SizedBox(height: 8.0),
-                      Visibility(
-                        visible: !_isEmailVerified,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _verificationEmailBeingSent
-                                ? const CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Palette.firebaseGrey,
-                                    ),
-                                  )
+                              ),
+                            ],
+                          ),
+                    const SizedBox(height: 8.0),
+                    Visibility(
+                      visible: !_isEmailVerified,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _verificationEmailBeingSent
+                              ? const CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Palette.firebaseGrey,
+                                  ),
+                                )
                               : ElevatedButton(
                                   onPressed: () async {
                                     setState(() {
@@ -230,31 +227,31 @@ class _EditProfileViewState extends State<EditProfileView> {
                                             MColors.grayV9),
                                   ),
                                 ),
-                            const SizedBox(width: 16.0),
-                            IconButton(
-                              icon: const Icon(Icons.refresh),
-                              onPressed: () async {
-                                User? user =
-                                    await Authentication.refreshUser(_user!);
+                          const SizedBox(width: 16.0),
+                          IconButton(
+                            icon: const Icon(Icons.refresh),
+                            onPressed: () async {
+                              User? user =
+                                  await Authentication.refreshUser(_user!);
 
-                                if (user != null) {
-                                  setState(() {
-                                    _user = user;
-                                    _isEmailVerified = user.emailVerified;
-                                  });
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                              if (user != null) {
+                                setState(() {
+                                  _user = user;
+                                  _isEmailVerified = user.emailVerified;
+                                });
+                              }
+                            },
+                          ),
+                        ],
                       ),
+                    ),
                     const SizedBox(height: 24.0),
-                      _isSigningOut
-                          ? const CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.redAccent,
-                              ),
-                            )
+                    _isSigningOut
+                        ? const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.redAccent,
+                            ),
+                          )
                         : ElevatedButton(
                             onPressed: () async {
                               setState(() {
@@ -265,10 +262,22 @@ class _EditProfileViewState extends State<EditProfileView> {
                                 _isSigningOut = false;
                               });
                               if (!mounted) return;
+                              if (Navigator.canPop(context)) {
+                                print('canPop!');
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+
+                                // Navigator.of(context)
+                                //     .popUntil((route) => route.isFirst);
+                              }
                               Navigator.of(context)
-                                  .pushReplacement(_routeToSignInScreen());
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (context) => SignInScreen(),
+                              ));
+                              // Navigator.of(context)
+                              //     .pushReplacement(_routeToSignInScreen());
                             },
-                            child: Text('Sign out',
+                            child: Text('Sign out???',
                                 style: SubHeading.SH18
                                     .copyWith(color: MColors.red)),
                             style: const ButtonStyle(
@@ -313,9 +322,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                     //       ),
                     //     ),
                     //   ),
-                      const SizedBox(height: 50),
-                    ],
-                  ),
+                    const SizedBox(height: 50),
+                  ],
+                ),
               ],
             ),
           ),

@@ -10,12 +10,11 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   final String title;
   final Widget? rightWidget;
 
-  // CommonAppBar({
-  //   required this.label,
-  //   this.rightWidget,
-
-  // });
-  CommonAppBar({super.key, required this.title, this.rightWidget})
+  CommonAppBar({
+    super.key,
+    required this.title,
+    this.rightWidget,
+  })
       : preferredSize = const Size.fromHeight(50.0);
 
   @override

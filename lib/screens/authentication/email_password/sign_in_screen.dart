@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:memz/styles/colors.dart';
+import 'package:memz/styles/fonts.dart';
 import '../../../features/mainViews/MainViews.dart';
 import '../../../firebase_options.dart';
 import '../../../res/custom_colors.dart';
@@ -8,7 +10,7 @@ import '../../../widgets/app_bar_title.dart';
 import '../../../widgets/authentication/email_password/register_form.dart';
 
 import '../../../widgets/authentication/email_password/sign_in_form.dart';
-import 'user_info_screen.dart';
+// import 'user_info_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -50,7 +52,7 @@ class SignInScreenState extends State<SignInScreen> {
         _passwordFocusNode.unfocus();
       },
       child: Scaffold(
-        backgroundColor: Palette.firebaseNavy,
+        backgroundColor: MColors.background,
         body: SafeArea(
           child: Stack(
             children: [
@@ -72,24 +74,13 @@ class SignInScreenState extends State<SignInScreen> {
                           Flexible(
                             flex: 1,
                             child: Image.asset(
-                              'assets/firebase_logo.png',
+                              'assets/SMYL_logo.png',
                               height: 160,
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          const Text(
-                            'FlutterFire',
-                            style: TextStyle(
-                              color: Palette.firebaseYellow,
-                              fontSize: 40,
-                            ),
-                          ),
-                          const Text(
-                            'Authentication',
-                            style: TextStyle(
-                              color: Palette.firebaseOrange,
-                              fontSize: 40,
-                            ),
+                          Text(
+                            'send me your location',
+                            style: Branding.H22.copyWith(color: MColors.grayV3),
                           ),
                         ],
                       ),

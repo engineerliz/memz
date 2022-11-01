@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:memz/styles/colors.dart';
 
 import '../../../res/custom_colors.dart';
+import '../../../styles/fonts.dart';
 import '../../../widgets/app_bar_title.dart';
 import '../../../widgets/authentication/email_password/register_form.dart';
 
@@ -25,14 +27,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         _passwordFocusNode.unfocus();
       },
       child: Scaffold(
-        backgroundColor: Palette.firebaseNavy,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Palette.firebaseNavy,
-          title: const AppBarTitle(
-            sectionName: 'Authentication',
-          ),
-        ),
+        backgroundColor: MColors.background,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -40,10 +35,33 @@ class RegisterScreenState extends State<RegisterScreen> {
               right: 16.0,
               bottom: 20.0,
             ),
-            child: RegisterForm(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Image.asset(
+                          'assets/SMYL_logo.png',
+                          height: 160,
+                        ),
+                      ),
+                      Text(
+                        'send me your location',
+                        style: Branding.H22.copyWith(color: MColors.grayV3),
+                      ),
+                    ],
+                  ),
+                ),
+                RegisterForm(
               nameFocusNode: _nameFocusNode,
               emailFocusNode: _emailFocusNode,
               passwordFocusNode: _passwordFocusNode,
+                ),
+              ],
             ),
           ),
         ),

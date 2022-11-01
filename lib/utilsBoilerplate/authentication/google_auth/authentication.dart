@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:memz/features/mainViews/MainViews.dart';
 
 import '../../../firebase_options.dart';
-import '../../../screens/authentication/email_password/user_info_screen.dart';
+// import '../../../screens/authentication/email_password/user_info_screen.dart';
 
 class Authentication {
   static SnackBar customSnackBar({required String content}) {

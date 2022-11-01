@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
 
 import '../../../res/fire_assets.dart';
-import '../../../screens/authentication/email_password/user_info_screen.dart';
+// import '../../../screens/authentication/email_password/user_info_screen.dart';
 import '../../../utilsBoilerplate/authentication/google_auth/authentication.dart';
 
 class GoogleSignInButton extends StatefulWidget {

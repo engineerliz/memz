@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
+import 'package:memz/styles/colors.dart';
+import 'package:memz/styles/fonts.dart';
 
 import '../../../res/custom_colors.dart';
 import '../../../screens/authentication/email_password/email_password.dart';
@@ -86,7 +88,7 @@ class SignInFormState extends State<SignInForm> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                          Palette.firebaseOrange,
+                          MColors.white,
                         ),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
@@ -111,7 +113,11 @@ class SignInFormState extends State<SignInForm> {
                           );
 
                           if (user != null) {
-                            Navigator.of(context).pop();
+                            if (Navigator.canPop(context)) {
+                              print('canPop!');
+
+                              Navigator.of(context).pop();
+                            }
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => MainViews(),
@@ -124,16 +130,11 @@ class SignInFormState extends State<SignInForm> {
                           _isSigningIn = false;
                         });
                       },
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: Text(
                           'LOGIN2',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Palette.firebaseGrey,
-                            letterSpacing: 2,
-                          ),
+                          style: SubHeading.SH18.copyWith(color: MColors.black),
                         ),
                       ),
                     ),
