@@ -14,10 +14,11 @@ class UserStore {
 
   static Future<void> addUser({
     required User user,
+    String? username,
   }) async {
     UserModel data = UserModel(
       id: user.uid,
-      username: user.displayName ?? '',
+      username: username,
       email: user.email ?? '',
       joinDate: user.metadata.creationTime,
     );

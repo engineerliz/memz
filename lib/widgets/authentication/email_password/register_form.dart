@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
+import 'package:memz/features/onboarding/VerifyEmailView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 
@@ -69,19 +70,19 @@ class RegisterFormState extends State<RegisterForm> {
             ),
             child: Column(
               children: [
-                CustomFormField(
-                  controller: _nameController,
-                  focusNode: widget.nameFocusNode,
-                  keyboardType: TextInputType.name,
-                  inputAction: TextInputAction.next,
-                  isCapitalized: true,
-                  validator: (value) => Validator.validateName(
-                    name: value,
-                  ),
-                  label: 'Username',
-                  hint: 'Enter a username',
-                ),
-                const SizedBox(height: 16.0),
+                // CustomFormField(
+                //   controller: _nameController,
+                //   focusNode: widget.nameFocusNode,
+                //   keyboardType: TextInputType.name,
+                //   inputAction: TextInputAction.next,
+                //   isCapitalized: true,
+                //   validator: (value) => Validator.validateName(
+                //     name: value,
+                //   ),
+                //   label: 'Username',
+                //   hint: 'Enter a username',
+                // ),
+                // const SizedBox(height: 16.0),
                 CustomFormField(
                   controller: _emailController,
                   focusNode: widget.emailFocusNode,
@@ -145,7 +146,7 @@ class RegisterFormState extends State<RegisterForm> {
                         if (_registerFormKey.currentState!.validate()) {
                           User? user =
                               await Authentication.registerUsingEmailPassword(
-                            name: _nameController.text,
+                            // name: _nameController.text,
                             email: _emailController.text,
                             password: _passwordController.text,
                             context: context,
@@ -174,10 +175,10 @@ class RegisterFormState extends State<RegisterForm> {
                             //     Navigator.of(context).pop();
                             //   }
                             // },
-                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => MainViews(),
+                                builder: (context) => VerifyEmailView(),
                               ),
                             );
                           }

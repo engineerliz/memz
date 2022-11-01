@@ -53,7 +53,7 @@ class Authentication {
   }
 
   static Future<User?> registerUsingEmailPassword({
-    required String name,
+    // required String name,
     required String email,
     required String password,
     required BuildContext context,
@@ -68,8 +68,8 @@ class Authentication {
       );
 
       user = userCredential.user;
-      await user!.updateDisplayName(name);
-      await user.reload();
+      // await user!.updateDisplayName(name);
+      await user!.reload();
       user = auth.currentUser;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

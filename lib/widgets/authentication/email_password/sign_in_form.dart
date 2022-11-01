@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:memz/features/mainViews/MainViews.dart';
+import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 
+import '../../../features/onboarding/utils/authPathNavigator.dart';
 import '../../../res/custom_colors.dart';
 import '../../../screens/authentication/email_password/email_password.dart';
 import '../../../utilsBoilerplate/authentication/email_password_auth/authentication.dart';
@@ -111,18 +112,13 @@ class SignInFormState extends State<SignInForm> {
                             email: _emailController.text,
                             password: _passwordController.text,
                           );
-
                           if (user != null) {
-                            if (Navigator.canPop(context)) {
-                              print('canPop!');
-
-                              Navigator.of(context).pop();
-                            }
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => MainViews(),
-                              ),
-                            );
+                            UserStore.getUserById(id: user.uid)
+                                .then((value) => getAuthNavigation(
+                                      context: context,
+                                      isEmailVerified: user.emailVerified,
+                                      user: value,
+                                    ));
                           }
                         }
 

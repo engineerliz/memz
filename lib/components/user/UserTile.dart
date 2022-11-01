@@ -44,7 +44,7 @@ class UserTile extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                user.username,
+                user.username ?? '',
                 style: SubHeading.SH14,
               )
             ],

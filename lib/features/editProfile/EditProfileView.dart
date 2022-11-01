@@ -84,7 +84,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   Widget build(BuildContext context) {
     if (widget.user != null) {
       nameController.text = widget.user!.name ?? '';
-      usernameController.text = widget.user!.username;
+      usernameController.text = widget.user!.username ?? '';
       emailController.text = widget.user!.email;
       homeBaseController.text = widget.user!.homeBase ?? '';
 
@@ -267,8 +267,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                                 Navigator.of(context, rootNavigator: true)
                                     .pop();
 
-                                // Navigator.of(context)
-                                //     .popUntil((route) => route.isFirst);
                               }
                               Navigator.of(context)
                                   .pushReplacement(MaterialPageRoute(

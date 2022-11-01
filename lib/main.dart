@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:memz/features/splash/SplashView.dart';
 import 'package:memz/screens/authentication/email_password/sign_in_screen.dart';
 import 'package:camera/camera.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         fontFamily: 'OpenSans',
       ),
-      home: SignInScreen(),
+      home: SplashView(),
       // home: const HomeScreen(),
     );
   }

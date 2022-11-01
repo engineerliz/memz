@@ -23,26 +23,26 @@ class SignInScreenState extends State<SignInScreen> {
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   
-  Future<FirebaseApp> _initializeFirebase() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  // Future<FirebaseApp> _initializeFirebase() async {
+  //   FirebaseApp firebaseApp = await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
 
-    User? user = FirebaseAuth.instance.currentUser;
+  //   User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      if (!mounted) return firebaseApp;
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => MainViews(
-              // user: user,
-          ),
-        ),
-      );
-    }
+  //   if (user != null) {
+  //     if (!mounted) return firebaseApp;
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (context) => MainViews(
+  //             // user: user,
+  //         ),
+  //       ),
+  //     );
+  //   }
 
-    return firebaseApp;
-  }
+  //   return firebaseApp;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -85,25 +85,29 @@ class SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                     ),
-                    FutureBuilder(
-                      future: _initializeFirebase(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Error initializing Firebase');
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.done) {
-                          return SignInForm(
+                    SignInForm(
                             emailFocusNode: _emailFocusNode,
-                            passwordFocusNode: _passwordFocusNode,
-                          );
-                        }
-                        return const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Palette.firebaseOrange,
+                      passwordFocusNode: _passwordFocusNode,
                           ),
-                        );
-                      },
-                    )
+                    // FutureBuilder(
+                    //   future: _initializeFirebase(),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.hasError) {
+                    //       return const Text('Error initializing Firebase');
+                    //     } else if (snapshot.connectionState ==
+                    //         ConnectionState.done) {
+                    // return SignInForm(
+                    //   emailFocusNode: _emailFocusNode,
+                    //   passwordFocusNode: _passwordFocusNode,
+                    // );
+                    //     }
+                    //     return const CircularProgressIndicator(
+                    //       valueColor: AlwaysStoppedAnimation<Color>(
+                    //         Palette.firebaseOrange,
+                    //       ),
+                    //     );
+                    //   },
+                    // )
                     // SignInForm(
                     //   emailFocusNode: _emailFocusNode,
                     //   passwordFocusNode: _passwordFocusNode,
