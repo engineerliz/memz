@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/features/onboarding/utils/authPathNavigator.dart';
 import 'package:memz/styles/colors.dart';
 
@@ -14,14 +15,27 @@ class VerifyEmailView extends StatefulWidget {
 }
 
 class VerifyEmailViewState extends State<VerifyEmailView> {
-  bool? _isEmailVerified;
   bool _verificationEmailBeingSent = false;
   late User? _user;
+  UserModel? userData;
 
   @override
   void initState() {
     _user = FirebaseAuth.instance.currentUser;
-    _isEmailVerified = _user?.emailVerified ?? false;
+
+    if (_user != null) {
+      UserStore.getUserById(id: _user!.uid).then((value) {
+        userData = value;
+      });
+    }
+
+    if (_user?.emailVerified == true) {
+      getAuthNavigation(
+        context: context,
+        isEmailVerified: _user?.emailVerified,
+        user: userData,
+      );
+    }
 
     super.initState();
   }
@@ -56,13 +70,11 @@ class VerifyEmailViewState extends State<VerifyEmailView> {
                     ElevatedButton(
                       onPressed: () async {
                         User? user = await Authentication.refreshUser(_user!);
-
                         if (user?.emailVerified == true) {
-                          UserStore.getUserById(id: user!.uid).then(
-                            (value) => getAuthNavigation(
-                                context: context,
-                                isEmailVerified: user.emailVerified,
-                                user: value),
+                          getAuthNavigation(
+                            context: context,
+                            isEmailVerified: user?.emailVerified,
+                            user: userData,
                           );
                         }
                       },
