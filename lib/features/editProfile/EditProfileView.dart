@@ -7,6 +7,7 @@ import 'package:memz/styles/fonts.dart';
 
 import '../../../res/custom_colors.dart';
 import '../../../screens/authentication/email_password/email_password.dart';
+import '../../components/scaffold/CommonAppBar.dart';
 import '../../utilsBoilerplate/authentication/email_password_auth/authentication.dart';
 import '../../utilsBoilerplate/authentication/email_password_auth/validator.dart';
 import '../../api/users/UserModel.dart';
@@ -93,9 +94,30 @@ class _EditProfileViewState extends State<EditProfileView> {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: CommonScaffold(
         title: 'Edit Profile',
+          appBar: CommonAppBar(
+            title: 'Edit Profile',
+            rightWidget: GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                child: Text(
+                  'Save',
+                  style: SubHeading.SH14,
+                ),
+              ),
+              onTap: () async => {
+                await UserStore.updateUser(
+                    user: widget.user!.updateEditableFields(
+                  newName: nameController.text,
+                  newUsername: usernameController.text,
+                  newEmail: emailController.text,
+                  newHomebase: homeBaseController.text,
+                )),
+                // Navigator.of(context).pop(),
+              },
+            ),
+          ),
         body: Padding(
             padding: const EdgeInsets.only(top: 20),
-            child: Expanded(
               child: ListView(
                 children: [
               Padding(
@@ -121,16 +143,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: TextField(
                     controller: homeBaseController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -138,75 +150,29 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () async => {
-                    await UserStore.updateUser(
-                        user: widget.user!.updateEditableFields(
-                      newName: nameController.text,
-                      newUsername: usernameController.text,
-                      newEmail: emailController.text,
-                      newHomebase: homeBaseController.text,
-                    )),
-                    Navigator.of(context).pop(),
-                  },
-                  child: const Text('Save'),
-                  style: const ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll<Color>(MColors.grayV9),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                    ),
                   ),
                 ),
-                  Text('Account', style: SubHeading.SH22),
+
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(),
-                      ClipOval(
-                        child: Material(
-                          color: Palette.firebaseGrey.withOpacity(0.3),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.person,
-                              size: 42,
-                              color: Palette.firebaseGrey,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      const Text(
-                        'Hello',
-                        style: TextStyle(
-                          color: Palette.firebaseGrey,
-                          fontSize: 26,
-                        ),
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        _user!.displayName!,
-                        style: const TextStyle(
-                          color: Palette.firebaseYellow,
-                          fontSize: 26,
-                        ),
-                      ),
-                      const SizedBox(height: 24.0),
+                  children: [
                       _isEmailVerified
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                ClipOval(
-                                  child: Material(
-                                    color: Colors.greenAccent.withOpacity(0.6),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(4.0),
-                                      child: Icon(
-                                        Icons.check,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                              Icon(
+                                Icons.check,
+                                size: 18,
+                                color: MColors.green,
+                              ),
                                 const SizedBox(width: 8.0),
                                 const Text(
                                   'Email is verified',
@@ -221,27 +187,16 @@ class _EditProfileViewState extends State<EditProfileView> {
                           : Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                ClipOval(
-                                  child: Material(
-                                    color: Colors.redAccent.withOpacity(0.8),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(4.0),
-                                      child: Icon(
+                              Icon(
                                         Icons.close,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                size: 18,
+                                color: MColors.red,
+                              ),
                                 const SizedBox(width: 8.0),
-                                const Text(
-                                  'Email is not verified',
-                                  style: TextStyle(
-                                    color: Colors.redAccent,
-                                    fontSize: 20,
-                                    letterSpacing: 0.5,
-                                  ),
+                              Text(
+                                'Email not verified',
+                                style: SubHeading.SH14
+                                    .copyWith(color: MColors.red),
                                 ),
                               ],
                             ),
@@ -257,42 +212,24 @@ class _EditProfileViewState extends State<EditProfileView> {
                                       Palette.firebaseGrey,
                                     ),
                                   )
-                                : ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                        Palette.firebaseGrey,
-                                      ),
-                                      shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: () async {
-                                      setState(() {
-                                        _verificationEmailBeingSent = true;
-                                      });
-                                      await _user!.sendEmailVerification();
-                                      setState(() {
-                                        _verificationEmailBeingSent = false;
-                                      });
-                                    },
-                                    child: const Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 8.0, bottom: 8.0),
-                                      child: Text(
-                                        'Verify',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Palette.firebaseNavy,
-                                          letterSpacing: 2,
-                                        ),
-                                      ),
-                                    ),
+                              : ElevatedButton(
+                                  onPressed: () async {
+                                    setState(() {
+                                      _verificationEmailBeingSent = true;
+                                    });
+                                    await _user!.sendEmailVerification();
+                                    setState(() {
+                                      _verificationEmailBeingSent = false;
+                                    });
+                                  },
+                                  child: Text('Resend Verification Email',
+                                      style: SubHeading.SH14),
+                                  style: const ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStatePropertyAll<Color>(
+                                            MColors.grayV9),
                                   ),
+                                ),
                             const SizedBox(width: 16.0),
                             IconButton(
                               icon: const Icon(Icons.refresh),
@@ -311,62 +248,75 @@ class _EditProfileViewState extends State<EditProfileView> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24.0),
-                      Text(
-                        'You are now signed in using Firebase Authentication. To sign out of your account click the "Sign Out" button below.',
-                        style: TextStyle(
-                            color: Palette.firebaseGrey.withOpacity(0.8),
-                            fontSize: 14,
-                            letterSpacing: 0.2),
-                      ),
-                      const SizedBox(height: 16.0),
+                    const SizedBox(height: 24.0),
                       _isSigningOut
                           ? const CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Colors.redAccent,
                               ),
                             )
-                          : ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  Colors.redAccent,
-                                ),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () async {
-                                setState(() {
-                                  _isSigningOut = true;
-                                });
-                                await FirebaseAuth.instance.signOut();
-                                setState(() {
-                                  _isSigningOut = false;
-                                });
-                                if (!mounted) return;
-                                Navigator.of(context)
-                                    .pushReplacement(_routeToSignInScreen());
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                child: Text(
-                                  'Sign Out',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: 2,
-                                  ),
-                                ),
-                              ),
+                        : ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                _isSigningOut = true;
+                              });
+                              await FirebaseAuth.instance.signOut();
+                              setState(() {
+                                _isSigningOut = false;
+                              });
+                              if (!mounted) return;
+                              Navigator.of(context)
+                                  .pushReplacement(_routeToSignInScreen());
+                            },
+                            child: Text('Sign out',
+                                style: SubHeading.SH18
+                                    .copyWith(color: MColors.red)),
+                            style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  MColors.grayV9),
                             ),
+                          ),
+
+                    // : ElevatedButton(
+                    //     style: ButtonStyle(
+                    //       backgroundColor: MaterialStateProperty.all(
+                    //         Colors.redAccent,
+                    //       ),
+                    //       shape: MaterialStateProperty.all(
+                    //         RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(10),
+                    //         ),
+                    //       ),
+                    //     ),
+                    // onPressed: () async {
+                    //   setState(() {
+                    //     _isSigningOut = true;
+                    //   });
+                    //   await FirebaseAuth.instance.signOut();
+                    //   setState(() {
+                    //     _isSigningOut = false;
+                    //   });
+                    //   if (!mounted) return;
+                    //   Navigator.of(context)
+                    //       .pushReplacement(_routeToSignInScreen());
+                    // },
+                    //     child: const Padding(
+                    //       padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                    //       child: Text(
+                    //         'Sign Out',
+                    //         style: TextStyle(
+                    //           fontSize: 20,
+                    //           fontWeight: FontWeight.bold,
+                    //           color: Colors.white,
+                    //           letterSpacing: 2,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
                       const SizedBox(height: 50),
                     ],
                   ),
-                ],
-              ),
+              ],
             ),
           ),
         ),

@@ -10,4 +10,5 @@ class MColors {
   static const grayV9 = Color(0xFF1b1b1b);
   static const background = Color(0xFF0E0E0E);
   static const green = Color(0xFF19f68c);
+  static const red = Color(0xFFFF3131);
 }
