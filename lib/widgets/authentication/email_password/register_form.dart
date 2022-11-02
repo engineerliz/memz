@@ -191,7 +191,7 @@ class RegisterFormState extends State<RegisterForm> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: Text(
-                          'REGISTER',
+                          'Sign Up',
                           style: SubHeading.SH18.copyWith(color: MColors.black),
                         ),
                       ),

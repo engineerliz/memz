@@ -67,12 +67,11 @@ class _EditProfileViewState extends State<EditProfileView> {
               ),
               onTap: () async => {
                 await UserStore.updateUser(
-                    user: widget.user!.updateEditableFields(
+                  user: widget.user!,
                   newName: nameController.text,
                   newUsername: usernameController.text,
-                  newEmail: emailController.text,
                   newHomebase: homeBaseController.text,
-                )),
+                ),
               },
             ),
           ),

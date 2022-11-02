@@ -26,7 +26,7 @@ class UserStore {
   }
 
   static Future<UserModel?> getUserById({
-    required String id,
+    String? id,
   }) async {
     final userDoc = usersDb.doc(id);
     return userDoc
@@ -66,11 +66,35 @@ class UserStore {
     return result;
   }
 
+  static Future<bool?> isUsernameTaken({
+    required String username,
+  }) async {
+    log('isUsernameTaken $username');
+    var isTaken = false;
+    final query = usersDb.where('username', isEqualTo: username);
+    await query.get().then((resultsList) {
+      if (resultsList.docs.isNotEmpty) {
+        isTaken = true;
+      }
+    });
+
+    return isTaken;
+  }
 
   static Future<void> updateUser({
     required UserModel user,
+    String? newUsername,
+    String? newName,
+    String? newHomebase,
   }) async {
-    usersDb.doc(user.id).set(user.toJson());
+    log('updateUser ${user.id}');
+    usersDb.doc(user.id).update(user
+        .updateEditableFields(
+          newUsername: newUsername,
+          newName: newName,
+          newHomebase: newHomebase,
+        )
+        .toJson());
   }
 
   static Future<void> updateItem({
