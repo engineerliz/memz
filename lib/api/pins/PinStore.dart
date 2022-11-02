@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memz/api/uploadFile/UploadStorage.dart';
 import 'package:uuid/uuid.dart';
@@ -63,6 +61,7 @@ class PinStore {
   }
 
   static Future<List<PinModel>?> getAllPins() async {
+    log('Get all pins');
     final query = pinsDb.orderBy('creationTime', descending: true);
     final Future<List<PinModel>?> result = query.get().then(
           (resultsList) => List.from(

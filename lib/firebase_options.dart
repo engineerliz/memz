@@ -47,30 +47,32 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBAUMPCsiB0wXLVH9xnN1tFvrQykeqdZqs',
-    appId: '1:717737182106:web:3958259d9e3515e4c3f023',
-    messagingSenderId: '717737182106',
-    projectId: 'memz-prod',
-    authDomain: 'memz-prod.firebaseapp.com',
-    storageBucket: 'memz-prod.appspot.com',
-    measurementId: 'G-BSD7ZVPJQK',
-  );
+      apiKey: 'AIzaSyAp0ULUS8jVhHCKRv55xupk8aGe1TWjfAE',
+      authDomain: 'memz-ae633.firebaseapp.com',
+      projectId: 'memz-ae633',
+      storageBucket: 'memz-ae633.appspot.com',
+      messagingSenderId: '801051530454',
+      appId: '1:801051530454:web:ea38b970cb4b9ef177e577',
+      measurementId: 'G-2LJY3DWS8Z');
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAQ0ilMfLpXq5Yvdf6WWo8-FuXTuQoh5Js',
-    appId: '1:717737182106:android:6bfbfbbbb478e406c3f023',
-    messagingSenderId: '717737182106',
-    projectId: 'memz-prod',
-    storageBucket: 'memz-prod.appspot.com',
+    apiKey: 'AIzaSyCBpOCTJvcgHSO1-XDhmGNJ-paLHAAratM',
+    appId: '1:132381301913:android:2897b20e4406c6ad1eec08',
+    messagingSenderId: '132381301913',
+    projectId: 'flutterfire-samples',
+    storageBucket: 'flutterfire-samples.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDRZ4thW8Ppayh5rFI14fxWVeuPQ3gcud4',
-    appId: '1:717737182106:ios:661856aff322881ec3f023',
-    messagingSenderId: '717737182106',
-    projectId: 'memz-prod',
-    storageBucket: 'memz-prod.appspot.com',
-    iosClientId: '717737182106-i3sircjkokeg6c28bk57jgu688f3eh7l.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAEBMy45SJ5YLmsBMaI6ReLJYsaSfvlywU',
+    appId: '1:801051530454:ios:2091a95c8c36848477e577',
+    messagingSenderId: '132381301913',
+    projectId: 'memz-ae633',
+    storageBucket: 'memz-ae633.appspot.com',
+    androidClientId:
+        '132381301913-5o1p8r5cr7hbmet7bjtltnk3hiv2eife.apps.googleusercontent.com',
+    iosClientId:
+        '801051530454-g8ankemrhg0uul9brrls0e2o926ic310.apps.googleusercontent.com',
     iosBundleId: 'com.example.memz',
   );
 }

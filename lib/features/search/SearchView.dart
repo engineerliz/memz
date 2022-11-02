@@ -88,9 +88,18 @@ class SearchViewState extends State<SearchView> {
                 return Padding(
                   padding: const EdgeInsets.all(10),
                   child: searchController.text.isEmpty
-                      ? Text(
-                          EmojiParser().get('people_holding_hands').code,
-                          style: SubHeading.SH26,
+                      ? Column(
+                          children: [
+                            Text(
+                              EmojiParser().get('people_holding_hands').code,
+                              style: SubHeading.SH26,
+                            ),
+                            Text(
+                              'Search only works for exact username match right now! Working on a better search experience soon maybe.',
+                              style: Paragraph.P14,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         )
                       : Column(
                           children: [
