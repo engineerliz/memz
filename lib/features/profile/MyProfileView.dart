@@ -8,7 +8,6 @@ import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/editProfile/EditProfileView.dart';
-import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
@@ -17,20 +16,13 @@ import '../../components/map/MultiPinMap.dart';
 import 'ProfileAboutTab.dart';
 import 'ProfilePinsTab.dart';
 
-class UserProfileView extends StatefulWidget {
-  final String userId;
-
-  const UserProfileView({
-    super.key,
-    required this.userId,
-  });
-
+class MyProfileView extends StatefulWidget {
   @override
-  UserProfileViewState createState() => UserProfileViewState();
+  MyProfileViewState createState() => MyProfileViewState();
 }
 
-class UserProfileViewState extends State<UserProfileView> {
-  String currentUserId = '';
+class MyProfileViewState extends State<MyProfileView> {
+  String? userId;
   UserModel? userData;
   List<PinModel>? _userPins;
   TabController? tabController;
@@ -43,101 +35,63 @@ class UserProfileViewState extends State<UserProfileView> {
   @override
   void initState() {
     setState(() {
-      currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+      userId = FirebaseAuth.instance.currentUser?.uid;
     });
-    UserStore.getUserById(id: widget.userId).then(
-      (value) => setState(() {
-        userData = value;
-      }),
-    );
-    PinStore.getPinsByUserId(userId: widget.userId).then(
-      (value) => setState(() {
-        _userPins = value;
-      }),
-    );
+    if (userId != null) {
+      UserStore.getUserById(id: userId!).then(
+        (value) => setState(() {
+          userData = value;
+        }),
+      );
+      PinStore.getPinsByUserId(userId: userId!).then(
+        (value) => setState(() {
+          _userPins = value;
+        }),
+      );
 
-    FollowStore.getFollowerUsers(userId: currentUserId).then(
-      (value) => setState(() {
-        if (value != null) {
-          followersList = List.from(value.map((follower) => follower.userId));
-        }
-      }),
-    );
+      FollowStore.getFollowerUsers(userId: userId!).then(
+        (value) => setState(() {
+          if (value != null) {
+            followersList = List.from(value.map((follower) => follower.userId));
+          }
+        }),
+      );
 
-    FollowStore.getFollowingUsers(userId: widget.userId).then(
-      (value) => setState(() {
-        if (value != null) {
-          followingList =
-              List.from(value.map((follower) => follower.followingId));
-        }
-      }),
-    );
-
-    FollowStore.getFollowStatus(
-      userId: currentUserId,
-      followingId: widget.userId,
-    ).then(
-      (value) => setState(() {
-        followStatus = value;
-      }),
-    );
-
+      FollowStore.getFollowingUsers(userId: userId!).then(
+        (value) => setState(() {
+          if (value != null) {
+            followingList =
+                List.from(value.map((follower) => follower.followingId));
+          }
+        }),
+      );
+    }
     super.initState();
   }
 
-  String getTitle() {
-    return userData?.username ?? 'Profile';
-  }
-
   GestureDetector? getRightWidget(BuildContext context, UserModel? userData) {
-    Widget label = Text(
-      'Follow',
-      style: SubHeading.SH14.copyWith(color: MColors.green),
-    );
-    if (followStatus == FollowStatus.requested) {
-      label = Text(
-        'Requested',
-        style: SubHeading.SH14.copyWith(color: MColors.grayV5),
-      );
-    } else if (followStatus == FollowStatus.following) {
-      label = Text(
-        'Unfollow',
-        style: SubHeading.SH14.copyWith(color: MColors.grayV5),
-      );
-    }
     return GestureDetector(
-      child: label,
-      onTap: () {
-        switch (followStatus) {
-          case FollowStatus.following:
-          case FollowStatus.requested:
-            FollowStore.unfollowUser(
-              userId: currentUserId,
-              followingId: widget.userId,
-            );
-            setState(() {
-              followStatus = FollowStatus.none;
-            });
-            break;
-          case FollowStatus.none:
-            FollowStore.requestFollowUser(
-              userId: currentUserId,
-              followingId: widget.userId,
-            );
-            setState(() {
-              followStatus = FollowStatus.requested;
-            });
-        }
-      },
+      child: Opacity(
+        opacity: 0.8,
+        child: Text(
+          EmojiParser().get('gear').code,
+          style: SubHeading.SH26,
+        ),
+      ),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => EditProfileView(user: userData),
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      title: getTitle(),
+      title: 'My Profile',
       appBar: CommonAppBar(
-        title: getTitle(),
+        title: 'My Profile',
         rightWidget: getRightWidget(context, userData),
       ),
       padding: const EdgeInsets.only(left: 0, right: 0),

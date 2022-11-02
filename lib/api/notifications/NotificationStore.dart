@@ -4,15 +4,17 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:memz/api/follow/FollowModel.dart';
+import 'package:memz/api/follow/FollowStore.dart';
+import 'package:memz/api/notifications/NotifcationModel.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
-final CollectionReference followsDb = db.collection('follows');
+final CollectionReference followsDb = db.collection('notifications');
 
 String getFollowId({required String userId, required String followingId}) {
   return '$userId>$followingId';
 }
 
-class FollowStore {
+class NotificationStore {
   static String? userUid;
 
   static Future<void> requestFollowUser({
@@ -125,41 +127,24 @@ class FollowStore {
     return result;
   }
 
-  static Future<List<FollowModel>?> getFollowerUsers({
+  static Future<List<NotificationModel>> getFollowRequestsNotifications({
     required String userId,
   }) async {
-    final query = followsDb
-        .where('followingId', isEqualTo: userId)
-        .orderBy('followTime', descending: true);
-    final Future<List<FollowModel>?> result = query.get().then(
-          (resultsList) => List.from(
-            resultsList.docs.map(
-              (value) =>
-                  FollowModel.fromJson(value.data() as Map<String, dynamic>),
-            ),
-          ),
-        );
-    return result;
-  }
-
-  static Future<List<FollowModel>> getFollowRequests({
-    required String userId,
-  }) async {
-    final query = followsDb
-        .where('followingId', isEqualTo: userId)
-        .where('status', isEqualTo: FollowStatus.requested.index)
-        .orderBy('followTime', descending: true);
-    final Future<List<FollowModel>> result = query.get().then((resultsList) {
-      if (resultsList.docs.isEmpty) {
-        return [];
-      }
-      return List.from(
-        resultsList.docs.map(
-          (value) => FollowModel.fromJson(value.data() as Map<String, dynamic>),
-        ),
-      );
+    log('getFollowRequestsNotifications $userId');
+    List<FollowModel> followRequests = [];
+    await FollowStore.getFollowRequests(userId: userId).then((value) {
+      followRequests = value;
     });
-    return result;
+    return followRequests.map((request) {
+      return NotificationModel(
+        id: request.id,
+        userId: request.userId,
+        timeSent: request.requestTime,
+        title: 'Follow request',
+        body: 'Accept the follow request to let them see your pins.',
+        type: NotificationType.followRequest,
+      );
+    }).toList();
   }
 
   // static Future<List<UserModel>?> searchUsersByUsername({

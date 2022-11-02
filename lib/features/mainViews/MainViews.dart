@@ -7,6 +7,8 @@ import '../../components/scaffold/BottomBar.dart';
 import '../../styles/colors.dart';
 import '../addPin/AddPinView.dart';
 import '../friendsFeed/FriendsFeedView.dart';
+import '../notifications/NotificationView.dart';
+import '../profile/MyProfileView.dart';
 
 class MainViews extends StatefulWidget {
   final String? title;
@@ -76,7 +78,8 @@ class MainViewsState extends State<MainViews> {
         children: <Widget>[
           FriendsFeedView(),
           AddPinView(),
-          UserProfileView(),
+          NotificationView(),
+          MyProfileView(),
         ],
         index: _selectedIndex,
       ),

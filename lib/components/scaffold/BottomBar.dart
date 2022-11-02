@@ -17,6 +17,7 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       unselectedLabelStyle: SubHeading.SH12,
       selectedLabelStyle: SubHeading.SH12.copyWith(color: MColors.green),
       items: <BottomNavigationBarItem>[
@@ -33,6 +34,13 @@ class BottomBar extends StatelessWidget {
             style: SubHeading.SH26,
           ),
           label: 'Drop a Pin',
+        ),
+        BottomNavigationBarItem(
+          icon: Text(
+            EmojiParser().get('bell').code,
+            style: SubHeading.SH26,
+          ),
+          label: 'Notifs',
         ),
         BottomNavigationBarItem(
           icon: Text(

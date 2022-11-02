@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:memz/features/profile/UserProfileView.dart';
-import 'package:memz/styles/fonts.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../styles/colors.dart';
-import 'BottomBar.dart';
-import 'CommonAppBar.dart';
 
 class PullToRefresh extends StatefulWidget {
   final Widget? body;
