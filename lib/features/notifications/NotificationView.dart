@@ -16,11 +16,11 @@ class NotificationView extends StatefulWidget {
 
 class NotificationViewState extends State<NotificationView> {
   UserModel? currentUser;
-  List<NotificationModel> followRequests = [];
+  List<Future<NotificationModel>> followRequests = [];
+  final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
   @override
   void initState() {
-    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-    print('notifications $currentUserId');
     if (currentUserId != null) {
       UserStore.getUserById(id: currentUserId).then((value) {
         setState(() {
@@ -28,25 +28,54 @@ class NotificationViewState extends State<NotificationView> {
         });
       });
 
-      NotificationStore.getFollowRequestsNotifications(userId: currentUserId)
-          .then((value) {
-        followRequests = value;
-      });
+      getNotifs();
     }
     super.initState();
   }
 
+  getNotifs() {
+    if (currentUserId != null) {
+      NotificationStore.getFollowRequestsNotifications(userId: currentUserId!)
+          .then((value) {
+        setState(() {
+          followRequests = value;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('followRequests $followRequests');
     return CommonScaffold(
       title: 'Notifications',
       body: PullToRefresh(
-        onRefresh: () {},
-        body: ListView(
-          children: [
-            ...followRequests
-                .map((request) => NotificationTile(notificationData: request))
-          ],
+        onRefresh: () {
+          print('notifs refresh');
+          getNotifs();
+        },
+        body: PullToRefresh(
+          body: ListView(
+            children: [
+              ...followRequests
+                    .map(
+                (requestFuture) => FutureBuilder<NotificationModel>(
+                  future: requestFuture,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<NotificationModel> notificationData,
+                  ) {
+                    if (notificationData.hasData) {
+                      return NotificationTile(
+                        notificationData: notificationData.data!,
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -41,4 +41,11 @@ class FollowModel {
         status: FollowStatus.values[data['status']],
       );
 
+  FollowModel approveFollowRequest() => FollowModel(
+        id: id,
+        userId: userId,
+        followingId: followingId,
+        requestTime: requestTime,
+        status: FollowStatus.following,
+      );
 }

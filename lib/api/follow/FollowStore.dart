@@ -15,6 +15,16 @@ String getFollowId({required String userId, required String followingId}) {
 class FollowStore {
   static String? userUid;
 
+  static Future<FollowModel?> getFollowById({
+    required String id,
+  }) async {
+    final followDoc = followsDb.doc(id);
+    return followDoc
+        .get()
+        .then((e) => FollowModel.fromJson(e.data() as Map<String, dynamic>))
+        .whenComplete(() => log('Fetched user $id'));
+  }
+
   static Future<void> requestFollowUser({
     required String userId,
     required String followingId,
@@ -57,6 +67,28 @@ class FollowStore {
         .delete()
         .whenComplete(() => log('User unfollowed'))
         .catchError((e) => log(e));
+  }
+
+  static Future<void> approveFollowRequest({
+    required String followRequestId,
+  }) async {
+    log('approveFollowRequest $followRequestId');
+    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+    final followDoc = followsDb.doc(followRequestId);
+
+    if (currentUserId != null) {
+      FollowStore.getFollowById(id: followRequestId).then((followData) {
+        if (followData != null) {
+          if (followData.followingId == currentUserId) {
+            followDoc.update(followData.approveFollowRequest().toJson());
+          } else {
+            log('Does not have permission to approve follow request');
+          }
+        } else {
+          log('No follow request to approve');
+        }
+      });
+    }
   }
 
   static Future<FollowStatus> getFollowStatus({
@@ -145,6 +177,7 @@ class FollowStore {
   static Future<List<FollowModel>> getFollowRequests({
     required String userId,
   }) async {
+    log('getFollowRequests $userId');
     final query = followsDb
         .where('followingId', isEqualTo: userId)
         .where('status', isEqualTo: FollowStatus.requested.index)
@@ -161,67 +194,4 @@ class FollowStore {
     });
     return result;
   }
-
-  // static Future<List<UserModel>?> searchUsersByUsername({
-  //   required String username,
-  // }) async {
-  //   final query = followsDb.where('username', isEqualTo: username);
-  //   final Future<List<UserModel>?> result = query.get().then(
-  //         (resultsList) => List.from(
-  //           resultsList.docs.map(
-  //             (value) =>
-  //                 UserModel.fromJson(value.data() as Map<String, dynamic>),
-  //           ),
-  //         ),
-  //       );
-  //   return result;
-  // }
-
-  // static Future<List<UserModel>?> searchUsersByEmail({
-  //   required String email,
-  // }) async {
-  //   final query = followsDb.where('email', isEqualTo: email);
-  //   final Future<List<UserModel>?> result = query.get().then(
-  //         (resultsList) => List.from(
-  //           resultsList.docs.map(
-  //             (value) =>
-  //                 UserModel.fromJson(value.data() as Map<String, dynamic>),
-  //           ),
-  //         ),
-  //       );
-  //   return result;
-  // }
-
-  // static Future<void> updateUser({
-  //   required UserModel user,
-  // }) async {
-  //   followsDb.doc(user.id).set(user.toJson());
-  // }
-
-  // static Future<void> updateItem({
-  //   required String title,
-  //   required String description,
-  //   required String docId,
-  // }) async {
-  //   DocumentReference documentReferencer =
-  //       followsDb.doc(userUid).collection('items').doc(docId);
-
-  //   Map<String, dynamic> data = <String, dynamic>{
-  //     "title": title,
-  //     "description": description,
-  //   };
-
-  //   await documentReferencer
-  //       .update(data)
-  //       .whenComplete(() => log("Note item updated in the database"))
-  //       .catchError((e) => log(e));
-  // }
-
-  // static Stream<QuerySnapshot> readItems() {
-  //   CollectionReference notesItemCollection =
-  //       followsDb.doc(userUid).collection('items');
-
-  //   return notesItemCollection.snapshots();
-  // }
-
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:intl/intl.dart';
+import 'package:memz/api/follow/FollowStore.dart';
 
 import '../../api/notifications/NotifcationModel.dart';
 import '../../styles/colors.dart';
@@ -15,27 +16,47 @@ class NotificationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: MColors.grayV9,
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Text(
-              EmojiParser().get('wave').code,
-              style: SubHeading.SH22,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Row(children: [
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  notificationData.title,
+                  style: SubHeading.SH14,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  notificationData.body,
+                  style: Paragraph.P14,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${DateFormat.yMMMd().format(notificationData.timeSent)}',
+                  style: Paragraph.P14.copyWith(color: MColors.grayV3),
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            Text(
-              notificationData.title,
-              style: SubHeading.SH14,
-            )
-          ],
-        ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              FollowStore.approveFollowRequest(
+                  followRequestId: notificationData.id);
+            },
+            child: Text('Approve',
+                style: SubHeading.SH14.copyWith(color: MColors.black)),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              backgroundColor: MColors.white,
+            ),
+          ),
+        ]),
       ),
     );
   }
