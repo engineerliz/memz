@@ -6,12 +6,18 @@ import '../../api/notifications/NotifcationModel.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 
-class NotificationTile extends StatelessWidget {
+class NotificationTile extends StatefulWidget {
   final NotificationModel notificationData;
 
   NotificationTile({
     required this.notificationData,
   });
+  @override
+  NotificationTileState createState() => NotificationTileState();
+}
+
+class NotificationTileState extends State<NotificationTile> {
+  bool isApproved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +31,17 @@ class NotificationTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  notificationData.title,
+                  widget.notificationData.title,
                   style: SubHeading.SH14,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  notificationData.body,
+                  widget.notificationData.body,
                   style: Paragraph.P14,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${DateFormat.yMMMd().format(notificationData.timeSent)}',
+                  '${DateFormat.yMMMd().format(widget.notificationData.timeSent)}',
                   style: Paragraph.P14.copyWith(color: MColors.grayV3),
                 ),
               ],
@@ -44,16 +50,20 @@ class NotificationTile extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               FollowStore.approveFollowRequest(
-                  followRequestId: notificationData.id);
+                      followRequestId: widget.notificationData.id)
+                  .whenComplete(() => setState(() {
+                        isApproved = true;
+                      }));
             },
-            child: Text('Approve',
-                style: SubHeading.SH14.copyWith(color: MColors.black)),
+            child: Text(isApproved ? 'Approved' : 'Approve',
+                style: SubHeading.SH14.copyWith(
+                    color: isApproved ? MColors.grayV3 : MColors.black)),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0),
               ),
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              backgroundColor: MColors.white,
+              backgroundColor: isApproved ? MColors.grayV7 : MColors.white,
             ),
           ),
         ]),

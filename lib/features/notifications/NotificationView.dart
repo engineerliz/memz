@@ -49,12 +49,12 @@ class NotificationViewState extends State<NotificationView> {
     print('followRequests $followRequests');
     return CommonScaffold(
       title: 'Notifications',
+        
       body: PullToRefresh(
         onRefresh: () {
           print('notifs refresh');
           getNotifs();
         },
-        body: PullToRefresh(
           body: ListView(
             children: [
               ...followRequests
@@ -76,7 +76,6 @@ class NotificationViewState extends State<NotificationView> {
               )
             ],
           ),
-        ),
       ),
     );
   }

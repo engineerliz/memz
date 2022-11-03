@@ -29,7 +29,7 @@ class NotificationStore {
           title: user?.username != null
               ? '${user!.username} requested to follow you'
               : 'Someone requested to follow you',
-          body: 'Accept the follow request to let them see your pins.',
+          body: 'Approve the follow request to let them see your pins.',
           type: NotificationType.followRequest,
         );
       }).toList();

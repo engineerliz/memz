@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
 class PullToRefresh extends StatefulWidget {
   final Widget? body;
   final VoidCallback? onRefresh;
@@ -21,6 +20,7 @@ class PullToRefreshState extends State<PullToRefresh> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
+    print('base comp PTR');
     if (widget.onRefresh != null) {
       widget.onRefresh!();
     }
