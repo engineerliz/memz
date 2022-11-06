@@ -46,7 +46,8 @@ class MainViewsState extends State<MainViews> {
 
   void askForLocation() {
     Future.delayed(Duration(seconds: 2), () async {
-      var newPermission = await Geolocator.checkPermission();
+      var newPermission = await Geolocator.requestPermission();
+
       setState(() {
         locationPermission = newPermission;
       });
