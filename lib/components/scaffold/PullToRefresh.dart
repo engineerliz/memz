@@ -4,11 +4,13 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class PullToRefresh extends StatefulWidget {
   final Widget? body;
   final VoidCallback? onRefresh;
+  final bool? enablePullUp;
 
   const PullToRefresh({
     super.key,
     this.body,
     this.onRefresh,
+    this.enablePullUp = false,
   });
 
   @override
@@ -42,7 +44,7 @@ class PullToRefreshState extends State<PullToRefresh> {
   Widget build(BuildContext context) {
     return SmartRefresher(
       enablePullDown: true,
-      enablePullUp: true,
+      enablePullUp: widget.enablePullUp!,
       header: WaterDropHeader(),
       controller: _refreshController,
       onRefresh: _onRefresh,
