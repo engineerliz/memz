@@ -6,14 +6,15 @@ import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/components/scaffold/PullToRefresh.dart';
 import 'package:memz/features/editProfile/EditProfileView.dart';
+import 'package:memz/features/profile/tabs/PinsGridView.dart';
 import 'package:memz/features/profile/utils/getProfileData.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
 import '../../api/pins/PinModel.dart';
 import '../../components/map/MultiPinMap.dart';
-import 'ProfileAboutTab.dart';
-import 'ProfilePinsTab.dart';
+import 'tabs/ProfileAboutTab.dart';
+import 'tabs/ProfilePinsTab.dart';
 
 class MyProfileView extends StatefulWidget {
   @override
@@ -160,19 +161,21 @@ class MyProfileViewState extends State<MyProfileView> {
                       ],
                     ),
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ),
+
                         child: TabBarView(
                           children: [
                             ListView(
                               children: [
-                                ProfilePinsTab(pins: _userPins),
+                              PinsGridView(pins: _userPins ?? []),
+                              // ProfilePinsTab(pins: _userPins),
                                 const SizedBox(height: 40),
                               ],
                             ),
-                            ListView(
+                          Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: ListView(
                               children: [
                                 ProfileAboutTab(
                                   username: userData?.username,
@@ -185,10 +188,10 @@ class MyProfileViewState extends State<MyProfileView> {
                                 ),
                                 const SizedBox(height: 40),
                               ],
-                            ),
+                              )),
                           ],
                         ),
-                      ),
+                      
                     ),
                   ],
                 ),

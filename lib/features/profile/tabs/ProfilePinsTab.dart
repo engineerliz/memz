@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
 
-import '../../api/pins/PinModel.dart';
-import '../../components/pin/PinPost.dart';
-import '../../styles/fonts.dart';
+import '../../../api/pins/PinModel.dart';
+import '../../../components/pin/PinPost.dart';
+import '../../../styles/fonts.dart';
 
 class ProfilePinsTab extends StatelessWidget {
   final List<PinModel>? pins;

@@ -3,8 +3,8 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
 import 'package:memz/features/profile/FollowsListView.dart';
 
-import '../../api/follow/FollowModel.dart';
-import '../../styles/fonts.dart';
+import '../../../api/follow/FollowModel.dart';
+import '../../../styles/fonts.dart';
 
 class ProfileAboutTab extends StatelessWidget {
   final String? username;
@@ -76,31 +76,29 @@ class ProfileAboutTab extends StatelessWidget {
                     style: SubHeading.SH14)
             ],
           ),
-
         ),
-
         const SizedBox(height: 6),
         GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => FollowsListView(
-                    title: 'Following',
-                    followList: followingList ?? [],
-                  ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => FollowsListView(
+                  title: 'Following',
+                  followList: followingList ?? [],
                 ),
-              );
-            },
-            child: Row(
-              children: [
-                const Text('👀', style: TextStyle(fontSize: 22)),
-                const SizedBox(
-                  width: 6,
-                ),
-                if (joinDate != null)
-                  Text('${followingList?.length ?? 0} following',
-                      style: SubHeading.SH14)
-              ],
+              ),
+            );
+          },
+          child: Row(
+            children: [
+              const Text('👀', style: TextStyle(fontSize: 22)),
+              const SizedBox(
+                width: 6,
+              ),
+              if (joinDate != null)
+                Text('${followingList?.length ?? 0} following',
+                    style: SubHeading.SH14)
+            ],
           ),
         ),
       ],

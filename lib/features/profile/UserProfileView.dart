@@ -14,8 +14,8 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import '../../api/pins/PinModel.dart';
 import '../../components/map/MultiPinMap.dart';
 import '../../components/scaffold/PullToRefresh.dart';
-import 'ProfileAboutTab.dart';
-import 'ProfilePinsTab.dart';
+import 'tabs/ProfileAboutTab.dart';
+import 'tabs/ProfilePinsTab.dart';
 
 class UserProfileView extends StatefulWidget {
   final String userId;
