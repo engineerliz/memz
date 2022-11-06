@@ -7,6 +7,7 @@ import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
+import 'package:memz/components/scaffold/PullToRefresh.dart';
 import 'package:memz/features/editProfile/EditProfileView.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
@@ -25,10 +26,8 @@ class MyProfileViewState extends State<MyProfileView> {
   String? userId;
   UserModel? userData;
   List<PinModel>? _userPins;
+  bool pinsLoading = true;
   TabController? tabController;
-  bool isMyProfile = true;
-  bool isFollowing = false;
-  FollowStatus followStatus = FollowStatus.none;
   List<String>? followersList;
   List<String>? followingList;
 
@@ -43,11 +42,17 @@ class MyProfileViewState extends State<MyProfileView> {
           userData = value;
         }),
       );
-      PinStore.getPinsByUserId(userId: userId!).then(
-        (value) => setState(() {
-          _userPins = value;
-        }),
-      );
+      PinStore.getPinsByUserId(userId: userId!)
+          .then(
+            (value) => setState(() {
+              _userPins = value;
+            }),
+          )
+          .whenComplete(
+            () => setState(() {
+              pinsLoading = false;
+            }),
+          );
 
       FollowStore.getFollowerUsers(userId: userId!).then(
         (value) => setState(() {
@@ -67,6 +72,23 @@ class MyProfileViewState extends State<MyProfileView> {
       );
     }
     super.initState();
+  }
+
+  onRefresh() {
+    setState(() {
+      pinsLoading = true;
+    });
+    PinStore.getPinsByUserId(userId: userId!)
+        .then(
+          (value) => setState(() {
+            _userPins = value;
+          }),
+        )
+        .whenComplete(
+          () => setState(() {
+            pinsLoading = false;
+          }),
+        );
   }
 
   GestureDetector? getRightWidget(BuildContext context, UserModel? userData) {
@@ -96,87 +118,92 @@ class MyProfileViewState extends State<MyProfileView> {
       ),
       padding: const EdgeInsets.only(left: 0, right: 0),
       activeTab: 2,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 200,
-            child: MultiPinMap(
-              pins: _userPins != null ? _userPins! : [],
-            ),
-          ),
-          Expanded(
-            child: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  TabBar(
-                    physics: const BouncingScrollPhysics(),
-                    tabs: [
-                      SizedBox(
-                        height: 50,
-                        child: Row(
-                          children: [
-                            Text(EmojiParser().get('round_pushpin').code,
-                                style: const TextStyle(fontSize: 22)),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            Text('${_userPins?.length ?? 0} pins',
-                                style: SubHeading.SH14)
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                        child: Row(
-                          children: [
-                            const Text('👋', style: TextStyle(fontSize: 22)),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            Text(userData?.username ?? '',
-                                style: SubHeading.SH14)
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                      child: TabBarView(
-                        children: [
-                          ListView(
+      body: PullToRefresh(
+        onRefresh: onRefresh,
+        body: Column(
+          children: [
+            if (!pinsLoading)
+              SizedBox(
+                height: 200,
+                child: MultiPinMap(
+                  pins: _userPins != null ? _userPins! : [],
+                  isLoading: pinsLoading,
+                ),
+              ),
+            Expanded(
+              child: DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    TabBar(
+                      physics: const BouncingScrollPhysics(),
+                      tabs: [
+                        SizedBox(
+                          height: 50,
+                          child: Row(
                             children: [
-                              ProfilePinsTab(pins: _userPins),
-                              const SizedBox(height: 40),
-                            ],
-                          ),
-                          ListView(
-                            children: [
-                              ProfileAboutTab(
-                                username: userData?.username,
-                                homebase: userData?.homeBase,
-                                friendsCount: 81,
-                                joinDate: userData?.joinDate,
-                                pinCount: _userPins?.length,
-                                followersList: followersList,
-                                followingList: followingList,
+                              Text(EmojiParser().get('round_pushpin').code,
+                                  style: const TextStyle(fontSize: 22)),
+                              const SizedBox(
+                                width: 6,
                               ),
-                              const SizedBox(height: 40),
+                              Text('${_userPins?.length ?? 0} pins',
+                                  style: SubHeading.SH14)
                             ],
                           ),
-                        ],
+                        ),
+                        SizedBox(
+                          height: 50,
+                          child: Row(
+                            children: [
+                              const Text('👋', style: TextStyle(fontSize: 22)),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text(userData?.username ?? '',
+                                  style: SubHeading.SH14)
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: TabBarView(
+                          children: [
+                            ListView(
+                              children: [
+                                ProfilePinsTab(pins: _userPins),
+                                const SizedBox(height: 40),
+                              ],
+                            ),
+                            ListView(
+                              children: [
+                                ProfileAboutTab(
+                                  username: userData?.username,
+                                  homebase: userData?.homeBase,
+                                  friendsCount: 81,
+                                  joinDate: userData?.joinDate,
+                                  pinCount: _userPins?.length,
+                                  followersList: followersList,
+                                  followingList: followingList,
+                                ),
+                                const SizedBox(height: 40),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

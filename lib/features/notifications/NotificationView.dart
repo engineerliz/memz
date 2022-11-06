@@ -46,13 +46,11 @@ class NotificationViewState extends State<NotificationView> {
 
   @override
   Widget build(BuildContext context) {
-    print('followRequests $followRequests');
     return CommonScaffold(
       title: 'Notifications',
         
       body: PullToRefresh(
         onRefresh: () {
-          print('notifs refresh');
           getNotifs();
         },
           body: ListView(

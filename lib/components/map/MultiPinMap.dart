@@ -81,6 +81,7 @@ class MultiPinMapState extends State<MultiPinMap> {
 
   @override
   Widget build(BuildContext context) {
+    print('widget.isLoading ${widget.isLoading}');
     return widget.isLoading == true
         ? const SizedBox(child: Text('Loading...'))
         : GoogleMap(
@@ -92,14 +93,17 @@ class MultiPinMapState extends State<MultiPinMap> {
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-              if (widget.pins.isNotEmpty) {
-                setState(() {
-                  controller.animateCamera(
-                      CameraUpdate.newLatLngBounds(_bounds(markerSet), 40));
-                });
-              }
 
               controller.setMapStyle(mapStyle);
+
+              if (widget.pins.isNotEmpty) {
+                if (markerSet.isNotEmpty) {
+                  setState(() {
+                    controller.animateCamera(
+                        CameraUpdate.newLatLngBounds(_bounds(markerSet), 40));
+                  });
+                }
+              }
             },
             markers: markerSet,
           );

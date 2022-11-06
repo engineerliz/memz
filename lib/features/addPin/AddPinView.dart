@@ -60,7 +60,6 @@ class AddPinViewState extends State<AddPinView> {
 
   @override
   Widget build(BuildContext context) {
-    print('picPath post view $picPath');
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: CommonScaffold(
