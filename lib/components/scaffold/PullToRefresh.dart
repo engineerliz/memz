@@ -22,7 +22,6 @@ class PullToRefreshState extends State<PullToRefresh> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    print('base comp PTR');
     if (widget.onRefresh != null) {
       widget.onRefresh!();
     }

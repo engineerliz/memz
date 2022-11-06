@@ -81,7 +81,6 @@ class MultiPinMapState extends State<MultiPinMap> {
 
   @override
   Widget build(BuildContext context) {
-    print('widget.isLoading ${widget.isLoading}');
     return widget.isLoading == true
         ? const SizedBox(child: Text('Loading...'))
         : GoogleMap(

@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:memz/api/follow/FollowModel.dart';
-import 'package:memz/api/follow/FollowStore.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserModel.dart';
-import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/components/scaffold/PullToRefresh.dart';
 import 'package:memz/features/editProfile/EditProfileView.dart';
+import 'package:memz/features/profile/utils/getProfileData.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
@@ -37,11 +35,13 @@ class MyProfileViewState extends State<MyProfileView> {
       userId = FirebaseAuth.instance.currentUser?.uid;
     });
     if (userId != null) {
-      UserStore.getUserById(id: userId!).then(
-        (value) => setState(() {
-          userData = value;
-        }),
-      );
+      getProfileUserData(userId!).then((profileData) {
+        setState(() {
+          userData = profileData.userData;
+          followersList = profileData.followersList;
+          followingList = profileData.followingList;
+        });
+      });
       PinStore.getPinsByUserId(userId: userId!)
           .then(
             (value) => setState(() {
@@ -53,23 +53,6 @@ class MyProfileViewState extends State<MyProfileView> {
               pinsLoading = false;
             }),
           );
-
-      FollowStore.getUsersFollowers(userId: userId!).then(
-        (value) => setState(() {
-          if (value != null) {
-            followersList = List.from(value.map((follower) => follower.userId));
-          }
-        }),
-      );
-
-      FollowStore.getUsersFollowing(userId: userId!).then(
-        (value) => setState(() {
-          if (value != null) {
-            followingList =
-                List.from(value.map((follower) => follower.followingId));
-          }
-        }),
-      );
     }
     super.initState();
   }
@@ -89,6 +72,15 @@ class MyProfileViewState extends State<MyProfileView> {
             pinsLoading = false;
           }),
         );
+    if (userId != null) {
+      getProfileUserData(userId!).then((profileData) {
+        setState(() {
+          userData = profileData.userData;
+          followersList = profileData.followersList;
+          followingList = profileData.followingList;
+        });
+      });
+    }
   }
 
   GestureDetector? getRightWidget(BuildContext context, UserModel? userData) {

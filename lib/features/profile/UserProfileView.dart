@@ -4,9 +4,9 @@ import 'package:memz/api/follow/FollowModel.dart';
 import 'package:memz/api/follow/FollowStore.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserModel.dart';
-import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
+import 'package:memz/features/profile/utils/getProfileData.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
@@ -44,11 +44,14 @@ class UserProfileViewState extends State<UserProfileView> {
     setState(() {
       currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
     });
-    UserStore.getUserById(id: widget.userId).then(
-      (value) => setState(() {
-        userData = value;
-      }),
-    );
+    getProfileUserData(widget.userId).then((profileData) {
+      setState(() {
+        userData = profileData.userData;
+        followersList = profileData.followersList;
+        followingList = profileData.followingList;
+      });
+    });
+
     PinStore.getPinsByUserId(userId: widget.userId).then(
       (value) => setState(() {
         _userPins = value;
@@ -60,23 +63,6 @@ class UserProfileViewState extends State<UserProfileView> {
           }),
         );
     ;
-
-    FollowStore.getUsersFollowers(userId: widget.userId).then(
-      (value) => setState(() {
-        if (value != null) {
-          followersList = List.from(value.map((follower) => follower.userId));
-        }
-      }),
-    );
-
-    FollowStore.getUsersFollowing(userId: widget.userId).then(
-      (value) => setState(() {
-        if (value != null) {
-          followingList =
-              List.from(value.map((follower) => follower.followingId));
-        }
-      }),
-    );
 
     FollowStore.getFollowStatus(
       userId: currentUserId,
@@ -105,6 +91,13 @@ class UserProfileViewState extends State<UserProfileView> {
             pinsLoading = false;
           }),
         );
+    getProfileUserData(widget.userId).then((profileData) {
+      setState(() {
+        userData = profileData.userData;
+        followersList = profileData.followersList;
+        followingList = profileData.followingList;
+      });
+    });
   }
 
   String getTitle() {

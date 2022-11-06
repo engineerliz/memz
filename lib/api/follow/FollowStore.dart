@@ -128,6 +128,7 @@ class FollowStore {
   static Future<List<FollowModel>?> getUsersFollowers({
     required String userId,
   }) async {
+    log('getUsersFollowers $userId');
     final query = followsDb
         .where('followingId', isEqualTo: userId)
         .where('status', isEqualTo: FollowStatus.following.index)
