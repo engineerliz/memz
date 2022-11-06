@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -111,6 +110,7 @@ class FollowStore {
   }) async {
     final query = followsDb
         .where('userId', isEqualTo: userId)
+        .where('status', isEqualTo: FollowStatus.following.index)
         .orderBy('followTime', descending: true);
     final Future<List<FollowModel>?> result = query.get().then(
           (resultsList) => List.from(
@@ -130,6 +130,7 @@ class FollowStore {
   }) async {
     final query = followsDb
         .where('followingId', isEqualTo: userId)
+        .where('status', isEqualTo: FollowStatus.following.index)
         .orderBy('followTime', descending: true);
     final Future<List<FollowModel>?> result = query.get().then(
           (resultsList) => List.from(

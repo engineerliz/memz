@@ -16,7 +16,7 @@ class NotificationView extends StatefulWidget {
 
 class NotificationViewState extends State<NotificationView> {
   UserModel? currentUser;
-  List<Future<NotificationModel>> followRequests = [];
+  List<Future<FollowRequestNotificationModel>> followRequests = [];
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
   @override
@@ -57,11 +57,12 @@ class NotificationViewState extends State<NotificationView> {
             children: [
               ...followRequests
                     .map(
-                (requestFuture) => FutureBuilder<NotificationModel>(
+              (requestFuture) => FutureBuilder<FollowRequestNotificationModel>(
                   future: requestFuture,
                   builder: (
                     BuildContext context,
-                    AsyncSnapshot<NotificationModel> notificationData,
+                  AsyncSnapshot<FollowRequestNotificationModel>
+                      notificationData,
                   ) {
                     if (notificationData.hasData) {
                       return NotificationTile(

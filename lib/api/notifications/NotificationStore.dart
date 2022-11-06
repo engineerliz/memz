@@ -10,7 +10,7 @@ final FirebaseFirestore db = FirebaseFirestore.instance;
 final CollectionReference followsDb = db.collection('notifications');
 
 class NotificationStore {
-  static Future<List<Future<NotificationModel>>>
+  static Future<List<Future<FollowRequestNotificationModel>>>
       getFollowRequestsNotifications({
     required String userId,
   }) {
@@ -22,15 +22,15 @@ class NotificationStore {
           user = value;
         }));
 
-        return NotificationModel(
+        return FollowRequestNotificationModel(
           id: request.id,
           userId: request.userId,
+          requesterId: user?.id != null ? user!.id : '',
           timeSent: request.requestTime,
           title: user?.username != null
               ? '${user!.username} requested to follow you'
               : 'Someone requested to follow you',
           body: 'Approve the follow request to let them see your pins.',
-          type: NotificationType.followRequest,
         );
       }).toList();
     });
