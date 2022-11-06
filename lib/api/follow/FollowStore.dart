@@ -106,39 +106,7 @@ class FollowStore {
     });
   }
 
-  static Future<bool?> isFollowing({
-    required String userId,
-    required String followingId,
-  }) async {
-    final followDoc =
-        followsDb.doc(getFollowId(userId: userId, followingId: followingId));
-    return followDoc.get().then((value) {
-      if (value.data() != null) {
-        return FollowModel.fromJson(value.data() as Map<String, dynamic>)
-                .status ==
-            FollowStatus.following;
-      }
-      return false;
-    });
-  }
-
-  static Future<bool?> isFollowRequested({
-    required String userId,
-    required String followingId,
-  }) async {
-    final followDoc =
-        followsDb.doc(getFollowId(userId: userId, followingId: followingId));
-    return followDoc.get().then((value) {
-      if (value.data() != null) {
-        return FollowModel.fromJson(value.data() as Map<String, dynamic>)
-                .status ==
-            FollowStatus.requested;
-      }
-      return false;
-    });
-  }
-
-  static Future<List<FollowModel>?> getFollowingUsers({
+  static Future<List<FollowModel>?> getUsersFollowing({
     required String userId,
   }) async {
     final query = followsDb
@@ -157,7 +125,7 @@ class FollowStore {
     return result;
   }
 
-  static Future<List<FollowModel>?> getFollowerUsers({
+  static Future<List<FollowModel>?> getUsersFollowers({
     required String userId,
   }) async {
     final query = followsDb

@@ -96,25 +96,6 @@ class UserStore {
         .toJson());
   }
 
-  static Future<void> updateItem({
-    required String title,
-    required String description,
-    required String docId,
-  }) async {
-    DocumentReference documentReferencer =
-        usersDb.doc(userUid).collection('items').doc(docId);
-
-    Map<String, dynamic> data = <String, dynamic>{
-      "title": title,
-      "description": description,
-    };
-
-    await documentReferencer
-        .update(data)
-        .whenComplete(() => log("Note item updated in the database"))
-        .catchError((e) => log(e));
-  }
-
   static Stream<QuerySnapshot> readItems() {
     CollectionReference notesItemCollection =
         usersDb.doc(userUid).collection('items');

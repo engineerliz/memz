@@ -7,13 +7,13 @@ import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
-import 'package:memz/features/editProfile/EditProfileView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
 import '../../api/pins/PinModel.dart';
 import '../../components/map/MultiPinMap.dart';
+import '../../components/scaffold/PullToRefresh.dart';
 import 'ProfileAboutTab.dart';
 import 'ProfilePinsTab.dart';
 
@@ -34,8 +34,7 @@ class UserProfileViewState extends State<UserProfileView> {
   UserModel? userData;
   List<PinModel>? _userPins;
   TabController? tabController;
-  bool isMyProfile = true;
-  bool isFollowing = false;
+  bool pinsLoading = true;
   FollowStatus followStatus = FollowStatus.none;
   List<String>? followersList;
   List<String>? followingList;
@@ -54,9 +53,15 @@ class UserProfileViewState extends State<UserProfileView> {
       (value) => setState(() {
         _userPins = value;
       }),
-    );
+        )
+        .whenComplete(
+          () => setState(() {
+            pinsLoading = false;
+          }),
+        );
+    ;
 
-    FollowStore.getFollowerUsers(userId: currentUserId).then(
+    FollowStore.getUsersFollowers(userId: widget.userId).then(
       (value) => setState(() {
         if (value != null) {
           followersList = List.from(value.map((follower) => follower.userId));
@@ -64,7 +69,7 @@ class UserProfileViewState extends State<UserProfileView> {
       }),
     );
 
-    FollowStore.getFollowingUsers(userId: widget.userId).then(
+    FollowStore.getUsersFollowing(userId: widget.userId).then(
       (value) => setState(() {
         if (value != null) {
           followingList =
@@ -83,6 +88,23 @@ class UserProfileViewState extends State<UserProfileView> {
     );
 
     super.initState();
+  }
+
+  onRefresh() {
+    setState(() {
+      pinsLoading = true;
+    });
+    PinStore.getPinsByUserId(userId: widget.userId)
+        .then(
+          (value) => setState(() {
+            _userPins = value;
+          }),
+        )
+        .whenComplete(
+          () => setState(() {
+            pinsLoading = false;
+          }),
+        );
   }
 
   String getTitle() {
@@ -142,14 +164,18 @@ class UserProfileViewState extends State<UserProfileView> {
       ),
       padding: const EdgeInsets.only(left: 0, right: 0),
       activeTab: 2,
-      body: Column(
+      body: PullToRefresh(
+        onRefresh: onRefresh,
+        body: Column(
         children: [
-          SizedBox(
-            height: 200,
-            child: MultiPinMap(
-              pins: _userPins != null ? _userPins! : [],
-            ),
-          ),
+            if (!pinsLoading)
+              SizedBox(
+                height: 200,
+                child: MultiPinMap(
+                  pins: _userPins != null ? _userPins! : [],
+                  isLoading: pinsLoading,
+                ),
+              ),
           Expanded(
             child: DefaultTabController(
               length: 2,
@@ -223,6 +249,7 @@ class UserProfileViewState extends State<UserProfileView> {
             ),
           ),
         ],
+        ),
       ),
     );
   }

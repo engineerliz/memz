@@ -54,7 +54,7 @@ class MyProfileViewState extends State<MyProfileView> {
             }),
           );
 
-      FollowStore.getFollowerUsers(userId: userId!).then(
+      FollowStore.getUsersFollowers(userId: userId!).then(
         (value) => setState(() {
           if (value != null) {
             followersList = List.from(value.map((follower) => follower.userId));
@@ -62,7 +62,7 @@ class MyProfileViewState extends State<MyProfileView> {
         }),
       );
 
-      FollowStore.getFollowingUsers(userId: userId!).then(
+      FollowStore.getUsersFollowing(userId: userId!).then(
         (value) => setState(() {
           if (value != null) {
             followingList =
