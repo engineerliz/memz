@@ -29,7 +29,7 @@ class EditProfileView extends StatefulWidget {
 // This class holds the data related to the Form.
 class _EditProfileViewState extends State<EditProfileView> {
   bool _isSigningOut = false;
-  Emoji? selectedEmoji = Emoji.byName(Emojis.wavingHand);
+  String? selectedEmoji = Emojis.wavingHand;
 
   final nameController = TextEditingController();
   final usernameController = TextEditingController();
@@ -74,7 +74,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   newName: nameController.text,
                   newUsername: usernameController.text,
                   newHomebase: homeBaseController.text,
-                  newEmoji: selectedEmoji.toString(),
+                  newEmoji: selectedEmoji,
                 ).whenComplete(() => Navigator.of(context).pop()),
               },
             ),
@@ -93,7 +93,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                           builder: (context) => EmojiPickerView(
                             onSelect: (emoji) {
                               setState(() {
-                                selectedEmoji = emoji;
+                                selectedEmoji = emoji.toString();
                               });
                               Navigator.of(context).pop();
                             },

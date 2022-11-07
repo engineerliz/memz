@@ -74,6 +74,17 @@ class PinStore {
     return result;
   }
 
+  static Future<void> deletePinById({
+    required String pinId,
+  }) async {
+    log('deletePinById $pinId');
+    DocumentReference documentReferencer = pinsDb.doc(pinId);
+    await documentReferencer
+        .delete()
+        .whenComplete(() => log('Pin deleted'))
+        .catchError((e) => log(e));
+  }
+
   static Future<void> updateUser({
     required PinModel user,
   }) async {
@@ -104,17 +115,5 @@ class PinStore {
         pinsDb.doc(userUid).collection('items');
 
     return notesItemCollection.snapshots();
-  }
-
-  static Future<void> deleteItem({
-    required String docId,
-  }) async {
-    DocumentReference documentReferencer =
-        pinsDb.doc(userUid).collection('items').doc(docId);
-
-    await documentReferencer
-        .delete()
-        .whenComplete(() => log('Note item deleted from the database'))
-        .catchError((e) => log(e));
   }
 }

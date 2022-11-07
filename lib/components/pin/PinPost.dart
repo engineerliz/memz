@@ -1,9 +1,11 @@
-import 'package:emojis/emoji.dart';
 import 'package:emojis/emojis.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/pins/PinModel.dart';
+import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/map/Map.dart';
+import 'package:memz/components/pin/MyPostContextButton.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +27,7 @@ class PinPost extends StatefulWidget {
 
 class PinPostState extends State<PinPost> {
   UserModel? userData;
+  bool isMyPost = false;
   @override
   void initState() {
     UserStore.getUserById(id: widget.pin.creatorId).then(
@@ -32,6 +35,13 @@ class PinPostState extends State<PinPost> {
         userData = value;
       }),
     );
+
+    if (FirebaseAuth.instance.currentUser?.uid == widget.pin.creatorId) {
+      setState(() {
+        isMyPost = true;
+      });
+    }
+
     super.initState();
   }
 
@@ -102,6 +112,7 @@ class PinPostState extends State<PinPost> {
         behavior: HitTestBehavior.opaque,
         child: Map(
           location: widget.pin.location,
+          zoom: 13.5,
           onTap: (latlng) {
             onTap();
           },
@@ -113,26 +124,31 @@ class PinPostState extends State<PinPost> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          onTap();
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          Row(
-            children: [
-              Text(
-                userData?.emoji != null ? userData!.emoji! : Emojis.wavingHand,
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        onTap();
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(
+              children: [
+                Text(
+                  userData?.emoji != null
+                      ? userData!.emoji!
+                      : Emojis.wavingHand,
                   style: SubHeading.SH22,
                 ),
                 const SizedBox(width: 6),
                 Text(userData?.username ?? '', style: Heading.H14),
                 const SizedBox(
                   width: 4,
-              ),
+                ),
               ],
-          ),
+            ),
+            if (isMyPost) MyPostContextButton(pin: widget.pin),
+          ]),
           if (widget.pin.caption?.isNotEmpty == true)
             Text(widget.pin.caption!, style: Paragraph.P14),
           const SizedBox(height: 8),
@@ -142,9 +158,8 @@ class PinPostState extends State<PinPost> {
           const SizedBox(height: 8),
           Text(
             'Posted ${DateFormat.yMMMd().format(widget.pin.creationTime)}',
-            style: SubHeading.SH14.copyWith(color: MColors.grayV5),
+            style: SubHeading.SH12.copyWith(color: MColors.grayV5),
           )
-
         ],
       ),
     );
