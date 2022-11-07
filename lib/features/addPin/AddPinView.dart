@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
+import 'package:memz/features/addPin/AddCaptionView.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
 import 'package:memz/styles/fonts.dart';
 
@@ -85,22 +86,24 @@ class AddPinViewState extends State<AddPinView> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               child: Text(
-                'Post',
+                'Next',
                 style: SubHeading.SH14,
               ),
             ),
             onTap: () {
               if (user?.uid != null && currentLocation.latitude != 0) {
-                PinStore.addPin(
-                  creatorId: user!.uid,
-                  location: currentLocation,
-                  caption: captionController.text,
-                  imgUrls: picPath != null ? [picPath!] : null,
-                );
-                Navigator.of(context).pushReplacement(
+                // PinStore.addPin(
+                // creatorId: user!.uid,
+                // location: currentLocation,
+                // caption: captionController.text,
+                // imgUrls: picPath != null ? [picPath!] : null,
+                // );
+                Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => MainViews(
-                      activeTab: 0,
+                    builder: (context) => AddCaptionView(
+                      creatorId: user!.uid,
+                      location: currentLocation,
+                      imgUrls: picPath != null ? [picPath!] : null,
                     ),
                   ),
                 );
@@ -132,16 +135,16 @@ class AddPinViewState extends State<AddPinView> {
                                 location: currentLocation,
                               ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: TextField(
-                          controller: captionController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Caption',
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(vertical: 8),
+                      //   child: TextField(
+                      //     controller: captionController,
+                      //     decoration: const InputDecoration(
+                      //       border: OutlineInputBorder(),
+                      //       labelText: 'Caption',
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   if (picPath != null)

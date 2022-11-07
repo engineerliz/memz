@@ -8,6 +8,8 @@ import 'package:memz/components/scaffold/PullToRefresh.dart';
 
 import '../../api/users/UserModel.dart';
 import '../../components/notification/NotificationTile.dart';
+import '../../styles/colors.dart';
+import '../../styles/fonts.dart';
 
 class NotificationView extends StatefulWidget {
   @override
@@ -53,7 +55,8 @@ class NotificationViewState extends State<NotificationView> {
         onRefresh: () {
           getNotifs();
         },
-          body: ListView(
+        body: followRequests.length > 1
+            ? ListView(
             children: [
               ...followRequests
                     .map(
@@ -74,7 +77,11 @@ class NotificationViewState extends State<NotificationView> {
                 ),
               )
             ],
-          ),
+              )
+            : Column(children: [
+                Text('All caught up!',
+                    style: SubHeading.SH14.copyWith(color: MColors.grayV5))
+              ]),
       ),
     );
   }
