@@ -2,7 +2,6 @@ import 'package:emojis/emojis.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/pins/PinModel.dart';
-import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/map/Map.dart';
 import 'package:memz/components/pin/MyPostContextButton.dart';

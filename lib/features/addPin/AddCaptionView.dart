@@ -1,19 +1,12 @@
-import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
 import 'package:memz/styles/fonts.dart';
 
-import '../../components/map/CurrentLocationMap.dart';
 import '../../components/scaffold/CommonAppBar.dart';
-import '../../components/scaffold/PullToRefresh.dart';
-import '../../styles/colors.dart';
 
 class AddCaptionView extends StatefulWidget {
   final String creatorId;

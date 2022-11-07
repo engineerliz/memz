@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/addPin/AddCaptionView.dart';
-import 'package:memz/features/mainViews/MainViews.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../components/map/CurrentLocationMap.dart';
@@ -92,12 +90,6 @@ class AddPinViewState extends State<AddPinView> {
             ),
             onTap: () {
               if (user?.uid != null && currentLocation.latitude != 0) {
-                // PinStore.addPin(
-                // creatorId: user!.uid,
-                // location: currentLocation,
-                // caption: captionController.text,
-                // imgUrls: picPath != null ? [picPath!] : null,
-                // );
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => AddCaptionView(
@@ -135,16 +127,6 @@ class AddPinViewState extends State<AddPinView> {
                                 location: currentLocation,
                               ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 8),
-                      //   child: TextField(
-                      //     controller: captionController,
-                      //     decoration: const InputDecoration(
-                      //       border: OutlineInputBorder(),
-                      //       labelText: 'Caption',
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   if (picPath != null)
