@@ -1,5 +1,6 @@
+import 'package:emojis/emoji.dart';
+import 'package:emojis/emojis.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:memz/api/pins/PinModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/map/Map.dart';
@@ -119,31 +120,31 @@ class PinPostState extends State<PinPost> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  EmojiParser().get('full_moon_with_face').code,
+          Row(
+            children: [
+              Text(
+                userData?.emoji != null ? userData!.emoji! : Emojis.wavingHand,
                   style: SubHeading.SH22,
                 ),
                 const SizedBox(width: 6),
                 Text(userData?.username ?? '', style: Heading.H14),
                 const SizedBox(
                   width: 4,
-                ),
-                Text(
-                  'posted ${DateFormat.yMMMd().format(widget.pin.creationTime)}',
-                  style: SubHeading.SH14.copyWith(color: MColors.grayV3),
-                )
+              ),
               ],
-            ),
-            const SizedBox(height: 2),
-            if (widget.pin.caption?.isNotEmpty == true) ...[
-              Text(widget.pin.caption!, style: Paragraph.P14),
-              const SizedBox(height: 12)
-            ],
+          ),
+          if (widget.pin.caption?.isNotEmpty == true)
+            Text(widget.pin.caption!, style: Paragraph.P14),
+          const SizedBox(height: 8),
           widget.pin.imgUrls != null
               ? getPostBodyWithPics()
               : getPostBodyWithoutPics(),
+          const SizedBox(height: 8),
+          Text(
+            'Posted ${DateFormat.yMMMd().format(widget.pin.creationTime)}',
+            style: SubHeading.SH14.copyWith(color: MColors.grayV5),
+          )
+
         ],
       ),
     );

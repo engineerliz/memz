@@ -1,3 +1,4 @@
+import 'package:emojis/emojis.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/follow/FollowModel.dart';
@@ -195,7 +196,11 @@ class UserProfileViewState extends State<UserProfileView> {
                         height: 50,
                         child: Row(
                           children: [
-                            const Text('👋', style: TextStyle(fontSize: 22)),
+                              Text(
+                                  userData?.emoji != null
+                                      ? userData!.emoji!
+                                      : Emojis.wavingHand,
+                                  style: TextStyle(fontSize: 22)),
                             const SizedBox(
                               width: 6,
                             ),

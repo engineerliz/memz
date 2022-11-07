@@ -7,6 +7,7 @@ class UserModel {
   late final String? name;
   late final String? homeBase;
   late final DateTime? joinDate;
+  late final String? emoji;
 
   UserModel({
     required this.id,
@@ -15,6 +16,7 @@ class UserModel {
     this.name,
     this.homeBase,
     this.joinDate,
+    this.emoji,
   });
 
   Map<String, dynamic> toJson() => {
@@ -24,6 +26,7 @@ class UserModel {
         'name': name,
         'homeBase': homeBase,
         'joinDate': joinDate,
+        'emoji': emoji,
       };
 
   factory UserModel.fromJson(Map<String, dynamic> data) => UserModel(
@@ -33,6 +36,7 @@ class UserModel {
         name: data['name'],
         homeBase: data['homeBase'],
         joinDate: data['joinDate'].toDate(),
+        emoji: data['emoji'],
       );
 
   UserModel updateEditableFields({
@@ -40,6 +44,7 @@ class UserModel {
     String? newEmail,
     String? newName,
     String? newHomebase,
+    String? newEmoji,
   }) =>
       UserModel(
         id: id,
@@ -48,5 +53,6 @@ class UserModel {
         email: newEmail ?? email,
         name: newName ?? name,
         homeBase: newHomebase ?? homeBase,
+        emoji: newEmoji ?? emoji,
       );
 }

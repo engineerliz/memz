@@ -85,6 +85,7 @@ class UserStore {
     String? newUsername,
     String? newName,
     String? newHomebase,
+    String? newEmoji,
   }) async {
     log('updateUser ${user.id}');
     usersDb.doc(user.id).update(user
@@ -92,6 +93,7 @@ class UserStore {
           newUsername: newUsername,
           newName: newName,
           newHomebase: newHomebase,
+          newEmoji: newEmoji,
         )
         .toJson());
   }
