@@ -1,3 +1,4 @@
+import 'package:emojis/emojis.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/pins/PinStore.dart';
@@ -55,9 +56,9 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      title: 'SMYL 🫠',
+        title: 'SMYL${Emojis.roundPushpin}',
         appBar: CommonAppBar(
-        title: 'SMYL 🫠',
+          title: 'SMYL${Emojis.roundPushpin}',
           rightWidget: GestureDetector(
             child: Opacity(
               opacity: 0.8,
