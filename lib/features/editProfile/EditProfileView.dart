@@ -1,8 +1,11 @@
+import 'package:emojis/emojis.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserStore.dart';
+import 'package:memz/components/emojiPicker/EmojiPickerView.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/styles/fonts.dart';
+import 'package:emojis/emoji.dart';
 
 import '../../../screens/authentication/email_password/email_password.dart';
 import '../../components/scaffold/CommonAppBar.dart';
@@ -26,6 +29,7 @@ class EditProfileView extends StatefulWidget {
 // This class holds the data related to the Form.
 class _EditProfileViewState extends State<EditProfileView> {
   bool _isSigningOut = false;
+  Emoji? selectedEmoji = Emoji.byName(Emojis.wavingHand);
 
   final nameController = TextEditingController();
   final usernameController = TextEditingController();
@@ -34,7 +38,6 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     nameController.dispose();
     usernameController.dispose();
     emailController.dispose();
@@ -79,6 +82,37 @@ class _EditProfileViewState extends State<EditProfileView> {
             padding: const EdgeInsets.only(top: 20),
             child: ListView(
               children: [
+                Column(
+                  children: [
+                    Text(selectedEmoji.toString(), style: Branding.H32),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EmojiPickerView(
+                            onSelect: (emoji) {
+                              setState(() {
+                                selectedEmoji = emoji;
+                              });
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ));
+                      },
+                      child: Text('Edit Emoji',
+                          style:
+                              SubHeading.SH14.copyWith(color: MColors.white)),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        backgroundColor: MColors.grayV7,
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: TextField(

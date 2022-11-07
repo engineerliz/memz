@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:memz/styles/fonts.dart';
+import 'package:emojis/emojis.dart';
 
 import '../../styles/colors.dart';
 
@@ -23,28 +23,28 @@ class BottomBar extends StatelessWidget {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Text(
-            EmojiParser().get('people_holding_hands').code,
+            Emojis.peopleHoldingHands,
             style: SubHeading.SH26,
           ),
           label: 'Friends',
         ),
         BottomNavigationBarItem(
           icon: Text(
-            EmojiParser().get('round_pushpin').code,
+            Emojis.roundPushpin,
             style: SubHeading.SH26,
           ),
           label: 'Drop a Pin',
         ),
         BottomNavigationBarItem(
           icon: Text(
-            EmojiParser().get('bell').code,
+            Emojis.bell,
             style: SubHeading.SH26,
           ),
           label: 'Notifs',
         ),
         BottomNavigationBarItem(
           icon: Text(
-            EmojiParser().get('wave').code,
+            Emojis.wavingHand,
             style: SubHeading.SH26,
           ),
           label: 'Me',

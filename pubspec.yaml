@@ -52,6 +52,7 @@ dependencies:
   firebase_storage: ^10.3.11
   pull_to_refresh: ^2.0.0
   image_picker: ^0.8.6
+  emojis: ^0.9.9
 
 dev_dependencies:
   flutter_launcher_icons: "^0.10.0"
