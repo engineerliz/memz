@@ -15,7 +15,7 @@ class EmojiPickerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      title: 'Pick Emoji',
+      title: 'Pick an Emoji',
       body: ListView(children: [EmojiPicker(onSelect: onSelect)]),
     );
   }

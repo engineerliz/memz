@@ -129,7 +129,7 @@ class SignInFormState extends State<SignInForm> {
                       child: Padding(
                         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: Text(
-                          'LOGIN2',
+                          'LOGIN',
                           style: SubHeading.SH18.copyWith(color: MColors.black),
                         ),
                       ),

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
-import 'package:memz/features/mainViews/MainViews.dart';
+import 'package:memz/features/onboarding/PickEmojiView.dart';
 
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
@@ -85,14 +85,6 @@ class PickUsernameViewState extends State<PickUsernameView> {
                     GestureDetector(
                       onTap: () async {
                         await FirebaseAuth.instance.signOut();
-
-                        // if (Navigator.canPop(context)) {
-                        //   print('canPop!');
-                        //   Navigator.of(context).pop();
-                        // }
-                        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        //   builder: (context) => SignInScreen(),
-                        // ));
                       },
                       child: Text(
                         'Sign in with a different account',
@@ -129,7 +121,7 @@ class PickUsernameViewState extends State<PickUsernameView> {
                           ).whenComplete(
                             () => Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => OnboardingSuccessView(),
+                                builder: (context) => PickEmojiView(),
                               ),
                             ),
                           );
