@@ -37,6 +37,12 @@ class _EditProfileViewState extends State<EditProfileView> {
   final homeBaseController = TextEditingController();
 
   @override
+  void initState() {
+    selectedEmoji = widget.user?.emoji ?? Emojis.wavingHand;
+    super.initState();
+  }
+
+  @override
   void dispose() {
     nameController.dispose();
     usernameController.dispose();
