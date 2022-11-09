@@ -50,6 +50,20 @@ class UserStore {
     return result;
   }
 
+  static Future<List<UserModel>> getAllUsers() async {
+    log('getAllUsers');
+    final query = usersDb;
+    final Future<List<UserModel>> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) =>
+                  UserModel.fromJson(value.data() as Map<String, dynamic>),
+            ),
+          ),
+        );
+    return result;
+  }
+
   static Future<List<UserModel>?> searchUsersByEmail({
     required String email,
   }) async {

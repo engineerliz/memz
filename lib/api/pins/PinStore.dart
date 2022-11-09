@@ -60,10 +60,10 @@ class PinStore {
     return result;
   }
 
-  static Future<List<PinModel>?> getAllPins() async {
+  static Future<List<PinModel>> getAllPins() async {
     log('Get all pins');
     final query = pinsDb.orderBy('creationTime', descending: true);
-    final Future<List<PinModel>?> result = query.get().then(
+    final Future<List<PinModel>> result = query.get().then(
           (resultsList) => List.from(
             resultsList.docs.map(
               (value) =>
@@ -74,7 +74,7 @@ class PinStore {
     return result;
   }
 
-  static Future<List<PinModel>?> getPinsFromFollowingList(
+  static Future<List<PinModel>> getPinsFromFollowingList(
       List<String> following) async {
     log('getPinsFromFollowingList $following');
     final pinsDb = db.collection('pins');
@@ -82,7 +82,7 @@ class PinStore {
         .where('creatorId', whereIn: following)
         .orderBy('creationTime', descending: true);
 
-    final Future<List<PinModel>?> result = query.get().then(
+    final Future<List<PinModel>> result = query.get().then(
           (resultsList) => List.from(
             resultsList.docs.map(
               (value) => PinModel.fromJson(value.data()),

@@ -14,6 +14,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import '../../api/pins/PinModel.dart';
 import '../../components/pin/PinPost.dart';
 import '../../components/scaffold/PullToRefresh.dart';
+import '../../styles/colors.dart';
 
 class FriendsFeedView extends StatefulWidget {
   const FriendsFeedView({super.key});
@@ -30,7 +31,7 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
   final Future<UserModel?> userFuture =
       UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '');
 
-  List<PinModel>? pinsData;
+  List<PinModel> pinsData = [];
 
   var parser = EmojiParser();
 
@@ -95,7 +96,7 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
         activeTab: 2,
         body: PullToRefresh(
           onRefresh: onRefresh,
-          body: pinsData != null
+          body: pinsData.length > 0
               ? ListView(
                   children: [
                     ...pinsData!.map(
@@ -106,7 +107,32 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
                     )
                   ],
                 )
-              : const SizedBox(),
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Find friends to see pins here',
+                        style: SubHeading.SH14),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SearchView(),
+                        ));
+                      },
+                      child: Text('Search for friends',
+                          style:
+                              SubHeading.SH14.copyWith(color: MColors.black)),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        backgroundColor: MColors.white,
+                      ),
+                    ),
+                  ],
+                )
       ),
     );
   }

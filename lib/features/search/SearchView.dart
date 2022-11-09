@@ -22,12 +22,18 @@ class SearchViewState extends State<SearchView> {
   UserModel? userData;
 
   Future<List<UserModel>?>? userSearchFuture;
+  List<UserModel> allUsers = [];
 
   var parser = EmojiParser();
   final searchController = TextEditingController();
 
   @override
   void initState() {
+    UserStore.getAllUsers().then((value) {
+      setState(() {
+        allUsers = value;
+      });
+    });
     super.initState();
   }
 
@@ -42,7 +48,7 @@ class SearchViewState extends State<SearchView> {
     return CommonScaffold(
       title: 'Search',
       activeTab: 2,
-      body: Column(
+      body: ListView(
         children: [
           TextField(
             onChanged: ((value) => setState(() {
@@ -71,7 +77,6 @@ class SearchViewState extends State<SearchView> {
                         child: UserTile(
                             user: user,
                             onTap: () {
-                              print('user??? ${user.id}');
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => UserProfileView(
@@ -85,9 +90,7 @@ class SearchViewState extends State<SearchView> {
                   ],
                 );
               } else {
-                return Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: searchController.text.isEmpty
+                return searchController.text.isEmpty
                       ? Column(
                           children: [
                             Text(
@@ -99,6 +102,13 @@ class SearchViewState extends State<SearchView> {
                               style: Paragraph.P14,
                               textAlign: TextAlign.center,
                             ),
+                          const SizedBox(height: 12),
+                          ...allUsers.map(
+                            (user) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: UserTile(user: user),
+                            ),
+                          )
                           ],
                         )
                       : Column(
@@ -113,8 +123,7 @@ class SearchViewState extends State<SearchView> {
                               style: SubHeading.SH14
                                   .copyWith(color: MColors.grayV5),
                             )
-                          ],
-                        ),
+                        ],
                 );
               }
             },
