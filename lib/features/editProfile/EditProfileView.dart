@@ -5,7 +5,6 @@ import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/emojiPicker/EmojiPickerView.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/styles/fonts.dart';
-import 'package:emojis/emoji.dart';
 
 import '../../../screens/authentication/email_password/email_password.dart';
 import '../../components/scaffold/CommonAppBar.dart';

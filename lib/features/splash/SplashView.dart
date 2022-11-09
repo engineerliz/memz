@@ -2,13 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserModel.dart';
-import 'package:memz/features/mainViews/MainViews.dart';
-import 'package:memz/features/onboarding/PickUsernameView.dart';
-import 'package:memz/features/onboarding/VerifyEmailView.dart';
 
 import '../../api/users/UserStore.dart';
 import '../../firebase_options.dart';
-import '../../screens/authentication/email_password/sign_in_screen.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../onboarding/utils/authPathNavigator.dart';
@@ -59,36 +55,6 @@ class SplashViewState extends State<SplashView> {
         isEmailVerified: _isEmailVerified,
         user: user,
       );
-      // if (user != null) {
-      //   if (!_isEmailVerified) {
-      //     print('email not verified');
-      //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //       builder: (context) => VerifyEmailView(),
-      //     ));
-      //     return;
-      //   } else if (user?.username == null) {
-      //     print('no username');
-
-      //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //       builder: (context) => PickUsernameView(),
-      //     ));
-      //     return;
-      //   } else {
-      //     print('normal user sign in');
-
-      //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //       builder: (context) => MainViews(),
-      //     ));
-      //     return;
-      //   }
-      // } else {
-      //   print('user is null');
-
-      //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //     builder: (context) => SignInScreen(),
-      //   ));
-      //   return;
-      // }
     });
   }
 

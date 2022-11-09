@@ -74,6 +74,24 @@ class PinStore {
     return result;
   }
 
+  static Future<List<PinModel>?> getPinsFromFollowingList(
+      List<String> following) async {
+    log('getPinsFromFollowingList $following');
+    final pinsDb = db.collection('pins');
+    final query = pinsDb
+        .where('creatorId', whereIn: following)
+        .orderBy('creationTime', descending: true);
+
+    final Future<List<PinModel>?> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) => PinModel.fromJson(value.data()),
+            ),
+          ),
+        );
+    return result;
+  }
+
   static Future<void> deletePinById({
     required String pinId,
   }) async {
@@ -100,13 +118,13 @@ class PinStore {
         pinsDb.doc(userUid).collection('items').doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
-      "title": title,
-      "description": description,
+      'title': title,
+      'description': description,
     };
 
     await documentReferencer
         .update(data)
-        .whenComplete(() => log("Note item updated in the database"))
+        .whenComplete(() => log('Note item updated in the database'))
         .catchError((e) => log(e));
   }
 

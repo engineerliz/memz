@@ -6,7 +6,6 @@ import 'package:memz/features/onboarding/PickEmojiView.dart';
 
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
-import 'OnboardingSuccessView.dart';
 import 'utils/usernameValidator.dart';
 
 class PickUsernameView extends StatefulWidget {

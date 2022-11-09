@@ -105,14 +105,15 @@ class FollowStore {
     });
   }
 
-  static Future<List<FollowModel>?> getUsersFollowing({
+  static Future<List<FollowModel>> getUsersFollowing({
     required String userId,
   }) async {
+    log('getUsersFollowing $userId');
     final query = followsDb
         .where('userId', isEqualTo: userId)
         .where('status', isEqualTo: FollowStatus.following.index)
         .orderBy('followTime', descending: true);
-    final Future<List<FollowModel>?> result = query.get().then(
+    final Future<List<FollowModel>> result = query.get().then(
           (resultsList) => List.from(
             resultsList.docs.map(
               (value) {

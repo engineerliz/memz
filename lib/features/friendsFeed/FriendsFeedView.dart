@@ -1,6 +1,7 @@
 import 'package:emojis/emojis.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:memz/api/follow/FollowStore.dart';
 import 'package:memz/api/pins/PinStore.dart';
 import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
@@ -24,6 +25,7 @@ class FriendsFeedView extends StatefulWidget {
 class FriendsFeedViewState extends State<FriendsFeedView> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel? userData;
+  List<String> followingUsersIdList = [];
 
   final Future<UserModel?> userFuture =
       UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '');
@@ -34,14 +36,30 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
 
   @override
   void initState() {
-    PinStore.getAllPins().then((value) {
-      pinsData = value;
-    });
     userFuture.then(
       (value) => setState(() {
         userData = value;
       }),
     );
+
+    if (FirebaseAuth.instance.currentUser?.uid != null) {
+      FollowStore.getUsersFollowing(
+              userId: FirebaseAuth.instance.currentUser!.uid)
+          .then((followingList) {
+        print('followingList $followingList');
+
+        setState(() {
+          followingUsersIdList = followingList
+              .map((followModel) => followModel.followingId)
+              .toList();
+          followingUsersIdList.add(FirebaseAuth.instance.currentUser!.uid);
+        });
+        PinStore.getPinsFromFollowingList(followingUsersIdList).then((value) {
+          pinsData = value;
+        });
+      });
+    }
+
     super.initState();
   }
 
@@ -89,7 +107,7 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
                   ],
                 )
               : const SizedBox(),
-        )
+      ),
     );
   }
 }
