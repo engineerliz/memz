@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memz/components/map/style.dart';
+import 'package:memz/components/shimmer/ShimmerBox.dart';
 
 import 'landmarks.dart';
 
@@ -22,7 +23,7 @@ class CurrentLocationMap extends StatefulWidget {
 
 class CurrentLocationMapState extends State<CurrentLocationMap> {
   final Completer<GoogleMapController> _controller = Completer();
-  late LatLng currentLocation = nycWSP;
+  LatLng? currentLocation;
   late BitmapDescriptor mapIcon = BitmapDescriptor.defaultMarker;
 
   @override
@@ -40,23 +41,16 @@ class CurrentLocationMapState extends State<CurrentLocationMap> {
     super.initState();
   }
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(40.7580, 73.9855),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
   @override
   Widget build(BuildContext context) {
-    return widget.isLoading == true
-        ? const SizedBox(child: Text('Loading...'))
+    return currentLocation == null
+        ? ShimmerBox()
         : GoogleMap(
             myLocationButtonEnabled: false,
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
-              target: currentLocation,
-              // target: nycWSP,
-              zoom: 15,
+              target: currentLocation!,
+              zoom: 11,
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
@@ -65,30 +59,10 @@ class CurrentLocationMapState extends State<CurrentLocationMap> {
             markers: {
               Marker(
                 markerId: const MarkerId('currentLocation'),
-                position: currentLocation,
-                // position: nycWSP,
+                position: currentLocation!,
                 icon: mapIcon,
               )
             },
           );
-    // return Scaffold(
-    //   body: GoogleMap(
-    //     mapType: MapType.normal,
-    //     initialCameraPosition: _kGooglePlex,
-    //     onMapCreated: (GoogleMapController controller) {
-    //       _controller.complete(controller);
-    //     },
-    //   ),
-    //   floatingActionButton: FloatingActionButton.extended(
-    //     onPressed: _goToTheLake,
-    //     label: const Text('To the lake!'),
-    //     icon: const Icon(Icons.directions_boat),
-    //   ),
-    // );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }

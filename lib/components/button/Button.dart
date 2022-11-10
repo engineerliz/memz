@@ -20,12 +20,16 @@ class Button extends StatelessWidget {
   final ButtonSize? size;
   final ButtonType? type;
   final VoidCallback? onTap;
+  final double? width;
+  final bool? fullWidth;
 
   Button({
     required this.label,
     this.size = ButtonSize.medium,
     this.type = ButtonType.primary,
     this.onTap,
+    this.width,
+    this.fullWidth = false,
   });
 
   Color getLabelColor() {
@@ -81,6 +85,37 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (fullWidth!) {
+      return SizedBox.expand(
+        child: ElevatedButton(
+          onPressed: onTap,
+          child: getChild(),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            padding: getPadding(),
+            backgroundColor: getButtonColor(),
+          ),
+        ),
+      );
+    }
+    if (width != null) {
+      return SizedBox(
+        width: width,
+        child: ElevatedButton(
+          onPressed: onTap,
+          child: getChild(),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            padding: getPadding(),
+            backgroundColor: getButtonColor(),
+          ),
+        ),
+      );
+    }
     return ElevatedButton(
       onPressed: onTap,
       child: getChild(),

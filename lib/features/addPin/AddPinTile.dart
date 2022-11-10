@@ -3,36 +3,32 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:memz/components/shimmer/ShimmerBox.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../components/button/Button.dart';
 import '../../components/map/CurrentLocationMap.dart';
 
-class AddPinTile extends StatefulWidget {
+class AddPinTile extends StatelessWidget {
+  final Function(String? filePath) onPicChange;
   final LatLng? location;
   final bool? isLoading;
+  final String? picPath;
 
   AddPinTile({
+    required this.onPicChange,
     this.location,
     this.isLoading,
+    this.picPath,
   });
-
-  @override
-  AddPinTileState createState() => AddPinTileState();
-}
-
-class AddPinTileState extends State<AddPinTile> {
-  String? picPath;
 
   getImageFromGallery() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      setState(() {
-        picPath = image.path;
-      });
+      onPicChange(image.path);
     }
   }
 
@@ -41,9 +37,7 @@ class AddPinTileState extends State<AddPinTile> {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
-      setState(() {
-        picPath = image.path;
-      });
+      onPicChange(image.path);
     }
   }
 
@@ -75,13 +69,15 @@ class AddPinTileState extends State<AddPinTile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Button(
+                    width: 120,
                     label: 'Camera',
                     onTap: getImageFromCamera,
                     type: ButtonType.primary,
                     size: ButtonSize.small,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   Button(
+                    width: 120,
                     label: 'Camera Roll',
                     onTap: getImageFromGallery,
                     type: ButtonType.primary,
@@ -95,7 +91,8 @@ class AddPinTileState extends State<AddPinTile> {
         ),
         Padding(
           padding: const EdgeInsets.all(5),
-          child: Container(
+          child: location != null
+              ? Container(
             height: 200,
             width: 150,
             clipBehavior: Clip.hardEdge,
@@ -103,10 +100,14 @@ class AddPinTileState extends State<AddPinTile> {
               borderRadius: BorderRadius.circular(15),
             ),
             child: CurrentLocationMap(
-              location: widget.location,
-              isLoading: widget.isLoading,
-            ),
-          ),
+                    location: location,
+                    isLoading: isLoading,
+                  ))
+              : ShimmerBox(
+                  height: 200,
+                  width: 150,
+                  radius: 15,
+                ),
         ),
       ],
     );

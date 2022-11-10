@@ -139,7 +139,6 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
           ),
         ),
       ),
-      activeTab: 2,
       body: PullToRefresh(onRefresh: onRefresh, body: getBody()),
     );
   }

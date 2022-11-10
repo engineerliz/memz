@@ -1,16 +1,12 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:memz/components/button/Button.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/addPin/AddCaptionView.dart';
 import 'package:memz/styles/fonts.dart';
 
-import '../../components/map/CurrentLocationMap.dart';
 import '../../components/scaffold/CommonAppBar.dart';
 import '../../components/scaffold/PullToRefresh.dart';
 import 'AddPinTile.dart';
@@ -23,7 +19,7 @@ class AddPinView extends StatefulWidget {
 class AddPinViewState extends State<AddPinView> {
   User? user = FirebaseAuth.instance.currentUser;
 
-  late LatLng currentLocation = LatLng(0, 0);
+  LatLng? currentLocation;
   late bool isLoading = true;
   String? picPath;
 
@@ -68,6 +64,12 @@ class AddPinViewState extends State<AddPinView> {
     }
   }
 
+  void onPicChange(String? path) {
+    setState(() {
+      picPath = path;
+    });
+  }
+
   @override
   void dispose() {
     captionController.dispose();
@@ -90,12 +92,12 @@ class AddPinViewState extends State<AddPinView> {
               ),
             ),
             onTap: () {
-              if (user?.uid != null && currentLocation.latitude != 0) {
+              if (user?.uid != null && currentLocation != null) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => AddCaptionView(
                       creatorId: user!.uid,
-                      location: currentLocation,
+                      location: currentLocation!,
                       imgUrls: picPath != null ? [picPath!] : null,
                     ),
                   ),
@@ -111,50 +113,9 @@ class AddPinViewState extends State<AddPinView> {
               AddPinTile(
                 location: currentLocation,
                 isLoading: isLoading,
+                onPicChange: onPicChange,
+                picPath: picPath,
               ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text('Your current location', style: Heading.H14),
-              //         const SizedBox(height: 8),
-              //         Container(
-              //           height: 200,
-              //           clipBehavior: Clip.hardEdge,
-              //           decoration: BoxDecoration(
-              //             borderRadius: BorderRadius.circular(15),
-              //           ),
-              //           child: isLoading
-              //               ? const SizedBox(child: Text('Loading...'))
-              //               : CurrentLocationMap(
-              //                   location: currentLocation,
-              //                 ),
-              //         ),
-              //       ],
-              //     ),
-              //     if (picPath != null)
-              //       Container(child: Image.file(File(picPath!))),
-              //     const SizedBox(height: 12),
-              //     Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         Button(
-              //           label: 'Camera',
-              //           onTap: getImageFromCamera,
-              //           type: ButtonType.secondary,
-              //         ),
-              //         const SizedBox(width: 12),
-              //         Button(
-              //           label: 'Camera Roll',
-              //           onTap: getImageFromGallery,
-              //           type: ButtonType.secondary,
-              //         ),
-              //       ],
-              //     ),
-              //   ],
-              // )
             ])),
       ),
     );
