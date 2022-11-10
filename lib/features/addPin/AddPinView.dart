@@ -13,6 +13,7 @@ import 'package:memz/styles/fonts.dart';
 import '../../components/map/CurrentLocationMap.dart';
 import '../../components/scaffold/CommonAppBar.dart';
 import '../../components/scaffold/PullToRefresh.dart';
+import 'AddPinTile.dart';
 
 class AddPinView extends StatefulWidget {
   @override
@@ -107,49 +108,53 @@ class AddPinViewState extends State<AddPinView> {
         body: PullToRefresh(
             onRefresh: getCurrenLocation,
             body: ListView(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Your current location', style: Heading.H14),
-                      const SizedBox(height: 8),
-                      Container(
-                        height: 200,
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: isLoading
-                            ? const SizedBox(child: Text('Loading...'))
-                            : CurrentLocationMap(
-                                location: currentLocation,
-                              ),
-                      ),
-                    ],
-                  ),
-                  if (picPath != null)
-                    Container(child: Image.file(File(picPath!))),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Button(
-                        label: 'Camera',
-                        onTap: getImageFromCamera,
-                        type: ButtonType.secondary,
-                      ),
-                      const SizedBox(width: 12),
-                      Button(
-                        label: 'Camera Roll',
-                        onTap: getImageFromGallery,
-                        type: ButtonType.secondary,
-                      ),
-                    ],
-                  ),
-                ],
-              )
+              AddPinTile(
+                location: currentLocation,
+                isLoading: isLoading,
+              ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Text('Your current location', style: Heading.H14),
+              //         const SizedBox(height: 8),
+              //         Container(
+              //           height: 200,
+              //           clipBehavior: Clip.hardEdge,
+              //           decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(15),
+              //           ),
+              //           child: isLoading
+              //               ? const SizedBox(child: Text('Loading...'))
+              //               : CurrentLocationMap(
+              //                   location: currentLocation,
+              //                 ),
+              //         ),
+              //       ],
+              //     ),
+              //     if (picPath != null)
+              //       Container(child: Image.file(File(picPath!))),
+              //     const SizedBox(height: 12),
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Button(
+              //           label: 'Camera',
+              //           onTap: getImageFromCamera,
+              //           type: ButtonType.secondary,
+              //         ),
+              //         const SizedBox(width: 12),
+              //         Button(
+              //           label: 'Camera Roll',
+              //           onTap: getImageFromGallery,
+              //           type: ButtonType.secondary,
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // )
             ])),
       ),
     );

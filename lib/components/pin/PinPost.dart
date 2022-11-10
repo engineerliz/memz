@@ -104,19 +104,7 @@ class PinPostState extends State<PinPost> {
   }
 
   Widget getPostBodyWithoutPics() {
-    return widget.isLoading!
-        ? Shimmer.fromColors(
-            baseColor: MColors.grayV9,
-            highlightColor: MColors.grayV7,
-            child: Container(
-              height: 170,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: MColors.grayV9),
-            ),
-          )
-        : Container(
+    return Container(
       height: 170,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
