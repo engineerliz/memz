@@ -8,7 +8,6 @@ import 'package:memz/components/pin/MyPostContextButton.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../api/users/UserModel.dart';
 import '../../features/profile/UserProfileView.dart';
