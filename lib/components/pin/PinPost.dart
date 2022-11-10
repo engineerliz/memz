@@ -88,7 +88,7 @@ class PinPostState extends State<PinPost> {
                 ),
                 child: Map(
                   location: widget.pin.location,
-                  zoom: 14,
+                  zoom: 11,
                   onTap: (latlng) {
                     onTap();
                   },

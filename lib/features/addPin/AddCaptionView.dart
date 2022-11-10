@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memz/api/pins/PinStore.dart';
@@ -53,16 +52,15 @@ class AddCaptionViewState extends State<AddCaptionView> {
                 location: widget.location,
                 caption: captionController.text,
                 imgUrls: widget.imgUrls,
-              ).whenComplete(() {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => MainViews(
-                      activeTab: 0,
-                    ),
+              );
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => MainViews(
+                    activeTab: 0,
                   ),
-                );
-              });
+                ),
+              );
             },
           ),
         ),

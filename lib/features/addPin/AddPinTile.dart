@@ -69,7 +69,7 @@ class AddPinTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Button(
-                        width: 120,
+                        width: 130,
                         label: 'Camera',
                         onTap: getImageFromCamera,
                         type: ButtonType.primary,
@@ -77,7 +77,7 @@ class AddPinTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Button(
-                        width: 120,
+                        width: 130,
                         label: 'Camera Roll',
                         onTap: getImageFromGallery,
                         type: ButtonType.primary,
