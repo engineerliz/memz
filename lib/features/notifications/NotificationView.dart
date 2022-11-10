@@ -55,7 +55,7 @@ class NotificationViewState extends State<NotificationView> {
         onRefresh: () {
           getNotifs();
         },
-        body: followRequests.length > 1
+        body: followRequests.length > 0
             ? ListView(
             children: [
               ...followRequests

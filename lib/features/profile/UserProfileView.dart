@@ -31,6 +31,7 @@ class UserProfileView extends StatefulWidget {
 }
 
 class UserProfileViewState extends State<UserProfileView> {
+  bool isMyProfile = true;
   String currentUserId = '';
   UserModel? userData;
   List<PinModel>? _userPins;
@@ -50,13 +51,17 @@ class UserProfileViewState extends State<UserProfileView> {
         userData = profileData.userData;
         followersList = profileData.followersList;
         followingList = profileData.followingList;
+        if (currentUserId != userData?.id) {
+          isMyProfile = false;
+        }
       });
     });
 
-    PinStore.getPinsByUserId(userId: widget.userId).then(
-      (value) => setState(() {
-        _userPins = value;
-      }),
+    PinStore.getPinsByUserId(userId: widget.userId)
+        .then(
+          (value) => setState(() {
+            _userPins = value;
+          }),
         )
         .whenComplete(
           () => setState(() {
@@ -106,6 +111,9 @@ class UserProfileViewState extends State<UserProfileView> {
   }
 
   GestureDetector? getRightWidget(BuildContext context, UserModel? userData) {
+    if (isMyProfile) {
+      return null;
+    }
     Widget label = Text(
       'Follow',
       style: SubHeading.SH14.copyWith(color: MColors.green),
@@ -161,7 +169,7 @@ class UserProfileViewState extends State<UserProfileView> {
       body: PullToRefresh(
         onRefresh: onRefresh,
         body: Column(
-        children: [
+          children: [
             if (!pinsLoading)
               SizedBox(
                 height: 200,
@@ -170,47 +178,47 @@ class UserProfileViewState extends State<UserProfileView> {
                   isLoading: pinsLoading,
                 ),
               ),
-          Expanded(
-            child: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  TabBar(
-                    physics: const BouncingScrollPhysics(),
-                    tabs: [
-                      SizedBox(
-                        height: 50,
-                        child: Row(
-                          children: [
-                            Text(EmojiParser().get('round_pushpin').code,
-                                style: const TextStyle(fontSize: 22)),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            Text('${_userPins?.length ?? 0} pins',
-                                style: SubHeading.SH14)
-                          ],
+            Expanded(
+              child: DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    TabBar(
+                      physics: const BouncingScrollPhysics(),
+                      tabs: [
+                        SizedBox(
+                          height: 50,
+                          child: Row(
+                            children: [
+                              Text(EmojiParser().get('round_pushpin').code,
+                                  style: const TextStyle(fontSize: 22)),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text('${_userPins?.length ?? 0} pins',
+                                  style: SubHeading.SH14)
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                        child: Row(
-                          children: [
+                        SizedBox(
+                          height: 50,
+                          child: Row(
+                            children: [
                               Text(
                                   userData?.emoji != null
                                       ? userData!.emoji!
                                       : Emojis.wavingHand,
                                   style: TextStyle(fontSize: 22)),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            Text(userData?.username ?? '',
-                                style: SubHeading.SH14)
-                          ],
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text(userData?.username ?? '',
+                                  style: SubHeading.SH14)
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                     Expanded(
                       child: TabBarView(
                         children: [
@@ -226,28 +234,27 @@ class UserProfileViewState extends State<UserProfileView> {
                                 horizontal: 16,
                               ),
                               child: ListView(
-                            children: [
-                              ProfileAboutTab(
-                                username: userData?.username,
-                                homebase: userData?.homeBase,
-                                friendsCount: 81,
-                                joinDate: userData?.joinDate,
-                                pinCount: _userPins?.length,
-                                followersList: followersList,
-                                followingList: followingList,
-                              ),
-                              const SizedBox(height: 40),
-                            ],
+                                children: [
+                                  ProfileAboutTab(
+                                    username: userData?.username,
+                                    homebase: userData?.homeBase,
+                                    friendsCount: 81,
+                                    joinDate: userData?.joinDate,
+                                    pinCount: _userPins?.length,
+                                    followersList: followersList,
+                                    followingList: followingList,
+                                  ),
+                                  const SizedBox(height: 40),
+                                ],
                               )),
                         ],
                       ),
                     ),
-
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
         ),
       ),
     );

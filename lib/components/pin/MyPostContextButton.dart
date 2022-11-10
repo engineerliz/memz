@@ -15,6 +15,8 @@ class MyPostContextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      padding: const EdgeInsets.all(2),
+      visualDensity: VisualDensity.compact,
       icon: const Icon(
         Icons.more_vert,
         color: MColors.grayV5,

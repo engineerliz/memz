@@ -143,7 +143,7 @@ class AddPinViewState extends State<AddPinView> {
                       const SizedBox(width: 12),
                       Button(
                         label: 'Camera Roll',
-                        onTap: getImageFromCamera,
+                        onTap: getImageFromGallery,
                         type: ButtonType.secondary,
                       ),
                     ],
