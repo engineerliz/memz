@@ -7,14 +7,15 @@ import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/scaffold/CommonAppBar.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
+import 'package:memz/components/scaffold/PullToRefresh.dart';
 import 'package:memz/features/search/SearchView.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
 import '../../api/pins/PinModel.dart';
-import '../../components/button/Button.dart';
+import '../../components/pin/LoadingPinPost.dart';
 import '../../components/pin/PinPost.dart';
-import '../../components/scaffold/PullToRefresh.dart';
+import 'EmptyFeedMessage.dart';
 
 class FriendsFeedView extends StatefulWidget {
   const FriendsFeedView({super.key});
@@ -24,6 +25,7 @@ class FriendsFeedView extends StatefulWidget {
 }
 
 class FriendsFeedViewState extends State<FriendsFeedView> {
+  bool isLoading = true;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel? userData;
   List<String> followingUsersIdList = [];
@@ -57,7 +59,11 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
         });
         PinStore.getPinsFromFollowingList(followingUsersIdList).then((value) {
           pinsData = value;
-        });
+        }).whenComplete(
+          () => setState(() {
+            isLoading = false;
+          }),
+        );
       });
     }
 
@@ -65,65 +71,76 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
   }
 
   void onRefresh() {
+    setState(() {
+      isLoading = true;
+    });
     PinStore.getAllPins().then((value) {
       setState(() {
         pinsData = value;
+        isLoading = false;
       });
     });
+  }
+
+  Widget getBody() {
+    if (isLoading) {
+      return ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: LoadingPinPost(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: LoadingPinPost(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: LoadingPinPost(),
+          ),
+        ],
+      );
+    }
+    if (pinsData.length == 0) {
+      return EmptyFeedMessage();
+    }
+    return ListView(
+      children: [
+        ...pinsData.map(
+          (pin) => Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: PinPost(
+              pin: pin,
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
+      title: 'SMYL${Emojis.roundPushpin}',
+      appBar: CommonAppBar(
         title: 'SMYL${Emojis.roundPushpin}',
-        appBar: CommonAppBar(
-          title: 'SMYL${Emojis.roundPushpin}',
-          rightWidget: GestureDetector(
-            child: Opacity(
-              opacity: 0.8,
-              child: Text(
-                parser.get('mag').code,
-                style: SubHeading.SH26,
-              ),
+        rightWidget: GestureDetector(
+          child: Opacity(
+            opacity: 0.8,
+            child: Text(
+              parser.get('mag').code,
+              style: SubHeading.SH26,
             ),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const SearchView(),
-              ),
+          ),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const SearchView(),
             ),
           ),
         ),
-        activeTab: 2,
-        body: PullToRefresh(
-          onRefresh: onRefresh,
-          body: pinsData.length > 0
-              ? ListView(
-                  children: [
-                    ...pinsData!.map(
-                      (pin) => Padding(
-                        padding: const EdgeInsets.only(bottom: 25),
-                        child: PinPost(pin: pin),
-                      ),
-                    )
-                  ],
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Find friends to see pins here',
-                        style: SubHeading.SH14),
-                    const SizedBox(height: 8),
-                    Button(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SearchView(),
-                        ));
-                      },
-                      label: 'Search for friends',
-                    ),
-                  ],
-                )
       ),
+      activeTab: 2,
+      body: PullToRefresh(onRefresh: onRefresh, body: getBody()),
     );
   }
 }

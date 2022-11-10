@@ -8,6 +8,7 @@ import 'package:memz/components/pin/MyPostContextButton.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../api/users/UserModel.dart';
 import '../../features/profile/UserProfileView.dart';
@@ -15,10 +16,12 @@ import '../../features/profile/UserProfileView.dart';
 class PinPost extends StatefulWidget {
   final PinModel pin;
   final bool? withTap;
+  final bool? isLoading;
 
   PinPost({
     required this.pin,
     this.withTap = true,
+    this.isLoading = false,
   });
   @override
   State<PinPost> createState() => PinPostState();
@@ -101,7 +104,19 @@ class PinPostState extends State<PinPost> {
   }
 
   Widget getPostBodyWithoutPics() {
-    return Container(
+    return widget.isLoading!
+        ? Shimmer.fromColors(
+            baseColor: MColors.grayV9,
+            highlightColor: MColors.grayV7,
+            child: Container(
+              height: 170,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: MColors.grayV9),
+            ),
+          )
+        : Container(
       height: 170,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
