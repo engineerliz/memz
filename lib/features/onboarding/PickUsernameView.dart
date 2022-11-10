@@ -4,6 +4,7 @@ import 'package:memz/api/users/UserModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/features/onboarding/PickEmojiView.dart';
 
+import '../../screens/authentication/email_password/sign_in_screen.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import 'utils/usernameValidator.dart';
@@ -84,6 +85,9 @@ class PickUsernameViewState extends State<PickUsernameView> {
                     GestureDetector(
                       onTap: () async {
                         await FirebaseAuth.instance.signOut();
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => SignInScreen(),
+                        ));
                       },
                       child: Text(
                         'Sign in with a different account',

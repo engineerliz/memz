@@ -29,7 +29,7 @@ class SearchViewState extends State<SearchView> {
 
   @override
   void initState() {
-    UserStore.getAllUsers().then((value) {
+    UserStore.getAllUsersCompleteOnboarding().then((value) {
       setState(() {
         allUsers = value;
       });

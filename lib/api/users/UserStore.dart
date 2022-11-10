@@ -64,6 +64,20 @@ class UserStore {
     return result;
   }
 
+  static Future<List<UserModel>> getAllUsersCompleteOnboarding() async {
+    log('getAllUsersCompleteOnboarding');
+    final query = usersDb.where('username', isNull: false);
+    final Future<List<UserModel>> result = query.get().then(
+          (resultsList) => List.from(
+            resultsList.docs.map(
+              (value) =>
+                  UserModel.fromJson(value.data() as Map<String, dynamic>),
+            ),
+          ),
+        );
+    return result;
+  }
+
   static Future<List<UserModel>?> searchUsersByEmail({
     required String email,
   }) async {

@@ -39,7 +39,7 @@ class UserTile extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                EmojiParser().get('wave').code,
+                user.emoji ?? EmojiParser().get('wave').code,
                 style: SubHeading.SH22,
               ),
               const SizedBox(width: 8),
