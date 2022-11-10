@@ -7,9 +7,11 @@ import '../button/Button.dart';
 
 class MyPostContextButton extends StatelessWidget {
   final PinModel pin;
+  final VoidCallback? onRefresh;
 
   MyPostContextButton({
     required this.pin,
+    this.onRefresh,
   });
 
   @override
@@ -34,7 +36,10 @@ class MyPostContextButton extends StatelessWidget {
                   label: 'Delete Post',
                   onTap: () {
                     PinStore.deletePinById(pinId: pin.id).whenComplete(
-                      () => Navigator.pop(context),
+                      () {
+                        Navigator.pop(context);
+                        if (onRefresh != null) onRefresh!();
+                      },
                     );
                   },
                   type: ButtonType.secondary,

@@ -16,11 +16,13 @@ class PinPost extends StatefulWidget {
   final PinModel pin;
   final bool? withTap;
   final bool? isLoading;
+  final VoidCallback? onRefresh;
 
   PinPost({
     required this.pin,
     this.withTap = true,
     this.isLoading = false,
+    this.onRefresh,
   });
   @override
   State<PinPost> createState() => PinPostState();
@@ -148,7 +150,11 @@ class PinPostState extends State<PinPost> {
                 ),
               ],
             ),
-            if (isMyPost) MyPostContextButton(pin: widget.pin),
+            if (isMyPost)
+              MyPostContextButton(
+                pin: widget.pin,
+                onRefresh: widget.onRefresh,
+              ),
           ]),
           if (widget.pin.caption?.isNotEmpty == true)
             Text(widget.pin.caption!, style: Paragraph.P14),

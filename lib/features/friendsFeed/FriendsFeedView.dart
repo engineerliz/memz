@@ -111,6 +111,7 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
             padding: const EdgeInsets.only(bottom: 25),
             child: PinPost(
               pin: pin,
+              onRefresh: onRefresh,
             ),
           ),
         )
