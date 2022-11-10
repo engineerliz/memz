@@ -47,6 +47,7 @@ class AddPinTile extends StatelessWidget {
       alignment: AlignmentDirectional.topEnd,
       children: [
         Container(
+          alignment: Alignment.bottomRight,
           clipBehavior: Clip.hardEdge,
           width: MediaQuery.of(context).size.width,
           height: 500,
@@ -60,46 +61,64 @@ class AddPinTile extends StatelessWidget {
                   )
                 : null,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text('Add a picture', style: SubHeading.SH18),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Button(
-                    width: 120,
-                    label: 'Camera',
-                    onTap: getImageFromCamera,
-                    type: ButtonType.primary,
-                    size: ButtonSize.small,
+          child: picPath == null
+              ? Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Text('Add a picture', style: SubHeading.SH18),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Button(
+                        width: 120,
+                        label: 'Camera',
+                        onTap: getImageFromCamera,
+                        type: ButtonType.primary,
+                        size: ButtonSize.small,
+                      ),
+                      const SizedBox(width: 8),
+                      Button(
+                        width: 120,
+                        label: 'Camera Roll',
+                        onTap: getImageFromGallery,
+                        type: ButtonType.primary,
+                        size: ButtonSize.small,
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  Button(
-                    width: 120,
-                    label: 'Camera Roll',
-                    onTap: getImageFromGallery,
-                    type: ButtonType.primary,
-                    size: ButtonSize.small,
+                  const SizedBox(height: 120),
+                ])
+              : Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: MColors.white,
+                    ),
+                    child: IconButton(
+                      visualDensity: VisualDensity.compact,
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: MColors.black,
+                        size: 22,
+                      ),
+                      onPressed: () {
+                        onPicChange(null);
+                      },
+                    ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 120),
-            ],
-          ),
+                ),
         ),
         Padding(
           padding: const EdgeInsets.all(5),
           child: location != null
               ? Container(
-            height: 200,
-            width: 150,
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: CurrentLocationMap(
+                  height: 200,
+                  width: 150,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: CurrentLocationMap(
                     location: location,
                     isLoading: isLoading,
                   ))
