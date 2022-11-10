@@ -12,9 +12,9 @@ import 'package:memz/styles/fonts.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
 import '../../api/pins/PinModel.dart';
+import '../../components/button/Button.dart';
 import '../../components/pin/PinPost.dart';
 import '../../components/scaffold/PullToRefresh.dart';
-import '../../styles/colors.dart';
 
 class FriendsFeedView extends StatefulWidget {
   const FriendsFeedView({super.key});
@@ -113,23 +113,13 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
                     Text('Find friends to see pins here',
                         style: SubHeading.SH14),
                     const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: () {
+                    Button(
+                      onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => SearchView(),
                         ));
                       },
-                      child: Text('Search for friends',
-                          style:
-                              SubHeading.SH14.copyWith(color: MColors.black)),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                        backgroundColor: MColors.white,
-                      ),
+                      label: 'Search for friends',
                     ),
                   ],
                 )

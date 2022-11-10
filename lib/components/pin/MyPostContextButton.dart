@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../api/pins/PinModel.dart';
 import '../../api/pins/PinStore.dart';
 import '../../styles/colors.dart';
+import '../button/Button.dart';
 
 class MyPostContextButton extends StatelessWidget {
   final PinModel pin;
@@ -25,15 +26,16 @@ class MyPostContextButton extends StatelessWidget {
           builder: (BuildContext context) {
             return Container(
               height: 120,
-              color: MColors.grayV9,
+              color: MColors.background,
               child: Center(
-                child: ElevatedButton(
-                  child: const Text('Delete Post'),
-                  onPressed: () {
+                child: Button(
+                  label: 'Delete Post',
+                  onTap: () {
                     PinStore.deletePinById(pinId: pin.id).whenComplete(
                       () => Navigator.pop(context),
                     );
                   },
+                  type: ButtonType.secondary,
                 ),
               ),
             );

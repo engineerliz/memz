@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:memz/components/button/Button.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/addPin/AddCaptionView.dart';
 import 'package:memz/styles/fonts.dart';
@@ -12,7 +13,6 @@ import 'package:memz/styles/fonts.dart';
 import '../../components/map/CurrentLocationMap.dart';
 import '../../components/scaffold/CommonAppBar.dart';
 import '../../components/scaffold/PullToRefresh.dart';
-import '../../styles/colors.dart';
 
 class AddPinView extends StatefulWidget {
   @override
@@ -131,31 +131,20 @@ class AddPinViewState extends State<AddPinView> {
                   ),
                   if (picPath != null)
                     Container(child: Image.file(File(picPath!))),
+                  const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: getImageFromCamera,
-                        style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(MColors.white),
-                        ),
-                        child: Text(
-                          'Camera',
-                          style: SubHeading.SH18.copyWith(color: MColors.black),
-                        ),
+                      Button(
+                        label: 'Camera',
+                        onTap: getImageFromCamera,
+                        type: ButtonType.secondary,
                       ),
                       const SizedBox(width: 12),
-                      ElevatedButton(
-                        onPressed: getImageFromGallery,
-                        style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(MColors.white),
-                        ),
-                        child: Text(
-                          'Camera Roll',
-                          style: SubHeading.SH18.copyWith(color: MColors.black),
-                        ),
+                      Button(
+                        label: 'Camera Roll',
+                        onTap: getImageFromCamera,
+                        type: ButtonType.secondary,
                       ),
                     ],
                   ),
