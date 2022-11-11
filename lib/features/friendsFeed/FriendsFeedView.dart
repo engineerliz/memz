@@ -44,7 +44,15 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
         userData = value;
       }),
     );
+    getPins();
 
+    super.initState();
+  }
+
+  void getPins() {
+    setState(() {
+      isLoading = true;
+    });
     if (FirebaseAuth.instance.currentUser?.uid != null) {
       FollowStore.getUsersFollowing(
               userId: FirebaseAuth.instance.currentUser!.uid)
@@ -66,20 +74,10 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
         );
       });
     }
-
-    super.initState();
   }
 
   void onRefresh() {
-    setState(() {
-      isLoading = true;
-    });
-    PinStore.getAllPins().then((value) {
-      setState(() {
-        pinsData = value;
-        isLoading = false;
-      });
-    });
+    getPins();
   }
 
   Widget getBody() {
