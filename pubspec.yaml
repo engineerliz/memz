@@ -54,6 +54,7 @@ dependencies:
   image_picker: ^0.8.6
   emojis: ^0.9.9
   shimmer: ^2.0.0
+  firebase_messaging: ^13.1.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.10.0"

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/api/users/UserModel.dart';
 
@@ -31,6 +32,7 @@ class SplashViewState extends State<SplashView> {
     return firebaseApp;
   }
 
+
   @override
   void initState() {
     _initializeFirebase().whenComplete(() {
@@ -44,6 +46,8 @@ class SplashViewState extends State<SplashView> {
 
       delayedNavigation();
     });
+    
+
 
     super.initState();
   }

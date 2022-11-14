@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/features/splash/SplashView.dart';
 import 'package:memz/screens/authentication/email_password/sign_in_screen.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -36,3 +38,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
