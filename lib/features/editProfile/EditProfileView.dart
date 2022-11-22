@@ -77,7 +77,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                 await UserStore.updateUser(
                   user: widget.user!,
                   newName: nameController.text,
-                  newUsername: usernameController.text,
                   newHomebase: homeBaseController.text,
                   newEmoji: selectedEmoji,
                 ).whenComplete(() => Navigator.of(context).pop()),

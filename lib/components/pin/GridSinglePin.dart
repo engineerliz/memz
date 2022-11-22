@@ -37,13 +37,16 @@ class GridSinglePin extends StatelessWidget {
                 border: Border.all(color: MColors.background),
               ),
               child: CachedNetworkImage(
+                memCacheWidth: 400,
+                memCacheHeight: 600,
+                maxWidthDiskCache: 400,
+                maxHeightDiskCache: 600,
                 height: height,
                 width: width,
                 fit: BoxFit.cover,
                 imageUrl: pinData.imgUrls!.first,
                 placeholder: (context, url) => ShimmerBox(
                   height: height,
-                  radius: width,
                 ),
               )));
     }

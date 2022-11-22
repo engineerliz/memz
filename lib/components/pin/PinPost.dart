@@ -90,6 +90,10 @@ class PinPostState extends State<PinPost> {
               borderRadius: BorderRadius.circular(15),
             ),
             child: CachedNetworkImage(
+              // memCacheWidth: 1000,
+              // memCacheHeight: 1000,
+              // maxWidthDiskCache: 1000,
+              // maxHeightDiskCache: 1000,
               imageUrl: widget.pin.imgUrls!.first,
               height: 500,
               fit: BoxFit.cover,
