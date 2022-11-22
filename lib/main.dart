@@ -1,12 +1,8 @@
 import 'dart:developer';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:memz/features/splash/SplashView.dart';
-import 'package:memz/screens/authentication/email_password/sign_in_screen.dart';
 import 'package:camera/camera.dart';
-
-import 'screens/main_screens/home_screen.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -34,7 +30,6 @@ class MyApp extends StatelessWidget {
         fontFamily: 'OpenSans',
       ),
       home: SplashView(),
-      // home: const HomeScreen(),
     );
   }
 }

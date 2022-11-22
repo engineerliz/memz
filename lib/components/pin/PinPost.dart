@@ -5,6 +5,7 @@ import 'package:memz/api/pins/PinModel.dart';
 import 'package:memz/api/users/UserStore.dart';
 import 'package:memz/components/map/Map.dart';
 import 'package:memz/components/pin/MyPostContextButton.dart';
+import 'package:memz/features/mapView/MapView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +32,8 @@ class PinPost extends StatefulWidget {
 class PinPostState extends State<PinPost> {
   UserModel? userData;
   bool isMyPost = false;
+  bool showMap = true;
+
   @override
   void initState() {
     UserStore.getUserById(id: widget.pin.creatorId).then(
@@ -48,7 +51,7 @@ class PinPostState extends State<PinPost> {
     super.initState();
   }
 
-  void onTap() {
+  void onProfileTap() {
     if (userData != null && widget.withTap == true) {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -58,6 +61,20 @@ class PinPostState extends State<PinPost> {
         ),
       );
     }
+  }
+
+  void onPostTap() {
+    setState(() {
+      showMap = !showMap;
+    });
+  }
+
+  void onMapTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MapView(latLng: widget.pin.location),
+      ),
+    );
   }
 
   Widget getPostBodyWithPics() {
@@ -77,27 +94,29 @@ class PinPostState extends State<PinPost> {
               ),
             ),
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Container(
-                height: 200,
-                width: 150,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Map(
-                  location: widget.pin.location,
-                  zoom: 11,
-                  onTap: (latlng) {
-                    onTap();
-                  },
+          if (showMap)
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Container(
+                  height: 200,
+                  width: 150,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Map(
+                    location: widget.pin.location,
+                    zoom: 11,
+                    onTap: (latlng) {
+                      onMapTap();
+                      // onPostTap();
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       );
     }
@@ -117,7 +136,7 @@ class PinPostState extends State<PinPost> {
           location: widget.pin.location,
           zoom: 13.5,
           onTap: (latlng) {
-            onTap();
+            onMapTap();
           },
         ),
       ),
@@ -126,49 +145,56 @@ class PinPostState extends State<PinPost> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        onTap();
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Row(
-              children: [
-                Text(
-                  userData?.emoji != null
-                      ? userData!.emoji!
-                      : Emojis.wavingHand,
-                  style: SubHeading.SH22,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              onProfileTap();
+            },
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Row(
+                  children: [
+                    Text(
+                      userData?.emoji != null
+                          ? userData!.emoji!
+                          : Emojis.wavingHand,
+                      style: SubHeading.SH22,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(userData?.username ?? '', style: Heading.H14),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 6),
-                Text(userData?.username ?? '', style: Heading.H14),
-                const SizedBox(
-                  width: 4,
-                ),
-              ],
-            ),
-            if (isMyPost)
-              MyPostContextButton(
-                pin: widget.pin,
-                onRefresh: widget.onRefresh,
-              ),
-          ]),
-          if (widget.pin.caption?.isNotEmpty == true)
-            Text(widget.pin.caption!, style: Paragraph.P14),
-          const SizedBox(height: 8),
-          widget.pin.imgUrls != null
-              ? getPostBodyWithPics()
-              : getPostBodyWithoutPics(),
-          const SizedBox(height: 8),
-          Text(
-            'Posted ${DateFormat.yMMMd().format(widget.pin.creationTime)}',
-            style: SubHeading.SH12.copyWith(color: MColors.grayV5),
-          )
-        ],
-      ),
+                if (isMyPost)
+                  MyPostContextButton(
+                    pin: widget.pin,
+                    onRefresh: widget.onRefresh,
+                  ),
+              ]),
+              if (widget.pin.caption?.isNotEmpty == true)
+                Text(widget.pin.caption!, style: Paragraph.P14),
+              const SizedBox(height: 8),
+            ])),
+        GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              onPostTap();
+            },
+            child: widget.pin.imgUrls != null
+                ? getPostBodyWithPics()
+                : getPostBodyWithoutPics()),
+        const SizedBox(height: 8),
+        Text(
+          '${DateFormat.yMMMd().format(widget.pin.creationTime)} ${DateFormat.jm().format(widget.pin.creationTime)}',
+          style: Paragraph.P12.copyWith(color: MColors.grayV5),
+        )
+      ],
     );
   }
 }

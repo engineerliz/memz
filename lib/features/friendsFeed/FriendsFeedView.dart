@@ -127,7 +127,7 @@ class FriendsFeedViewState extends State<FriendsFeedView> {
           child: Opacity(
             opacity: 0.8,
             child: Text(
-              parser.get('mag').code,
+              Emojis.magnifyingGlassTiltedLeft,
               style: SubHeading.SH26,
             ),
           ),
