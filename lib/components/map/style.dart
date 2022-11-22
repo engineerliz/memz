@@ -1,5 +1,11 @@
 const mapStyle = '''
-    [
+  [
+    {
+    "featureType": "all",
+    "stylers": [
+      { "color": "#2C435F" }
+    ]
+  },
   {
     "elementType": "geometry",
     "stylers": [
@@ -38,6 +44,24 @@ const mapStyle = '''
     "stylers": [
       {
         "color": "#BFCADC"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.country",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#DCE5FB"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.province",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#839BAC"
       }
     ]
   },
@@ -82,7 +106,7 @@ const mapStyle = '''
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#4B6C84"
+        "color": "#3B5677"
       }
     ]
   },
@@ -100,7 +124,7 @@ const mapStyle = '''
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#8E9BC8"
+        "color": "#435C6F"
       }
     ]
   },
@@ -155,6 +179,14 @@ const mapStyle = '''
     "stylers": [
       {
         "color": "#BFCADC"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "stylers": [
+      {
+        "color": "#384F6A"
       }
     ]
   }
