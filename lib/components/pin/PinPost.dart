@@ -9,9 +9,11 @@ import 'package:memz/features/mapView/MapView.dart';
 import 'package:memz/styles/colors.dart';
 import 'package:memz/styles/fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../api/users/UserModel.dart';
 import '../../features/profile/UserProfileView.dart';
+import '../shimmer/ShimmerBox.dart';
 
 class PinPost extends StatefulWidget {
   final PinModel pin;
@@ -84,13 +86,17 @@ class PinPostState extends State<PinPost> {
         children: [
           Container(
             clipBehavior: Clip.hardEdge,
-            width: MediaQuery.of(context).size.width,
-            height: 500,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(widget.pin.imgUrls!.first),
+            ),
+            child: CachedNetworkImage(
+              imageUrl: widget.pin.imgUrls!.first,
+              height: 500,
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+              placeholder: (context, url) => ShimmerBox(
+                height: 500,
+                radius: 15,
               ),
             ),
           ),
@@ -111,7 +117,6 @@ class PinPostState extends State<PinPost> {
                     zoom: 11,
                     onTap: (latlng) {
                       onMapTap();
-                      // onPostTap();
                     },
                   ),
                 ),
