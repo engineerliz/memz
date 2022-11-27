@@ -126,6 +126,18 @@ class UserStore {
         .toJson());
   }
 
+  static Future<void> updateUserToken({
+    required String userId,
+    required String token,
+    required DateTime time,
+  }) async {
+    log('updateUserToken ${userId}');
+    usersDb.doc(userId).collection('tokens').doc(token).set({
+      'token': token,
+      'updated': time,
+    });
+  }
+
   static Stream<QuerySnapshot> readItems() {
     CollectionReference notesItemCollection =
         usersDb.doc(userUid).collection('items');

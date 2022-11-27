@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:memz/features/profile/UserProfileView.dart';
 
+import '../../api/users/UserModel.dart';
+import '../../api/users/UserStore.dart';
 import '../../components/scaffold/BottomBar.dart';
 import '../../styles/colors.dart';
 import '../addPin/AddPinView.dart';
@@ -31,12 +33,14 @@ class MainViews extends StatefulWidget {
 }
 
 class MainViewsState extends State<MainViews> {
+  UserModel? userData;
   late int _selectedIndex;
   User? user = FirebaseAuth.instance.currentUser;
   late LocationPermission? locationPermission =
       LocationPermission.unableToDetermine;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings? notifPermission;
+  String? messagingToken;
 
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
@@ -81,10 +85,28 @@ class MainViewsState extends State<MainViews> {
     // }
   }
 
+  void storeUserToken() {
+    FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        messagingToken = token;
+      });
+      if (user?.uid != null && token != null) {
+        UserStore.updateUserToken(
+            userId: user!.uid, token: token, time: DateTime.now());
+      }
+    });
+    print('user token $messagingToken');
+  }
+
   @override
   initState() {
     super.initState();
-
+    UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '')
+        .then(
+      (value) => setState(() {
+        userData = value;
+      }),
+    );
     _selectedIndex = widget.activeTab ?? 0;
     Future.delayed(Duration.zero, () async {
       var permission = await Geolocator.checkPermission();
@@ -109,6 +131,7 @@ class MainViewsState extends State<MainViews> {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     setupInteractedMessage();
+    storeUserToken();
   }
 
   void askForLocation() {
@@ -144,6 +167,8 @@ class MainViewsState extends State<MainViews> {
 
   @override
   Widget build(BuildContext context) {
+    print('user token?? $messagingToken');
+
     if (locationPermission == LocationPermission.unableToDetermine) {
       askForLocation();
     }
