@@ -31,6 +31,9 @@ class AddPinViewState extends State<AddPinView> {
   }
 
   void getCurrenLocation() {
+    setState(() {
+      isLoading = true;
+    });
     Future.delayed(Duration.zero, () async {
       Position position = await determinePosition();
       setState(() {

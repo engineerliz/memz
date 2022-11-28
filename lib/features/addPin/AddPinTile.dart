@@ -110,7 +110,7 @@ class AddPinTile extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(5),
-          child: location != null
+          child: location != null && isLoading != true
               ? Container(
                   height: 200,
                   width: 150,
