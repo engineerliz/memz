@@ -10,6 +10,7 @@ final FirebaseFirestore db = FirebaseFirestore.instance;
 final CollectionReference followsDb = db.collection('notifications');
 
 class NotificationStore {
+  
   static Future<List<Future<FollowRequestNotificationModel>>>
       getFollowRequestsNotifications({
     required String userId,

@@ -1,6 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 
-Future<Position> _determinePosition() async {
+Future<Position> determinePosition() async {
   bool serviceEnabled;
   LocationPermission permission;
 
@@ -34,5 +34,7 @@ Future<Position> _determinePosition() async {
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
-  return await Geolocator.getCurrentPosition();
+  return await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high,
+  );
 }

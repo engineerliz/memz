@@ -8,6 +8,7 @@ import 'package:memz/features/addPin/AddCaptionView.dart';
 import 'package:memz/styles/fonts.dart';
 
 import '../../components/scaffold/CommonAppBar.dart';
+import '../../components/location/CurrentLocation.dart';
 import '../../components/scaffold/PullToRefresh.dart';
 import 'AddPinTile.dart';
 
@@ -31,8 +32,7 @@ class AddPinViewState extends State<AddPinView> {
 
   void getCurrenLocation() {
     Future.delayed(Duration.zero, () async {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+      Position position = await determinePosition();
       setState(() {
         currentLocation = LatLng(position.latitude, position.longitude);
         isLoading = false;

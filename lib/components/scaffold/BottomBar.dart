@@ -7,12 +7,46 @@ import '../../styles/colors.dart';
 class BottomBar extends StatelessWidget {
   final int activeIndex;
   final ValueChanged<int> onItemTapped;
+  final int? notificationCount;
 
   const BottomBar({
     super.key,
     required this.activeIndex,
     required this.onItemTapped,
+    this.notificationCount = 0,
   });
+
+  BottomNavigationBarItem getNotificationItem() {
+    if (notificationCount! > 0) {
+      return BottomNavigationBarItem(
+        icon: Stack(alignment: AlignmentDirectional.topEnd, children: [
+          Text(
+            Emojis.bell,
+            style: SubHeading.SH26,
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Container(
+                height: 9,
+                width: 9,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: MColors.green,
+                ),
+              )),
+        ]),
+        label: 'Notifs ($notificationCount)',
+      );
+    }
+    return BottomNavigationBarItem(
+      icon: Text(
+        Emojis.bell,
+        style: SubHeading.SH26,
+      ),
+      label: 'Notifs',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +69,15 @@ class BottomBar extends StatelessWidget {
           ),
           label: 'Drop a Pin',
         ),
-        BottomNavigationBarItem(
-          icon: Text(
-            Emojis.bell,
-            style: SubHeading.SH26,
-          ),
-          label: 'Notifs',
-        ),
+        getNotificationItem(),
+        // BottomNavigationBarItem(
+        //   icon: Text(
+        //     Emojis.bell,
+        //     style: SubHeading.SH26,
+        //   ),
+        //   label:
+        //       notificationCount! > 0 ? 'Notifs ($notificationCount)' : 'Notifs',
+        // ),
         BottomNavigationBarItem(
           icon: Text(
             Emojis.wavingHand,

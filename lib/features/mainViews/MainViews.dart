@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:memz/features/profile/UserProfileView.dart';
 
+import '../../api/notifications/NotificationStore.dart';
 import '../../api/users/UserModel.dart';
 import '../../api/users/UserStore.dart';
 import '../../components/scaffold/BottomBar.dart';
@@ -41,6 +42,7 @@ class MainViewsState extends State<MainViews> {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings? notifPermission;
   String? messagingToken;
+  int notificationCount = 0;
 
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
@@ -119,6 +121,16 @@ class MainViewsState extends State<MainViews> {
       });
     });
 
+    if (FirebaseAuth.instance.currentUser?.uid != null) {
+      NotificationStore.getFollowRequestsNotifications(
+              userId: FirebaseAuth.instance.currentUser!.uid)
+          .then((value) {
+        setState(() {
+          notificationCount = value.length;
+        });
+      });
+    }
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
@@ -169,9 +181,9 @@ class MainViewsState extends State<MainViews> {
   Widget build(BuildContext context) {
     print('user token?? $messagingToken');
 
-    if (locationPermission == LocationPermission.unableToDetermine) {
-      askForLocation();
-    }
+    // if (locationPermission == LocationPermission.unableToDetermine) {
+    //   askForLocation();
+    // }
     if (notifPermission == null) {
       askForNotificationPermission();
     }
@@ -197,6 +209,7 @@ class MainViewsState extends State<MainViews> {
       bottomNavigationBar: BottomBar(
         activeIndex: _selectedIndex,
         onItemTapped: onItemTapped,
+        notificationCount: notificationCount,
       ),
     );
   }
