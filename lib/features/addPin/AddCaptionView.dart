@@ -5,6 +5,7 @@ import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/mainViews/MainViews.dart';
 import 'package:memz/styles/fonts.dart';
 
+import '../../components/button/Button.dart';
 import '../../components/scaffold/CommonAppBar.dart';
 
 class AddCaptionView extends StatefulWidget {
@@ -38,14 +39,10 @@ class AddCaptionViewState extends State<AddCaptionView> {
       child: CommonScaffold(
         appBar: CommonAppBar(
           title: 'Add a caption',
-          rightWidget: GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              child: Text(
-                'Post',
-                style: SubHeading.SH14,
-              ),
-            ),
+          rightWidget: Button(
+            label: 'Post',
+            size: ButtonSize.xsmall,
+            type: ButtonType.secondary,
             onTap: () {
               PinStore.addPin(
                 creatorId: widget.creatorId,

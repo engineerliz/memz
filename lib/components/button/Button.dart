@@ -10,6 +10,7 @@ enum ButtonType {
 }
 
 enum ButtonSize {
+  xsmall,
   small,
   medium,
   large,
@@ -58,6 +59,9 @@ class Button extends StatelessWidget {
 
   Widget getChild() {
     switch (size) {
+      case ButtonSize.xsmall:
+        return Text(label,
+            style: SubHeading.SH12.copyWith(color: getLabelColor()));
       case ButtonSize.small:
         return Text(label,
             style: SubHeading.SH14.copyWith(color: getLabelColor()));
@@ -73,6 +77,8 @@ class Button extends StatelessWidget {
 
   EdgeInsets getPadding() {
     switch (size) {
+      case ButtonSize.xsmall:
+        return EdgeInsets.symmetric(horizontal: 16, vertical: 0);
       case ButtonSize.small:
         return EdgeInsets.symmetric(horizontal: 16, vertical: 4);
       case ButtonSize.large:

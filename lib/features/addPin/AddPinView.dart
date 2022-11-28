@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:memz/components/button/Button.dart';
 import 'package:memz/components/scaffold/CommonScaffold.dart';
 import 'package:memz/features/addPin/AddCaptionView.dart';
 import 'package:memz/styles/fonts.dart';
@@ -86,14 +87,10 @@ class AddPinViewState extends State<AddPinView> {
       child: CommonScaffold(
         appBar: CommonAppBar(
           title: 'Drop a Pin',
-          rightWidget: GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              child: Text(
-                'Next',
-                style: SubHeading.SH14,
-              ),
-            ),
+          rightWidget: Button(
+            label: 'Next',
+            size: ButtonSize.xsmall,
+            type: ButtonType.secondary,
             onTap: () {
               if (user?.uid != null && currentLocation != null) {
                 Navigator.of(context).push(
