@@ -222,13 +222,14 @@ class UserProfileViewState extends State<UserProfileView> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          ListView(
-                            children: [
-                              PinsGridView(pins: _userPins ?? []),
-                              // ProfilePinsTab(pins: _userPins),
-                              const SizedBox(height: 40),
-                            ],
-                          ),
+                          PinsGridView(pins: _userPins ?? []),
+                          // ListView(
+                          //   children: [
+                          //     PinsGridView(pins: _userPins ?? []),
+                          //     // ProfilePinsTab(pins: _userPins),
+                          //     const SizedBox(height: 40),
+                          //   ],
+                          // ),
                           Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,

@@ -13,14 +13,19 @@ class PinsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        ...pins.map(
-          (pin) => GridSinglePin(
-            pinData: pin,
-          ),
-        ),
-      ],
+    return GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: .7,
+      mainAxisSpacing: 1,
+      crossAxisSpacing: 1,
+      children: List.generate(
+        pins.length,
+        (index) {
+          return GridSinglePin(
+            pinData: pins[index],
+          );
+        },
+      ),
     );
   }
 }

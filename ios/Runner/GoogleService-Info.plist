@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>801051530454-g8ankemrhg0uul9brrls0e2o926ic310.apps.googleusercontent.com</string>
+	<string>717737182106-i3sircjkokeg6c28bk57jgu688f3eh7l.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.801051530454-g8ankemrhg0uul9brrls0e2o926ic310</string>
+	<string>com.googleusercontent.apps.717737182106-i3sircjkokeg6c28bk57jgu688f3eh7l</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAEBMy45SJ5YLmsBMaI6ReLJYsaSfvlywU</string>
+	<string>AIzaSyDRZ4thW8Ppayh5rFI14fxWVeuPQ3gcud4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>801051530454</string>
+	<string>717737182106</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.memz</string>
 	<key>PROJECT_ID</key>
-	<string>memz-ae633</string>
+	<string>memz-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>memz-ae633.appspot.com</string>
+	<string>memz-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:801051530454:ios:2091a95c8c36848477e577</string>
+	<string>1:717737182106:ios:661856aff322881ec3f023</string>
 </dict>
 </plist>

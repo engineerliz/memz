@@ -168,14 +168,8 @@ class MyProfileViewState extends State<MyProfileView> {
                     Expanded(
 
                         child: TabBarView(
-                          children: [
-                            ListView(
-                              children: [
-                              PinsGridView(pins: _userPins ?? []),
-                              // ProfilePinsTab(pins: _userPins),
-                                const SizedBox(height: 40),
-                              ],
-                            ),
+                        children: [
+                          PinsGridView(pins: _userPins ?? []),
                           Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
