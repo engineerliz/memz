@@ -1,16 +1,7 @@
-# memz
+# SMYL (Project name Memz)
 
-A new Flutter project.
+SMYL is a social mobile app allowing users to share a picture of what they're doing from where they are at. Posts upload with a picture a pinned location of where they post from. 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Stack
+- Flutter 
+- Deployed on iOS
