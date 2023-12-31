@@ -88,62 +88,69 @@ class MainViewsState extends State<MainViews> {
   }
 
   void storeUserToken() {
-    FirebaseMessaging.instance.getToken().then((token) {
-      setState(() {
-        messagingToken = token;
+    if (FirebaseAuth.instance.currentUser?.uid != null) {
+      FirebaseMessaging.instance.getToken().then((token) {
+        setState(() {
+          messagingToken = token;
+        });
+        if (token != null) {
+          UserStore.updateUserToken(
+              userId: user!.uid, token: token, time: DateTime.now());
+        }
       });
-      if (user?.uid != null && token != null) {
-        UserStore.updateUserToken(
-            userId: user!.uid, token: token, time: DateTime.now());
-      }
-    });
-    print('user token $messagingToken');
+      print('user token $messagingToken');
+    }
   }
 
   @override
   initState() {
-    super.initState();
-    UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '')
-        .then(
-      (value) => setState(() {
-        userData = value;
-      }),
-    );
-    _selectedIndex = widget.activeTab ?? 0;
-    Future.delayed(Duration.zero, () async {
-      var permission = await Geolocator.checkPermission();
-      NotificationSettings newNotifPermission =
-          await messaging.getNotificationSettings();
-
-      setState(() {
-        locationPermission = permission;
-        notifPermission = newNotifPermission;
-      });
-    });
-
     if (FirebaseAuth.instance.currentUser?.uid != null) {
-      NotificationStore.getFollowRequestsNotifications(
-              userId: FirebaseAuth.instance.currentUser!.uid)
-          .then((value) {
+      UserStore.getUserById(id: FirebaseAuth.instance.currentUser?.uid ?? '')
+          .then(
+        (value) => setState(() {
+          userData = value;
+        }),
+      );
+      _selectedIndex = widget.activeTab ?? 0;
+      Future.delayed(Duration.zero, () async {
+        var permission = await Geolocator.checkPermission();
+        NotificationSettings newNotifPermission =
+            await messaging.getNotificationSettings();
+
         setState(() {
-          notificationCount = value.length;
+          locationPermission = permission;
+          notifPermission = newNotifPermission;
         });
       });
-    }
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+      if (FirebaseAuth.instance.currentUser?.uid != null) {
+        NotificationStore.getFollowRequestsNotifications(
+                userId: FirebaseAuth.instance.currentUser!.uid)
+            .then((value) {
+          setState(() {
+            notificationCount = value.length;
+          });
+        });
       }
-    });
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print('Got a message whilst in the foreground!');
+        print('Message data: ${message.data}');
 
-    setupInteractedMessage();
-    storeUserToken();
+        if (message.notification != null) {
+          print(
+              'Message also contained a notification: ${message.notification}');
+        }
+      });
+
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
+
+      setupInteractedMessage();
+      storeUserToken();
+    }
+    super.initState();
+
   }
 
   void askForLocation() {
